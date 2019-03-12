@@ -20,6 +20,7 @@ build:
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
   skip: True  # [win]
+  skip: True  # [ppc64le]
 
 requirements:
   build:
