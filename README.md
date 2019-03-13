@@ -22,7 +22,6 @@ Current build status
 ====================
 
 [![Linux](https://img.shields.io/circleci/project/github/conda-forge/lief-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/lief-feedstock)
-[![OSX](https://img.shields.io/travis/conda-forge/lief-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/lief-feedstock)
 ![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 
 Current release info
