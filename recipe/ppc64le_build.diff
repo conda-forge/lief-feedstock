@@ -1,0 +1,60 @@
+diff --git a/src/ELF/Builder.tcc b/src/ELF/Builder.tcc
+index 55f45a2..7f97765 100644
+--- a/src/ELF/Builder.tcc
++++ b/src/ELF/Builder.tcc
+@@ -16,7 +16,17 @@
+ #include <numeric>
+ 
+ #include "LIEF/logging++.hpp"
++#ifdef ELF_CLASS
++#undef ELF_CLASS
++#endif
+ 
++#ifdef ELF_DATA
++#undef ELF_DATA
++#endif
++
++#ifdef R_PPC_RELATIVE
++#undef R_PPC_RELATIVE
++#endif
+ #include "LIEF/BinaryStream/VectorStream.hpp"
+ 
+ #include "LIEF/ELF/EnumToString.hpp"
+diff --git a/src/ELF/Header.cpp b/src/ELF/Header.cpp
+index 1581f6b..6b601b3 100644
+--- a/src/ELF/Header.cpp
++++ b/src/ELF/Header.cpp
+@@ -28,6 +28,13 @@
+ #include "LIEF/ELF/EnumToString.hpp"
+ 
+ #include "LIEF/logging++.hpp"
++#ifdef ELF_CLASS
++#undef ELF_CLASS
++#endif
++
++#ifdef ELF_DATA
++#undef ELF_DATA
++#endif
+ 
+ namespace LIEF {
+ namespace ELF {
+diff --git a/src/ELF/Section.cpp b/src/ELF/Section.cpp
+index 664868c..a4eca80 100644
+--- a/src/ELF/Section.cpp
++++ b/src/ELF/Section.cpp
+@@ -24,6 +24,14 @@
+ 
+ #include "LIEF/logging++.hpp"
+ 
++#ifdef ELF_CLASS
++#undef ELF_CLASS
++#endif
++
++#ifdef ELF_DATA
++#undef ELF_DATA
++#endif
++
+ #include "LIEF/ELF/hash.hpp"
+ 
+ #include "LIEF/ELF/EnumToString.hpp"
+

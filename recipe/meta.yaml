@@ -14,13 +14,13 @@ source:
       - 0003-Export-LIEF-Object-and-LIEF-MachO-DataCodeEntry-clas.patch
       - 0004-MachO-Fix-has_dynamic_symbol_command.patch
       - 0005-Link-Python-extension-module-to-shared-LIEF-library.patch
+      - ppc64le_build.diff
 
 build:
-  number: 0
+  number: 1
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
   skip: True  # [win]
-  skip: True  # [ppc64le]
 
 requirements:
   build:
@@ -31,7 +31,7 @@ requirements:
     - jom                   # [win]
     - cmake
     - make                  # [unix]
-    - python                # [aarch64]
+    - python                # [aarch64 or ppc64le]
 
 outputs:
   - name: py-lief
