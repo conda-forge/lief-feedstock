@@ -1,10 +1,12 @@
 #!/bin/bash
 
 declare -a CMAKE_EXTRA_ARGS
-if [[ ${target_platform} =~ linux-* ]]; then
-  echo "Nothing special for linux"
-elif [[ ${target_platform} == osx-64 ]]; then
+if [[ ${target_platform} == osx-64 ]]; then
   CMAKE_EXTRA_ARGS+=(-DCMAKE_OSX_SYSROOT=${CONDA_BUILD_SYSROOT})
+elif [[ ${target_platform} == linux-ppc64le ]]; then
+  CMAKE_EXTRA_ARGS+=(-DLIEF_LOGGING=OFF)
+  export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
+  export CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
 fi
 
 mkdir build || true
