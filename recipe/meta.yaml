@@ -30,7 +30,7 @@ requirements:
     - jom                   # [win]
     - cmake
     - make                  # [unix]
-    - python                # [aarch64 or ppc64le]
+    - python                # [aarch64]
 
 outputs:
   - name: py-lief
