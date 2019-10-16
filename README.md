@@ -25,6 +25,13 @@ Current build status
         <img alt="macOS" src="https://img.shields.io/travis/conda-forge/lief-feedstock/master.svg?label=macOS">
       </a>
     </td>
+  </tr><tr>
+    <td>Drone</td>
+    <td>
+      <a href="https://cloud.drone.io/conda-forge/lief-feedstock">
+        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/master.svg?label=Linux">
+      </a>
+    </td>
   </tr>
     
   <tr>
