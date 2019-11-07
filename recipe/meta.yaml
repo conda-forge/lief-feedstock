@@ -89,7 +89,8 @@ outputs:
 
 about:
   home: https://lief.quarkslab.com/
-  license: Apache 2.0
+  license: Apache-2.0
+  license_file: LICENSE
   license_family: Apache
   summary: A cross platform library to parse, modify and abstract ELF, PE and MachO formats.
   description: |
