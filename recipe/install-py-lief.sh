@@ -45,7 +45,8 @@ pushd build
   pushd api/python
     find ${SP_DIR}
     ${PYTHON} setup.py install --single-version-externally-managed --record=record.txt
-    ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief.cpython-${CONDA_PY}m-darwin.so ${SP_DIR}/_pylief.cpython-${CONDA_PY}m-darwin.so
+    ext_suffix="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
+    ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/_pylief${ext_suffix}
   popd
 popd
 [[ -d "${PREFIX}"/share/LIEF/examples ]] && rm -rf "${PREFIX}"/share/LIEF/examples/
