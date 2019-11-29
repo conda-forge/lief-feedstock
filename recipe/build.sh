@@ -5,6 +5,9 @@ if [[ ${target_platform} == osx-64 ]]; then
   CMAKE_EXTRA_ARGS+=(-DCMAKE_OSX_SYSROOT=${CONDA_BUILD_SYSROOT})
 elif [[ ${target_platform} == linux-ppc64le ]]; then
   CMAKE_EXTRA_ARGS+=(-DLIEF_LOGGING=OFF)
+fi
+if [[ ${target_platform} == linux-* ]]; then
+  # TODO: remove this when lief's internal pybind is updated (with lief=0.10.0 probably)
   export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
   export CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
 fi
