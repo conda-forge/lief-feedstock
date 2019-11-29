@@ -8,12 +8,6 @@ source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
     sha256: 6f30c98a559f137e08b25bcbb376c0259914b33c307b8b901e01ca952241d00a
-    patches:
-      - 0001-Allow-building-from-released-tarball.patch
-      - 0002-MSVC-Add-bigobj-flag.patch
-      - 0003-Export-LIEF-Object-and-LIEF-MachO-DataCodeEntry-clas.patch
-      - 0004-MachO-Fix-has_dynamic_symbol_command.patch
-      - 0005-Link-Python-extension-module-to-shared-LIEF-library.patch
 
 build:
   number: 0
