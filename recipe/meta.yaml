@@ -1,4 +1,4 @@
-{% set version = "0.9.0" %}
+{% set version = "0.10.0" %}
 
 package:
   name: lief
@@ -7,7 +7,7 @@ package:
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
-    sha256: 8f1a12d69d9f6bd8404d4f5809549d1c7f3138cacf3bccd1192cb4f46bfb9eb7
+    sha256: 372645c972f3e6f0518a2c1150b2ec825208ba8584300e38d81a0e0063ab8462
     patches:
       - 0001-Allow-building-from-released-tarball.patch
       - 0002-MSVC-Add-bigobj-flag.patch
@@ -16,7 +16,7 @@ source:
       - 0005-Link-Python-extension-module-to-shared-LIEF-library.patch
 
 build:
-  number: 1
+  number: 0
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
   skip: True  # [win]
