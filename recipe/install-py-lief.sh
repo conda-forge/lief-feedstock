@@ -42,6 +42,8 @@ pushd build
 
   make -j${CPU_COUNT}
   make install
+  find .
+  find . | grep setup.py
   pushd api/python
     ${PYTHON} setup.py install --single-version-externally-managed --record=record.txt
     if [[ ${target_platform} == osx-64 ]]; then
