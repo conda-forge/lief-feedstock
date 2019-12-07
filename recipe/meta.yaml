@@ -19,7 +19,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - git
+    # - git
     - pkg-config            # [not win]
     - jom                   # [win]
     - cmake
@@ -37,7 +37,7 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - git
+        # - git
         - pkg-config            # [not win]
         - jom                   # [win]
         - cmake
@@ -65,7 +65,7 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - git
+        # - git
         - pkg-config            # [not win]
         - jom                   # [win]
         - cmake
