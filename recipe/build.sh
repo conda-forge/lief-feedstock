@@ -12,41 +12,33 @@ if [[ ${target_platform} == linux-* ]]; then
   export CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
 fi
 
-mkdir build || true
-cd build
+cmake . -LAH -G "Ninja"              \
+  -DLIEF_VERSION_MAJOR=0              \
+  -DLIEF_VERSION_MINOR=10             \
+  -DLIEF_VERSION_PATCH=1              \
+  -DCMAKE_BUILD_TYPE="Release"        \
+  -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
+  -DCMAKE_INSTALL_LIBDIR=lib          \
+  -DCMAKE_SKIP_RPATH=ON               \
+  -DCMAKE_AR="${AR}"                  \
+  -DCMAKE_LINKER="${LD}"              \
+  -DCMAKE_NM="${NM}"                  \
+  -DCMAKE_OBJCOPY="${OBJCOPY}"        \
+  -DCMAKE_OBJDUMP="${OBJDUMP}"        \
+  -DCMAKE_RANLIB="${RANLIB}"          \
+  -DCMAKE_STRIP="${STRIP}"            \
+  -DBUILD_SHARED_LIBS=ON              \
+  -DLIEF_PYTHON_API=OFF               \
+  -DLIEF_INSTALL_PYTHON=OFF           \
+  -DPYTHON_EXECUTABLE:FILEPATH=       \
+  -DPYTHON_INCLUDE_DIR:PATH=          \
+  -DPYTHON_LIBRARIES:PATH=            \
+  -DPYTHON_LIBRARY:PATH=              \
+  -DPYTHON_VERSION:STRING=            \
+  -D_PYTHON_LIBRARY:FILEPATH=         \
+  "${CMAKE_EXTRA_ARGS[@]}"
 
-if [[ ! -f Makefile ]]; then
-
-  cmake .. -LAH                         \
-    -DLIEF_VERSION_MAJOR=0              \
-    -DLIEF_VERSION_MINOR=9              \
-    -DLIEF_VERSION_PATCH=0              \
-    -DCMAKE_BUILD_TYPE="Release"        \
-    -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
-    -DCMAKE_INSTALL_LIBDIR=lib          \
-    -DCMAKE_SKIP_RPATH=ON               \
-    -DCMAKE_AR="${AR}"                  \
-    -DCMAKE_LINKER="${LD}"              \
-    -DCMAKE_NM="${NM}"                  \
-    -DCMAKE_OBJCOPY="${OBJCOPY}"        \
-    -DCMAKE_OBJDUMP="${OBJDUMP}"        \
-    -DCMAKE_RANLIB="${RANLIB}"          \
-    -DCMAKE_STRIP="${STRIP}"            \
-    -DBUILD_SHARED_LIBS=ON              \
-    -DLIEF_PYTHON_API=OFF               \
-    -DLIEF_INSTALL_PYTHON=OFF           \
-    -DPYTHON_EXECUTABLE:FILEPATH=       \
-    -DPYTHON_INCLUDE_DIR:PATH=          \
-    -DPYTHON_LIBRARIES:PATH=            \
-    -DPYTHON_LIBRARY:PATH=              \
-    -DPYTHON_VERSION:STRING=            \
-    -D_PYTHON_LIBRARY:FILEPATH=         \
-    "${CMAKE_EXTRA_ARGS[@]}"
-
-  if [[ ! $? ]]; then
-    echo "configure failed with $?"
-    exit 1
-  fi
+if [[ ! $? ]]; then
+  echo "configure failed with $?"
+  exit 1
 fi
-
-make -j${CPU_COUNT}

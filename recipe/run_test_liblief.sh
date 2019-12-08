@@ -2,8 +2,8 @@
 
 pushd tests
 
-  cmake -DCMAKE_BUILD_TYPE=Debug .
-  make -j${CPU_COUNT} VERBOSE=1
+  cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug .
+  ninja
 
   # This MachO object has no DynamicSymbolCommand, testing for bug fixed in PR:
   # https://github.com/lief-project/LIEF/pull/262

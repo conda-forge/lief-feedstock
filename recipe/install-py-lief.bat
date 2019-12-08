@@ -1,9 +1,6 @@
 @echo ON
 setlocal enabledelayedexpansion
 
-mkdir build
-pushd build
-
 if "%PY3K%" == "0" (
     echo "Copying stdint.h for windows"
     copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\calib3d\include\stdint.h
@@ -17,6 +14,8 @@ for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
 )
 set PY_LIB=python%PY_MAJOR%%PY_MINOR%.lib
 
+mkdir build-%PY_VER%
+pushd build-%PY_VER%
 
 :: CMake/OpenCV like Unix-style paths for some reason.
 set UNIX_PREFIX=%PREFIX:\=/%
@@ -25,28 +24,36 @@ set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
 set UNIX_SP_DIR=%SP_DIR:\=/%
 set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
-cmake .. -LAH -G "NMake Makefiles JOM"                                      ^
-    -DCMAKE_BUILD_TYPE="Release"                                            ^
-    -DCMAKE_INSTALL_PREFIX=%PREFIX%                                         ^
-    -DCMAKE_INSTALL_LIBDIR=lib                                              ^
-    -DCMAKE_SKIP_RPATH=ON                                                   ^
-    -DLIEF_PYTHON_API=ON                                                    ^
-    -DLIEF_INSTALL_PYTHON=ON                                                ^
-    -DPYTHON_VERSION=%PY_VER%                                               ^
-    -DPYTHON_LIBRARY=%PREFIX%\libs\python%CONDA_PY%.lib                     ^
-    -DPYTHON_LIBRARY_DEBUG=%PREFIX%\libs\python%CONDA_PY%.lib               ^
-    -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include
+cmake .. -LAH -G "Ninja"  ^
+    -DCMAKE_BUILD_TYPE="Release"  ^
+    -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
+    -DCMAKE_INSTALL_LIBDIR=lib  ^
+    -DCMAKE_SKIP_RPATH=ON  ^
+    -DLIEF_PYTHON_API=ON  ^
+    -DLIEF_INSTALL_PYTHON=ON  ^
+    -DPYTHON_VERSION=%PY_VER%  ^
+    -DPYTHON_LIBRARY=%PREFIX%\libs\python%CONDA_PY%.lib  ^
+    -DPYTHON_LIBRARY_DEBUG=%PREFIX%\libs\python%CONDA_PY%.lib  ^
+    -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include  ^
+    -DCMAKE_VERBOSE_MAKEFILE=ON  ^
+    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
+    -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS=OFF
 
-cmake --build . --config Release --target CLEAN -- VERBOSE=1  -- -j%CPU_COUNT%
-cmake --build . --config Release --target INSTALL -- VERBOSE=1
-
-dir /s .
-  pushd api\python
-  dir /s .
-  copy _pylief.pyd %SP_DIR%\
+:: If we do not create this directory, then a cmake copy command will copy a pyd to a file
+:: called lief, instead of putting it in that directory (or so it seems at least).
+pushd api\python
+  mkdir lief
 popd
 
-if errorlevel 1 exit /b 1
+:: cmake --build . --config Release --target CLEAN -- VERBOSE=1  -- -j%CPU_COUNT%
+:: cmake --build . --config Release --target INSTALL -- VERBOSE=1
+ninja -v pyLIEF && ninja -v install
+:: cmake --build . --config Release --target pyLIEF
 
-:: Unfortunate examples.
-del /s /q %PREFIX%\share\LIEF
+:: We end up with an exe called lief which is weird.
+pushd api\python
+  %PYTHON% -m pip install . -vv
+::  %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
+::  copy lief.pyd %SP_DIR%\
+popd
+  pushd api/python

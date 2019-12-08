@@ -1,6 +1,7 @@
 #!/bin/bash
 
-pushd build
-  make install ${VERBOSE_CM}
-popd
-[[ -d "${PREFIX}"/share/LIEF/examples ]] && rm -rf "${PREFIX}"/share/LIEF/examples/
+ninja -v && ninja -v install
+
+if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
+  rm -rf "${PREFIX}"/share/LIEF/examples/
+fi

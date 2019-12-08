@@ -21,10 +21,11 @@ requirements:
     - {{ compiler('cxx') }}
     # - git
     - pkg-config            # [not win]
-    - jom                   # [win]
+    # - jom                   # [win]
     - cmake
-    - make                  # [unix]
-    - python
+    - ninja
+    # - make                  # [unix]
+    # - python
 
 outputs:
   - name: py-lief
@@ -39,13 +40,15 @@ outputs:
         - {{ compiler('cxx') }}
         # - git
         - pkg-config            # [not win]
-        - jom                   # [win]
+        # - jom                   # [win]
         - cmake
-        - make                  # [unix]
+        - ninja
+        # - make                  # [unix]
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
         - setuptools
+        - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
@@ -67,9 +70,10 @@ outputs:
         - {{ compiler('cxx') }}
         # - git
         - pkg-config            # [not win]
-        - jom                   # [win]
+        # - jom                   # [win]
         - cmake
-        - make                  # [unix]
+        - ninja
+        # - make                  # [unix]
     test:
       files:
         - tests
@@ -78,8 +82,9 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - cmake
-        - jom                   # [win]
-        - make                  # [unix]
+        # - jom                   # [win]
+        - ninja
+        # - make                  # [unix]
 
 about:
   home: https://lief.quarkslab.com/
