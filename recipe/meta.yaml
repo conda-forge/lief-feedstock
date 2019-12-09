@@ -8,7 +8,9 @@ source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
     sha256: 6f30c98a559f137e08b25bcbb376c0259914b33c307b8b901e01ca952241d00a
-
+    patches:
+      - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
+      - 0002-Add-creation-of-BuildToolVersion.patch
 build:
   number: 0
   # Python 2.7 is not supported on Windows

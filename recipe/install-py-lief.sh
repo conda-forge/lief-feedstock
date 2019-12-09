@@ -1,8 +1,5 @@
 #!/bin/bash
 
-set +e
-set -x
-
 declare -a CMAKE_EXTRA_ARGS
 if [[ ${target_platform} =~ linux-* ]]; then
   echo "Nothing special for linux"
@@ -48,6 +45,8 @@ mv api/python/lief.so ${SP_DIR}/lief${ext_suffix}
 if [[ ${target_platform} == osx-64 ]]; then
   ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
 fi
+set -e
+${PYTHON} -c "import lief"
 
 if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
   rm -rf "${PREFIX}"/share/LIEF/examples/
