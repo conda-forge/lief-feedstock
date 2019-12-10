@@ -12,9 +12,6 @@ source:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
       - 0003-Export-BuildToolVersion.patch
-  # - path: /opt/Shared.local/src/LIEF
-  #   folder: lief
-  #   path_via_symlink: True
 
 build:
   number: 0
@@ -26,13 +23,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    # - git
     - pkg-config            # [not win]
-    # - jom                   # [win]
     - cmake
     - ninja
-    # - make                  # [unix]
-    # - python
 
 outputs:
   - name: py-lief
@@ -45,12 +38,9 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        # - git
         - pkg-config            # [not win]
-        # - jom                   # [win]
         - cmake
         - ninja
-        # - make                  # [unix]
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
@@ -75,12 +65,9 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        # - git
         - pkg-config            # [not win]
-        # - jom                   # [win]
         - cmake
         - ninja
-        # - make                  # [unix]
     test:
       files:
         - tests
@@ -89,9 +76,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - cmake
-        # - jom                   # [win]
         - ninja
-        # - make                  # [unix]
 
 about:
   home: https://lief.quarkslab.com/
