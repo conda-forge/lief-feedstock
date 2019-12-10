@@ -50,3 +50,5 @@ pushd api\python\lief
   :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
   copy lief.pyd %SP_DIR%\
 popd
+
+%PYTHON% -c "import lief"
