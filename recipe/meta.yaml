@@ -24,6 +24,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config            # [not win]
+    - patch  # [not win]
+    - m2-patch  # [win]
     - cmake
     - ninja
 

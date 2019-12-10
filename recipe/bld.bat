@@ -1,9 +1,6 @@
 @echo ON
 setlocal enabledelayedexpansion
 
-mkdir build
-cd build
-
 if "%PY3K%" == "0" (
     echo "Copying stdint.h for windows"
     copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\calib3d\include\stdint.h
@@ -18,10 +15,9 @@ set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
 set UNIX_SP_DIR=%SP_DIR:\=/%
 set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
-cmake .. -LAH -G "Ninja"  ^
+cmake . -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="Release"  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
-    -DCMAKE_INSTALL_LIBDIR=lib  ^
     -DCMAKE_SKIP_RPATH=ON  ^
     -DLIEF_PYTHON_API=OFF  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^

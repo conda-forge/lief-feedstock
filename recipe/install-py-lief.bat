@@ -27,7 +27,6 @@ set UNIX_SRC_DIR=%SRC_DIR:\=/%
 cmake .. -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="Release"  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
-    -DCMAKE_INSTALL_LIBDIR=lib  ^
     -DCMAKE_SKIP_RPATH=ON  ^
     -DLIEF_PYTHON_API=ON  ^
     -DLIEF_INSTALL_PYTHON=ON  ^
@@ -52,8 +51,7 @@ ninja -v pyLIEF && ninja -v install
 
 :: We end up with an exe called lief which is weird.
 pushd api\python
-  %PYTHON% -m pip install . -vv
+dir /s /q
 ::  %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
-::  copy lief.pyd %SP_DIR%\
+  copy lief.pyd %SP_DIR%\
 popd
-  pushd api/python
