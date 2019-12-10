@@ -10,8 +10,7 @@ source:
     sha256: 6f30c98a559f137e08b25bcbb376c0259914b33c307b8b901e01ca952241d00a
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
-      - 0002-Add-creation-of-BuildToolVersion.patch
-      - 0003-Add-BuildToolVersion-more.patch
+      - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
 
 build:
   number: 0

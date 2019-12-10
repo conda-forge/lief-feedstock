@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# _ZTIN4LIEF5MachO16BuildToolVersionE => "typeinfo for LIEF::MachO::BuildToolVersion"
+# _ZTIN4LIEF5MachO12BuildVersionE => "typeinfo for LIEF::MachO::BuildVersion"
+
 ninja -v && ninja -v install
 
 if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then

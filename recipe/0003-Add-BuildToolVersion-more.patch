@@ -1,4 +1,4 @@
-From a87797a2baf88072daf40154dab65de5f8b97dc0 Mon Sep 17 00:00:00 2001
+From 684ff08f00c62ee6bac48f190fd63d1ca4cdd1b4 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 10 Dec 2019 14:45:58 +0100
 Subject: [PATCH 3/3] Add BuildToolVersion more
@@ -48,7 +48,7 @@ index 008f057..2fa9b67 100644
    LIEF_LOCAL bool has_command(void) const;
  
 diff --git a/src/MachO/Binary.cpp b/src/MachO/Binary.cpp
-index 8757fb2..2bcfcea 100644
+index 8757fb2..9fd537f 100644
 --- a/src/MachO/Binary.cpp
 +++ b/src/MachO/Binary.cpp
 @@ -2024,6 +2024,20 @@ const BuildVersion& Binary::build_version(void) const {
@@ -61,11 +61,11 @@ index 8757fb2..2bcfcea 100644
 +  return this->has_command<BuildToolVersion>();
 +}
 +
-+BuildVersion& Binary::build_tool_version(void) {
++BuildToolVersion& Binary::build_tool_version(void) {
 +  return this->command<BuildToolVersion>();
 +}
 +
-+const BuildVersion& Binary::build_tool_version(void) const {
++const BuildToolVersion& Binary::build_tool_version(void) const {
 +  return this->command<BuildToolVersion>();
 +}
 +
