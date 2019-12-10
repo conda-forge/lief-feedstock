@@ -1,10 +1,4 @@
 c_compiler:
-  - vs2008                     # [win]
-  - vs2017                     # [win]
-  - vs2017                     # [win]
   - vs2017                     # [win]
 cxx_compiler:
-  - vs2008                     # [win]
-  - vs2017                     # [win]
-  - vs2017                     # [win]
   - vs2017                     # [win]
