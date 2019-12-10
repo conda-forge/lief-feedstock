@@ -31,14 +31,14 @@ else
   LMBTV="typeinfo for LIEF::MachO::BuiltToolVersion"
 fi
 
-"${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF.so | rg "${LM}"
+"${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF${SHLIB_EXT} | rg "${LM}"
 
-if ! "${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF.so | rg "${LMBV}"; then
-  echo "Failed to find typeinfo for LIEF::MachO::BuildVersion in lib/libLIEF.so"
+if ! "${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF${SHLIB_EXT} | rg "${LMBV}"; then
+  echo "Failed to find typeinfo for LIEF::MachO::BuildVersion in lib/libLIEF${SHLIB_EXT}"
   exit 1
 fi
 
-if ! "${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF.so | rg "${LMBTV}"; then
-  echo "Failed to find typeinfo for LIEF::MachO::BuildToolVersion in lib/libLIEF.so"
+if ! "${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF${SHLIB_EXT} | rg "${LMBTV}"; then
+  echo "Failed to find typeinfo for LIEF::MachO::BuildToolVersion in lib/libLIEF${SHLIB_EXT}"
   exit 2
 fi
