@@ -20,7 +20,6 @@ cmake . -LAH -G "Ninja"               \
   -DLIEF_VERSION_PATCH=1              \
   -DCMAKE_BUILD_TYPE="Release"        \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
-  -DCMAKE_INSTALL_LIBDIR=lib          \
   -DCMAKE_SKIP_RPATH=ON               \
   -DCMAKE_AR="${AR}"                  \
   -DCMAKE_LINKER="${LD}"              \
@@ -32,12 +31,6 @@ cmake . -LAH -G "Ninja"               \
   -DBUILD_SHARED_LIBS=ON              \
   -DLIEF_PYTHON_API=OFF               \
   -DLIEF_INSTALL_PYTHON=OFF           \
-  -DPYTHON_EXECUTABLE:FILEPATH=       \
-  -DPYTHON_INCLUDE_DIR:PATH=          \
-  -DPYTHON_LIBRARIES:PATH=            \
-  -DPYTHON_LIBRARY:PATH=              \
-  -DPYTHON_VERSION:STRING=            \
-  -D_PYTHON_LIBRARY:FILEPATH=         \
   "${CMAKE_EXTRA_ARGS[@]}"
 
 if [[ ! $? ]]; then
