@@ -1,12 +1,11 @@
-From 56fb5eaa64b51b7b47a81b0359f23e242b1968aa Mon Sep 17 00:00:00 2001
+From 7ca3eb0b81b1f3a69dd713939ba3c93f64a2b880 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 9 Dec 2019 15:52:14 +0100
-Subject: [PATCH 2/2] Add creation of BuildToolVersion
+Subject: [PATCH 2/3] Add creation of BuildToolVersion
 
 ---
  api/python/MachO/pyMachO.cpp | 1 +
- api/python/MachO/pyMachO.hpp | 1 +
- 2 files changed, 2 insertions(+)
+ 1 file changed, 1 insertion(+)
 
 diff --git a/api/python/MachO/pyMachO.cpp b/api/python/MachO/pyMachO.cpp
 index 2a48172..ef9b422 100644
@@ -19,18 +18,6 @@ index 2a48172..ef9b422 100644
 +  CREATE(BuildToolVersion, m);
  }
  
- }
-diff --git a/api/python/MachO/pyMachO.hpp b/api/python/MachO/pyMachO.hpp
-index 164d01d..51781a6 100644
---- a/api/python/MachO/pyMachO.hpp
-+++ b/api/python/MachO/pyMachO.hpp
-@@ -79,6 +79,7 @@ SPECIALIZE_CREATE(SubFramework);
- SPECIALIZE_CREATE(DyldEnvironment);
- SPECIALIZE_CREATE(EncryptionInfo);
- SPECIALIZE_CREATE(BuildVersion);
-+SPECIALIZE_CREATE(BuildToolVersion);
- 
- }
  }
 -- 
 2.23.0

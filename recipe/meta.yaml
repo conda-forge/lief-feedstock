@@ -11,6 +11,8 @@ source:
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Add-creation-of-BuildToolVersion.patch
+      - 0003-Add-BuildToolVersion-more.patch
+
 build:
   number: 0
   # Python 2.7 is not supported on Windows
