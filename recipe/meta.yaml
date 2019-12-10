@@ -11,7 +11,10 @@ source:
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
-      - 0003-Hack.patch
+      - 0003-Export-BuildToolVersion.patch
+  # - path: /opt/Shared.local/src/LIEF
+  #   folder: lief
+  #   path_via_symlink: True
 
 build:
   number: 0

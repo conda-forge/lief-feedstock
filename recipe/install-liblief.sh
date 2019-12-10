@@ -31,7 +31,7 @@ else
   OBJDUMP+=(-C)
   LM="typeinfo for LIEF::MachO::"
   LMBV="typeinfo for LIEF::MachO::BuildVersion"
-  LMBTV="typeinfo for LIEF::MachO::BuiltToolVersion"
+  LMBTV="typeinfo for LIEF::MachO::BuildToolVersion"
 fi
 
 "${OBJDUMP[@]}" ${PREFIX}/lib/libLIEF${SHLIB_EXT} | rg "${LM}"

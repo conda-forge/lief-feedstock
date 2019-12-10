@@ -1,7 +1,7 @@
-From 8d661be4cd9f51ee8b4768b35f3b5abf0dadecb4 Mon Sep 17 00:00:00 2001
+From 68f61547226cfb3b09d1628bf11f68443b7a8bcf Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 10 Dec 2019 13:59:49 +0100
-Subject: [PATCH 2/2] Fix typo BuildeVersion => BuildVersion which may lead to
+Subject: [PATCH 2/3] Fix typo BuildeVersion => BuildVersion which may lead to
  my link failures
 
 ---
