@@ -1,0 +1,26 @@
+From d033bbd39f8362fed632816941cbfd1b151fbe50 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Tue, 10 Dec 2019 14:54:37 +0100
+Subject: [PATCH 3/3] Hack
+
+---
+ src/MachO/BinaryParser.tcc | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/MachO/BinaryParser.tcc b/src/MachO/BinaryParser.tcc
+index 02eb812..3f882a3 100644
+--- a/src/MachO/BinaryParser.tcc
++++ b/src/MachO/BinaryParser.tcc
+@@ -406,6 +406,9 @@ void BinaryParser::parse_load_commands(void) {
+             }
+ 
+             auto&& tool_struct = this->stream_->peek<build_tool_version>(cmd_offset);
++            // Force an instantiation of a BuildToolVersion.
++            BuildToolVersion btv(tool_struct);
++            (void)btv;
+             build_version->tools_.emplace_back(tool_struct);
+           }
+           break;
+-- 
+2.24.0
+
