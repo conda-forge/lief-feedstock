@@ -41,14 +41,12 @@ pushd api\python
   mkdir lief
 popd
 
-:: cmake --build . --config Release --target CLEAN -- VERBOSE=1  -- -j%CPU_COUNT%
-:: cmake --build . --config Release --target INSTALL -- VERBOSE=1
 ninja -v pyLIEF && ninja -v install
-:: cmake --build . --config Release --target pyLIEF
 
 :: We end up with an exe called lief which is weird.
-pushd api\python
-dir /s /q
-::  %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
+pushd api\python\lief
+  :: We may want to have our own dummy setup.py so we get a dist-info folder. It would
+  :: be nice to use LIEF's setup.py but it places too many constraints on the build.
+  :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
   copy lief.pyd %SP_DIR%\
 popd
