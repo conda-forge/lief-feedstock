@@ -15,12 +15,12 @@ if [[ ${target_platform} == osx-64 ]]; then
     # Want better matches for these.
     LM="MachO"
     LMBV="BuildVersion"
-    LMBTV="BuiltToolVersion"
+    LMBTV="BuildToolVersion"
   else
     OBJDUMP+=(-C)
     LM="typeinfo for LIEF::MachO::"
     LMBV="typeinfo for LIEF::MachO::BuildVersion"
-    LMBTV="typeinfo for LIEF::MachO::BuiltToolVersion"
+    LMBTV="typeinfo for LIEF::MachO::BuildToolVersion"
   fi
 else
   OBJDUMP+=(objdump)
