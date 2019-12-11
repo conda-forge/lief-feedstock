@@ -12,6 +12,10 @@ for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
    set "PY_MAJOR=%%a"
    set "PY_MINOR=%%b"
 )
+
+mkdir build-%PY_VER%
+pushd build-%PY_VER%
+
 set PY_LIB=python%PY_MAJOR%%PY_MINOR%.lib
 
 :: CMake/OpenCV like Unix-style paths for some reason.
@@ -21,7 +25,7 @@ set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
 set UNIX_SP_DIR=%SP_DIR:\=/%
 set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
-cmake . -LAH -G "Ninja"  ^
+cmake .. -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="Release"  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
     -DCMAKE_SKIP_RPATH=ON  ^

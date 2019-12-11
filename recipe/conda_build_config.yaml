@@ -1,5 +1,5 @@
 python:                        # [win]
-  = 3.6                        # [win]
+  - 3.6                        # [win]
   - 3.7                        # [win]
   - 3.8                        # [win]
 c_compiler:                    # [win]
