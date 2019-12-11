@@ -18,7 +18,7 @@ pushd build-%PY_VER%
 
 set PY_LIB=python%PY_MAJOR%%PY_MINOR%.lib
 
-:: CMake/OpenCV like Unix-style paths for some reason.
+:: CMake/OpenCV like Unix-style paths.
 set UNIX_PREFIX=%PREFIX:\=/%
 set UNIX_LIBRARY_PREFIX=%LIBRARY_PREFIX:\=/%
 set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
@@ -31,9 +31,9 @@ cmake .. -LAH -G "Ninja"  ^
     -DCMAKE_SKIP_RPATH=ON  ^
     -DLIEF_PYTHON_API=ON  ^
     -DLIEF_INSTALL_PYTHON=ON  ^
+    -DPYTHON_EXECUTABLE=%PREFIX%\python.exe  ^
     -DPYTHON_VERSION=%PY_VER%  ^
     -DPYTHON_LIBRARY=%PREFIX%\libs\python%CONDA_PY%.lib  ^
-    -DPYTHON_LIBRARY_DEBUG=%PREFIX%\libs\python%CONDA_PY%.lib  ^
     -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^
     -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
@@ -41,9 +41,7 @@ cmake .. -LAH -G "Ninja"  ^
 
 :: If we do not create this directory, then a cmake copy command will copy a pyd to a file
 :: called lief, instead of putting it in that directory (or so it seems at least).
-pushd api\python
-  mkdir lief
-popd
+mkdir api\python\lief
 
 ninja -v pyLIEF && ninja -v install
 
