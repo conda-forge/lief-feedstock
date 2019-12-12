@@ -12,6 +12,9 @@ source:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
       - 0003-Export-BuildToolVersion.patch
+      - 0004-Do-not-annotate-static-ELF-Parser-s-parse-function-a.patch
+      - 0005-Update-LIEF_VERSION_PATCH-to-1-for-v0.10.1.patch
+      - 0006-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
 
 build:
   number: 0

@@ -1,0 +1,39 @@
+From eb147e0afb8c737a58eb123289148ca5da5afba8 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Thu, 12 Dec 2019 01:33:59 +0100
+Subject: [PATCH 6/6] Call the C++ DLL libLIEF.dll so it does not clash with
+ lief.pyd
+
+---
+ CMakeLists.txt | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 064a2d7..df53655 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -443,9 +443,20 @@ endif()
+ 
+ find_package(cppcheck)
+ 
++# Since the Python extension module will be called lief.pyd, we cannot have the C++ Library
++# called LIEF.dll since Windows will not load both.
++if(WINDOWS AND BUILD_SHARED_LIBS)
++  set_target_properties(
++    LIB_LIEF
++    PROPERTIES OUTPUT_NAME libLIEF)
++else()
++  set_target_properties(
++    LIB_LIEF
++    PROPERTIES OUTPUT_NAME LIEF
++endif()
++
+ set_target_properties(
+   LIB_LIEF
+-  PROPERTIES OUTPUT_NAME LIEF
+   CLEAN_DIRECT_OUTPUT 1)
+ 
+ # Set a default build type if none was specified
+-- 
+2.24.0
+
