@@ -19,11 +19,14 @@ set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
 set UNIX_SP_DIR=%SP_DIR:\=/%
 set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
-cmake .. -LAH -G "Ninja"  ^
+cmake -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="Release"  ^
+    -DBUILD_SHARED_LIBS:BOOL=ON  ^
+    -DBUILD_STATIC_LIBS:BOOL=OFF  ^
+    -DLIEF_PYTHON_API=OFF  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
     -DCMAKE_SKIP_RPATH=ON  ^
-    -DLIEF_PYTHON_API=OFF  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^
-    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF
-if errorlevel 1 exit /b 1
+    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
+    ..
+if %errorlevel% neq 0 exit /b 1

@@ -15,6 +15,7 @@ source:
       - 0004-Do-not-annotate-static-ELF-Parser-s-parse-function-a.patch
       - 0005-Update-LIEF_VERSION_PATCH-to-1-for-v0.10.1.patch
       - 0006-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      - 0007-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
 
 build:
   number: 0
