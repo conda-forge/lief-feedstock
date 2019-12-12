@@ -19,6 +19,9 @@ set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
 set UNIX_SP_DIR=%SP_DIR:\=/%
 set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
+set CC=cl.exe
+set CXX=cl.exe
+
 cmake -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="Release"  ^
     -DBUILD_SHARED_LIBS:BOOL=ON  ^

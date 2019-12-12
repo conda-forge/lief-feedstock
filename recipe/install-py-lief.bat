@@ -58,6 +58,9 @@ if %PY_VER% == 3.8 (
   set STATIC_BUILD=OFF
 )
 
+set CC=cl.exe
+set CXX=cl.exe
+
 cmake -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="Release"  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
