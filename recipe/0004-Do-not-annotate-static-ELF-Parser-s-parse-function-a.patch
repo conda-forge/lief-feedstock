@@ -1,7 +1,7 @@
-From 30dc9736150346cfaff8add9ccf8f9b11db62b4a Mon Sep 17 00:00:00 2001
+From 24162f780ad9e2f8e5f797682349df04c4e5f397 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Wed, 11 Dec 2019 16:52:17 +0100
-Subject: [PATCH 4/4] Do not annotate static ELF Parser's parse function as
+Subject: [PATCH 4/7] Do not annotate static ELF Parser's parse function as
  LIEF_API
 
 It leads to:

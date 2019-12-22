@@ -1,11 +1,7 @@
-From f9d59effcd80d43c2be6d4689cb2918a46c47546 Mon Sep 17 00:00:00 2001
+From bc909c9643742df43763d8bf8e475b5c3768f1cb Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Thu, 12 Dec 2019 01:33:28 +0100
-Subject: [PATCH 5/6] =?UTF-8?q?Update=20=C2=83=C2=96LIEF=5FVERSION=5FPATCH?=
- =?UTF-8?q?=20to=201=20for=20v0.10.1?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH 5/7] Update LIEF_VERSION_PATCH to 1 for v0.10.1
 
 ---
  CMakeLists.txt | 2 +-

@@ -1,7 +1,7 @@
-From f9e88a6665e80675c67310089d43045ebd3b64ef Mon Sep 17 00:00:00 2001
+From eb656a538a76a3767b633fa9ec85a2e893cfe037 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Tue, 10 Dec 2019 18:20:18 +0100
-Subject: [PATCH 3/3] Export BuildToolVersion
+Subject: [PATCH 3/7] Export BuildToolVersion
 
 ---
  include/LIEF/MachO/BuildVersion.hpp | 2 +-
@@ -21,5 +21,5 @@ index da9cd8b..2bfb80d 100644
    //! @brief Version is an array of **3** integers
    using version_t = std::array<uint32_t, 3>;
 -- 
-2.23.0
+2.24.0
 

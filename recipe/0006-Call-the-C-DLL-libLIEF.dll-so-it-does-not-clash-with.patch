@@ -1,7 +1,7 @@
-From 6b5e1ae6fe42e666582a275032539e523d1c6b02 Mon Sep 17 00:00:00 2001
+From cc1bae3fef148f49c387e25b0bb273fd93e196ca Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Thu, 12 Dec 2019 01:33:59 +0100
-Subject: [PATCH 6/6] Call the C++ DLL libLIEF.dll so it does not clash with
+Subject: [PATCH 6/7] Call the C++ DLL libLIEF.dll so it does not clash with
  lief.pyd
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH 6/6] Call the C++ DLL libLIEF.dll so it does not clash with
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 064a2d7..a5fdaf7 100644
+index 064a2d7..8560105 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -443,10 +443,21 @@ endif()

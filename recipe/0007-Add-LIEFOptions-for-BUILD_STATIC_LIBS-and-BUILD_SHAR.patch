@@ -1,4 +1,4 @@
-From dc559c286f572c3e86e09ad97f9769c3130b0ea0 Mon Sep 17 00:00:00 2001
+From c4f12d38f04f28a79f21b655421f7738877931ef Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Thu, 12 Dec 2019 12:16:47 +0100
 Subject: [PATCH 7/7] Add LIEFOptions for BUILD_STATIC_LIBS and
