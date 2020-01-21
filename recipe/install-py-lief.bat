@@ -13,12 +13,15 @@ for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
    set "PY_MINOR=%%b"
 )
 
-mkdir build-%PY_VER%
-pushd build-%PY_VER%
+:: mkdir build-%PY_VER%
+:: pushd build-%PY_VER%
+
+mkdir build-py
+pushd build-py
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?
-set PY_LIB=python%PY_MAJOR%.lib
+set PY_LIB=python%PY_MAJOR%%PY_MINOR%.lib
 
 :: CMake/OpenCV like Unix-style paths.
 set UNIX_PREFIX=%PREFIX:\=/%
@@ -51,8 +54,10 @@ set UNIX_SRC_DIR=%SRC_DIR:\=/%
 :: ImportError: OS_ABI: element "GNU" already exists!
 
 if %PY_VER% == 3.8 (
-  set SHARED_BUILD=OFF
-  set STATIC_BUILD=ON
+::  set SHARED_BUILD=OFF
+::  set STATIC_BUILD=ON
+  set SHARED_BUILD=ON
+  set STATIC_BUILD=OFF
 ) else (
   set SHARED_BUILD=ON
   set STATIC_BUILD=OFF
@@ -95,6 +100,23 @@ pushd api\python\lief
   copy lief.pyd %SP_DIR%\
 popd
 
-%PYTHON% -c "import lief"
+:: When pywin32 (or something else) modifies PATH in funny ways we can end up with conda run
+:: not working at all properly, and the sys python getting run instead (for example).
+set CONDA_TEST_SAVE_TEMPS=1
+echo "PATH is %PATH%"
+call conda run -p %PREFIX% --debug-wrapper-scripts call %RECIPE_DIR%\echo_path.bat
+echo "Done call conda run -p"
 if %errorlevel% neq 0 exit /b 1
+
+:: The commented out tests above are overkill, but we should run this one at least.
+call conda run -p %PREFIX% --debug-wrapper-scripts python -v --version | findstr /r /c:%PY_VER%
+if %errorlevel% neq 0 exit /b 1
+
+call conda run -p %PREFIX% --debug-wrapper-scripts python -c "import lief" | findstr /r /c:"The specified module could not be found"
+if %errorlevel% neq 1 exit /b 1
+
+call conda run -p %PREFIX% --debug-wrapper-scripts python -c "import lief" | findstr /r /c:"no current thread state"
+if %errorlevel% neq 1 exit /b 1
+
 rmdir /s /q %PREFIX%\share\LIEF\examples
+exit /b 1

@@ -47,6 +47,18 @@ fi
 set -e
 ${PYTHON} -c "import lief"
 
+conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version | grep ${PY_VER}
+if [[ ! $? ]]; then
+  echo "conda run runs the wrong python"
+  exit 1
+fi
+
+conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" | grep "The specified module could not be found"
+if [[ ! $? ]]; then
+  echo "conda run ${PREFIX} --debug-wrapper-scripts python \"import lief\" runs the wrong python"
+  exit 1
+fi
+
 if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
   rm -rf "${PREFIX}"/share/LIEF/examples/
 fi
