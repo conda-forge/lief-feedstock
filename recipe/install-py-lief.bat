@@ -122,13 +122,14 @@ echo "(install-py-lief.bat) Done call conda run -p"
 if %errorlevel% neq 0 exit /b 1
 
 :: The commented out tests above are overkill, but we should run this one at least.
-call conda run -p %PREFIX% --debug-wrapper-scripts python -v --version | findstr /r /c:%PY_VER%
+:: Add --debug-wrapper-scripts to the conda run calls to see what goes on.
+call conda run -p %PREFIX% python --version 2>&1 | findstr /r /c:%PY_VER%
 if %errorlevel% neq 0 exit /b 1
 
-call conda run -p %PREFIX% --debug-wrapper-scripts python -c "import lief" | findstr /r /c:"The specified module could not be found"
+call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"The specified module could not be found"
 if %errorlevel% neq 1 exit /b 1
 
-call conda run -p %PREFIX% --debug-wrapper-scripts python -c "import lief" | findstr /r /c:"no current thread state"
+call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"no current thread state"
 if %errorlevel% neq 1 exit /b 1
 
 rmdir /s /q %PREFIX%\share\LIEF\examples
