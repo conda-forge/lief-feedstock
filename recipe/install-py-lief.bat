@@ -66,8 +66,14 @@ if %PY_VER% == 3.8 (
 set CC=cl.exe
 set CXX=cl.exe
 
+if "%DEBUG_C%" == "yes" (
+  set BUILD_TYPE=Debug
+) else (
+  set BUILD_TYPE=Release
+)
+
 cmake -LAH -G "Ninja"  ^
-    -DCMAKE_BUILD_TYPE="Release"  ^
+    -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
     -DBUILD_SHARED_LIBS:BOOL=%SHARED_BUILD%  ^
     -DBUILD_STATIC_LIBS:BOOL=%STATIC_BUILD%  ^
@@ -93,19 +99,26 @@ mkdir api\python\lief
 ninja -v pyLIEF && ninja -v install
 
 :: We end up with an exe called lief which is weird.
-pushd api\python\lief
+pushd api\python
   :: We may want to have our own dummy setup.py so we get a dist-info folder. It would
   :: be nice to use LIEF's setup.py but it places too many constraints on the build.
   :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
-  copy lief.pyd %SP_DIR%\
+  if "%DEBUG_C%" == "yes" (
+    copy lief\lief.pyd %SP_DIR%\lief_d.pyd
+    if exist lief.pdb copy lief.pdb %SP_DIR%\lief_d.pdb
+  ) else (
+    copy lief\lief.pyd %SP_DIR%\lief.pyd
+    if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
+  )
 popd
 
 :: When pywin32 (or something else) modifies PATH in funny ways we can end up with conda run
 :: not working at all properly, and the sys python getting run instead (for example).
 set CONDA_TEST_SAVE_TEMPS=1
-echo "PATH is %PATH%"
+echo "(install-py-lief.bat) PATH just before conda run -p %RECIPE_DIR%\echo_path.bat is %PATH%"
+where conda
 call conda run -p %PREFIX% --debug-wrapper-scripts call %RECIPE_DIR%\echo_path.bat
-echo "Done call conda run -p"
+echo "(install-py-lief.bat) Done call conda run -p"
 if %errorlevel% neq 0 exit /b 1
 
 :: The commented out tests above are overkill, but we should run this one at least.
@@ -119,4 +132,3 @@ call conda run -p %PREFIX% --debug-wrapper-scripts python -c "import lief" | fin
 if %errorlevel% neq 1 exit /b 1
 
 rmdir /s /q %PREFIX%\share\LIEF\examples
-exit /b 1

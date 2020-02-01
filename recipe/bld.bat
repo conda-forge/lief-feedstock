@@ -22,10 +22,15 @@ set UNIX_SRC_DIR=%SRC_DIR:\=/%
 set CC=cl.exe
 set CXX=cl.exe
 
+if "%DEBUG_C%" == "yes" (
+  set BUILD_TYPE=Debug
+) else (
+  set BUILD_TYPE=Release
+)
+
 cmake -LAH -G "Ninja"  ^
-    -DCMAKE_BUILD_TYPE="Release"  ^
+    -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^
     -DBUILD_SHARED_LIBS:BOOL=ON  ^
-    -DBUILD_STATIC_LIBS:BOOL=OFF  ^
     -DLIEF_PYTHON_API=OFF  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
     -DCMAKE_SKIP_RPATH=ON  ^

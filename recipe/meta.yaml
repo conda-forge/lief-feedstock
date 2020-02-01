@@ -62,8 +62,9 @@ outputs:
         - {{ compiler('cxx') }}
       imports:
         - lief
-      # commands:
-      #   - exit /b 1  # [win]
+      # Force a failure.
+      commands:
+        - exit /b 1  # [win]
 
   - name: liblief
     script: install-liblief.sh        # [unix]
