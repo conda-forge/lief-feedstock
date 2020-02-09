@@ -1,5 +1,16 @@
 {% set version = "0.10.1" %}
 
+{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
+{% if python != '3.8' %}
+    {% set variant = "" %}
+{% else %}
+  {% if debug != '' %}
+    {% set variant = "cpython_dbg" %}
+  {% else %}
+    {% set variant = "cpython" %}
+  {% endif %}
+{% endif %}
+
 package:
   name: lief
   version: {{ version }}
@@ -31,7 +42,7 @@ requirements:
     - pkg-config            # [not win]
     - patch  # [not win]
     - m2-patch  # [win]
-    - posix  # [win]
+    - m2-gcc-libs  # [win]
     - cmake
     - ninja
 
@@ -42,6 +53,8 @@ outputs:
     build:
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
+      ignore_run_exports:
+        - python
     requirements:
       build:
         - {{ compiler('c') }}
@@ -51,20 +64,17 @@ outputs:
         - ninja
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
-        - python
+        - python {{python}}* *{{variant}}
         - setuptools
         - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
-        - python
+        - python {{python}}* *{{variant}}
     test:
       requires:
         - {{ compiler('cxx') }}
       imports:
         - lief
-      # Force a failure.
-      commands:
-        - exit /b 1  # [win]
 
   - name: liblief
     script: install-liblief.sh        # [unix]
