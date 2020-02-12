@@ -54,13 +54,15 @@ set UNIX_SRC_DIR=%SRC_DIR:\=/%
 :: ImportError: OS_ABI: element "GNU" already exists!
 
 if %PY_VER% == 3.8 (
-::  set SHARED_BUILD=OFF
-::  set STATIC_BUILD=ON
-  set SHARED_BUILD=ON
-  set STATIC_BUILD=OFF
+  set SHARED_BUILD=OFF
+  set STATIC_BUILD=ON
+::  set SHARED_BUILD=ON
+::  set STATIC_BUILD=OFF
 ) else (
-  set SHARED_BUILD=ON
-  set STATIC_BUILD=OFF
+  set SHARED_BUILD=OFF
+  set STATIC_BUILD=ON
+::  set SHARED_BUILD=ON
+::  set STATIC_BUILD=OFF
 )
 
 set CC=cl.exe
