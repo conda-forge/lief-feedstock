@@ -1,6 +1,12 @@
 @echo ON
 setlocal enabledelayedexpansion
 
+if "%DEBUG_C%" == "yes" (
+  set BUILD_TYPE=Debug
+) else (
+  set BUILD_TYPE=Release
+)
+
 :: All builds done in a subdir so CMake caches are not found next time.
 mkdir build
 pushd build
@@ -21,12 +27,6 @@ set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
 set CC=cl.exe
 set CXX=cl.exe
-
-if "%DEBUG_C%" == "yes" (
-  set BUILD_TYPE=Debug
-) else (
-  set BUILD_TYPE=Release
-)
 
 cmake -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^

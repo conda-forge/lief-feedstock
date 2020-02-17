@@ -13,6 +13,14 @@ for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
    set "PY_MINOR=%%b"
 )
 
+if "%DEBUG_C%" == "yes" (
+  set BUILD_TYPE=Debug
+  set DEBUG_SUFFIX=_d
+) else (
+  set BUILD_TYPE=Release
+  set DEBUG_SUFFIX=_
+)
+
 :: mkdir build-%PY_VER%
 :: pushd build-%PY_VER%
 
@@ -21,7 +29,7 @@ pushd build-py
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?
-set PY_LIB=python%PY_MAJOR%%PY_MINOR%.lib
+set PY_LIB=python%PY_MAJOR%%PY_MINOR%%DEBUG_SUFFIX%.lib
 
 :: CMake/OpenCV like Unix-style paths.
 set UNIX_PREFIX=%PREFIX:\=/%
@@ -68,12 +76,6 @@ if %PY_VER% == 3.8 (
 set CC=cl.exe
 set CXX=cl.exe
 
-if "%DEBUG_C%" == "yes" (
-  set BUILD_TYPE=Debug
-) else (
-  set BUILD_TYPE=Release
-)
-
 cmake -LAH -G "Ninja"  ^
     -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
@@ -98,7 +100,15 @@ if %errorlevel% neq 0 exit /b 1
 :: called lief, instead of putting it in that directory (or so it seems at least).
 mkdir api\python\lief
 
-ninja -v pyLIEF && ninja -v install
+ninja -v pyLIEF
+
+:: We might need to clean some stuff manually here.
+if "%DEBUG_C%" == "yes" (
+  patch -p1<%RECIPE_DIR%\pybind11-MSVC-allow-debug-python.patch
+  ninja -v pyLIEF
+)
+
+ninja -v install
 
 :: We end up with an exe called lief which is weird.
 pushd api\python
@@ -106,8 +116,9 @@ pushd api\python
   :: be nice to use LIEF's setup.py but it places too many constraints on the build.
   :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
   if "%DEBUG_C%" == "yes" (
-    copy lief\lief.pyd %SP_DIR%\lief_d.pyd
-    if exist lief.pdb copy lief.pdb %SP_DIR%\lief_d.pdb
+    :: I used to copy to _d.pyd and _d.pdb, that does not work.
+    copy lief\lief.pyd %SP_DIR%\lief.pyd
+    if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
   ) else (
     copy lief\lief.pyd %SP_DIR%\lief.pyd
     if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb

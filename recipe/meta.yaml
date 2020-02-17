@@ -1,14 +1,13 @@
 {% set version = "0.10.1" %}
 
 {% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
-{% if python != '3.8' %}
-    {% set variant = "" %}
+{% if debug != '' %}
+  {% set debug = "_dbg" %}
+{% endif %}
+{% if debug != '' %}
+  {% set variant = "cpython_dbg" %}
 {% else %}
-  {% if debug != '' %}
-    {% set variant = "cpython_dbg" %}
-  {% else %}
-    {% set variant = "cpython" %}
-  {% endif %}
+  {% set variant = "cpython" %}
 {% endif %}
 
 package:
@@ -28,9 +27,11 @@ source:
       - 0006-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
       - 0007-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
       # - 0008-Export-parse-in-include-LIEF-ELF-Parser.hpp.patch
+      - 0008-Add-_DEBUG-when-CMAKE_BUILD_TYPE-matches-Debug.patch
 
 build:
   number: 0
+  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
   skip: True  # [win and py<30]
@@ -51,6 +52,7 @@ outputs:
     script: install-py-lief.sh   # [unix]
     script: install-py-lief.bat  # [win]
     build:
+      string: py{{ ''.join(python.split('.')[0:2]) }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
       ignore_run_exports:
@@ -60,6 +62,9 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - pkg-config            # [not win]
+        # When making a debug build on Windows, we need to patch CMake downloaded pybind11. Sorry.
+        - m2-patch  # [win]
+        - m2-gcc-libs  # [win]
         - cmake
         - ninja
       host:
@@ -75,13 +80,12 @@ outputs:
         - {{ compiler('cxx') }}
       imports:
         - lief
-      commands:
-        - exit /b 1  # [win]
 
   - name: liblief
     script: install-liblief.sh        # [unix]
     script: install-liblief.bat       # [win]
     build:
+      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
       run_exports:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
     requirements:
