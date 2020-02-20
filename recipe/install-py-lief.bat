@@ -116,9 +116,8 @@ pushd api\python
   :: be nice to use LIEF's setup.py but it places too many constraints on the build.
   :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
   if "%DEBUG_C%" == "yes" (
-    :: I used to copy to _d.pyd and _d.pdb, that does not work.
-    copy lief\lief.pyd %SP_DIR%\lief.pyd
-    if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
+    copy lief\lief.pyd %SP_DIR%\lief_d.pyd
+    if exist lief.pdb copy lief.pdb %SP_DIR%\lief_d.pdb
   ) else (
     copy lief\lief.pyd %SP_DIR%\lief.pyd
     if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
