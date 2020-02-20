@@ -28,6 +28,7 @@ source:
       - 0007-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
       # - 0008-Export-parse-in-include-LIEF-ELF-Parser.hpp.patch
       - 0008-Add-_DEBUG-when-CMAKE_BUILD_TYPE-matches-Debug.patch
+      - 0009-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
 
 build:
   number: 0
