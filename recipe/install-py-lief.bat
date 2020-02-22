@@ -18,7 +18,7 @@ if "%DEBUG_C%" == "yes" (
   set DEBUG_SUFFIX=_d
 ) else (
   set BUILD_TYPE=Release
-  set DEBUG_SUFFIX=_
+  set DEBUG_SUFFIX=
 )
 
 :: mkdir build-%PY_VER%
