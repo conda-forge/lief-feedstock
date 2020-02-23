@@ -144,4 +144,4 @@ if %errorlevel% neq 1 exit /b 1
 call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"no current thread state"
 if %errorlevel% neq 1 exit /b 1
 
-rmdir /s /q %PREFIX%\share\LIEF\examples
+if exist %PREFIX%\share\LIEF\examples rmdir /s /q %PREFIX%\share\LIEF\examples
