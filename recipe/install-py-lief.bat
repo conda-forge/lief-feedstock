@@ -107,7 +107,6 @@ if %errorlevel% neq 0 exit /b 1
 mkdir api\python\lief
 
 ninja -v pyLIEF
-copy api\python api\python.pre-DEBUG-patch
 robocopy api\python api\python.pre-DEBUG-patch
 
 :: We might need to clean some stuff manually here.
