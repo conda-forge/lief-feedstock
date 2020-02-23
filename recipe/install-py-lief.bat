@@ -61,6 +61,12 @@ set UNIX_SRC_DIR=%SRC_DIR:\=/%
 ::   File "<string>", line 1, in <module>
 :: ImportError: OS_ABI: element "GNU" already exists!
 
+echo Top of install-py-lief.bat: INCLUDE=%INCLUDE%
+echo Top of install-py-lief.bat: LIBRARY_INC=%LIBRARY_INC%
+echo Top of install-py-lief.bat: LIB=%LIB%
+echo Top of install-py-lief.bat: INCLUDE=%INCLUDE%
+echo Top of install-py-lief.bat: LIBRARY_LIB=%LIBRARY_LIB%
+
 if %PY_VER% == 3.8 (
   set SHARED_BUILD=OFF
   set STATIC_BUILD=ON
@@ -86,7 +92,7 @@ cmake -LAH -G "Ninja"  ^
     -DCMAKE_SKIP_RPATH=ON  ^
     -DLIEF_PYTHON_API=ON  ^
     -DLIEF_INSTALL_PYTHON=ON  ^
-    -DPYTHON_EXECUTABLE=%PREFIX%\python.exe  ^
+    -DPYTHON_EXECUTABLE=%PREFIX%\python%DEBUG_SUFFIX%.exe  ^
     -DPYTHON_VERSION=%PY_VER%  ^
     -DPYTHON_LIBRARY=%PREFIX%\libs\%PY_LIB%  ^
     -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include  ^
@@ -101,11 +107,20 @@ if %errorlevel% neq 0 exit /b 1
 mkdir api\python\lief
 
 ninja -v pyLIEF
+copy api\python api\python.pre-DEBUG-patch
+robocopy api\python api\python.pre-DEBUG-patch
 
 :: We might need to clean some stuff manually here.
 if "%DEBUG_C%" == "yes" (
   patch -p1<%RECIPE_DIR%\pybind11-MSVC-allow-debug-python.patch
   ninja -v pyLIEF
+  robocopy api\python api\python.post-DEBUG-patch
+  rmdir /s /q api\python\CMakeFiles
+  rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-build
+  rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-stamp
+  rmdir /s /q build-py\api\python\lief_pybind11-prefix\tmp
+  ninja -v pyLIEF
+  robocopy api\python api\python.post-DEBUG-patch-post-clean
 )
 
 ninja -v install
