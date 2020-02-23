@@ -107,22 +107,17 @@ if %errorlevel% neq 0 exit /b 1
 mkdir api\python\lief
 
 :: when DEBUG_C, the first run will download pybind11 sources which will cause a build failure
-:: (at best, and a broken .pyd at worst) because pybind11 undefines _DEBUG just before including
+:: at best, and a broken .pyd at worst because pybind11 undefines _DEBUG just before including
 :: Python.h. We undo that.
 ninja -v pyLIEF
-:: robocopy api\python api\python.pre-DEBUG-patch
 
 if "%DEBUG_C%" == "yes" (
   patch -p1<%RECIPE_DIR%\pybind11-MSVC-allow-debug-python.patch
-  :: ninja -v pyLIEF
-  :: robocopy api\python api\python.post-DEBUG-patch
-  :: We need to clean some stuff manually here.
   rmdir /s /q api\python\CMakeFiles
   rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-build
   rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-stamp
   rmdir /s /q build-py\api\python\lief_pybind11-prefix\tmp
   ninja -v pyLIEF
-  :: robocopy api\python api\python.post-DEBUG-patch-post-clean
 )
 
 ninja -v install
