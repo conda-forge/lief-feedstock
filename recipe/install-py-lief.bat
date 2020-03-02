@@ -21,11 +21,8 @@ if "%DEBUG_C%" == "yes" (
   set DEBUG_SUFFIX=
 )
 
-:: mkdir build-%PY_VER%
-:: pushd build-%PY_VER%
-
-mkdir build-py
-pushd build-py
+mkdir build-%PY_VER%
+pushd build-%PY_VER%
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?
