@@ -53,7 +53,7 @@ outputs:
     script: install-py-lief.sh   # [unix]
     script: install-py-lief.bat  # [win]
     build:
-      string: py{{ ''.join(python.split('.')[0:2]) }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
+      # string: py{{ ''.join(python.split('.')[0:2]) }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
       ignore_run_exports:
@@ -70,12 +70,14 @@ outputs:
         - ninja
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
-        - python {{python}}* *{{variant}}
+        # - python {{python}}* *{{variant}}
+        - python
         - setuptools
         - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
-        - python {{python}}* *{{variant}}
+        # - python {{python}}* *{{variant}}
+        - python
     test:
       requires:
         - {{ compiler('cxx') }}
@@ -86,7 +88,7 @@ outputs:
     script: install-liblief.sh        # [unix]
     script: install-liblief.bat       # [win]
     build:
-      string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
+      # string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
       run_exports:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
     requirements:
