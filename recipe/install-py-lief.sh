@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 declare -a CMAKE_EXTRA_ARGS
 if [[ ${target_platform} =~ linux-* ]]; then
   echo "Nothing special for linux"
@@ -9,6 +11,9 @@ else
   echo "target_platform not known: ${target_platform}"
   exit 1
 fi
+
+mkdir build-${PY_VER}
+pushd build-${PY_VER}
 
 cmake . -LAH -G "Ninja"  \
   -DCMAKE_BUILD_TYPE="Release"  \
