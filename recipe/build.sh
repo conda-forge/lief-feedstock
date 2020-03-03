@@ -11,7 +11,7 @@ if [[ ${target_platform} == linux-* ]]; then
   export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
   export CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
   # export LDFLAGS="${LDFLAGS} -Wl,--trace -Wl,--cref -Wl,--trace-symbol,_ZTIN4LIEF5MachO16BuildToolVersionE"
-  export LDFLAGS="${LDFLAGS} -Wl,--trace-symbol,_ZTIN4LIEF5MachO16BuildToolVersionE -Wl,--trace-symbol,_ZTIN4LIEF5MachO12BuildVersionE"
+  # export LDFLAGS="${LDFLAGS} -Wl,--trace-symbol,_ZTIN4LIEF5MachO16BuildToolVersionE -Wl,--trace-symbol,_ZTIN4LIEF5MachO12BuildVersionE"
 fi
 
 cmake . -LAH -G "Ninja"               \
