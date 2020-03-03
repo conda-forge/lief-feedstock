@@ -38,7 +38,16 @@ fi
 
 # cmake --build . --target pyLIEF
 # cmake --build . --target install
-ninja -v pyLIEF && ninja -v install
+ninja -v pyLIEF
+if [[ ! $? ]]; then
+  echo "Build failed with $?"
+  exit 1
+fi
+ninja -v install
+if [[ ! $? ]]; then
+  echo "Install failed with $?"
+  exit 1
+fi
 ext_suffix="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
 mv api/python/lief.so ${SP_DIR}/lief${ext_suffix}
 if [[ ${target_platform} == osx-64 ]]; then
@@ -47,13 +56,13 @@ fi
 set -e
 ${PYTHON} -c "import lief"
 
-conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version | grep ${PY_VER}
+conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version 2>&1 | grep ${PY_VER}
 if [[ ! $? ]]; then
   echo "conda run runs the wrong python"
   exit 1
 fi
 
-conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" | grep "The specified module could not be found"
+conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" 2>&1 | grep "The specified module could not be found"
 if [[ ! $? ]]; then
   echo "conda run ${PREFIX} --debug-wrapper-scripts python \"import lief\" runs the wrong python"
   exit 1
