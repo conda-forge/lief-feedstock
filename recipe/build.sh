@@ -14,26 +14,31 @@ if [[ ${target_platform} == linux-* ]]; then
   # export LDFLAGS="${LDFLAGS} -Wl,--trace-symbol,_ZTIN4LIEF5MachO16BuildToolVersionE -Wl,--trace-symbol,_ZTIN4LIEF5MachO12BuildVersionE"
 fi
 
-cmake . -LAH -G "Ninja"               \
-  -DLIEF_VERSION_MAJOR=0              \
-  -DLIEF_VERSION_MINOR=10             \
-  -DLIEF_VERSION_PATCH=1              \
-  -DCMAKE_BUILD_TYPE="Release"        \
+mkdir build
+pushd build
+
+cmake .. -LAH -G "Ninja"  \
+  -DLIEF_VERSION_MAJOR=0  \
+  -DLIEF_VERSION_MINOR=10  \
+  -DLIEF_VERSION_PATCH=1  \
+  -DCMAKE_BUILD_TYPE="Release"  \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
-  -DCMAKE_SKIP_RPATH=ON               \
-  -DCMAKE_AR="${AR}"                  \
-  -DCMAKE_LINKER="${LD}"              \
-  -DCMAKE_NM="${NM}"                  \
-  -DCMAKE_OBJCOPY="${OBJCOPY}"        \
-  -DCMAKE_OBJDUMP="${OBJDUMP}"        \
-  -DCMAKE_RANLIB="${RANLIB}"          \
-  -DCMAKE_STRIP="${STRIP}"            \
-  -DBUILD_SHARED_LIBS=ON              \
-  -DLIEF_PYTHON_API=OFF               \
-  -DLIEF_INSTALL_PYTHON=OFF           \
+  -DCMAKE_SKIP_RPATH=ON  \
+  -DCMAKE_AR="${AR}"  \
+  -DCMAKE_LINKER="${LD}"  \
+  -DCMAKE_NM="${NM}"  \
+  -DCMAKE_OBJCOPY="${OBJCOPY}"  \
+  -DCMAKE_OBJDUMP="${OBJDUMP}"  \
+  -DCMAKE_RANLIB="${RANLIB}"  \
+  -DCMAKE_STRIP="${STRIP}"  \
+  -DBUILD_SHARED_LIBS=ON  \
+  -DLIEF_PYTHON_API=OFF  \
+  -DLIEF_INSTALL_PYTHON=OFF  \
   "${CMAKE_EXTRA_ARGS[@]}"
 
 if [[ ! $? ]]; then
   echo "configure failed with $?"
   exit 1
 fi
+
+popd

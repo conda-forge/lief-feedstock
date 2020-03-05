@@ -12,10 +12,10 @@ else
   exit 1
 fi
 
-mkdir build-${PY_VER}
-pushd build-${PY_VER}
+mkdir build-py${PY_VER}
+pushd build-py${PY_VER}
 
-cmake . -LAH -G "Ninja"  \
+cmake .. -LAH -G "Ninja"  \
   -DCMAKE_BUILD_TYPE="Release"  \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
   -DCMAKE_SKIP_RPATH=ON  \
@@ -60,6 +60,8 @@ if [[ ${target_platform} == osx-64 ]]; then
 fi
 set -e
 ${PYTHON} -c "import lief"
+
+conda run -p ${PREFIX} --debug-wrapper-scripts which python
 
 conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version 2>&1 | grep ${PY_VER}
 if [[ ! $? ]]; then
