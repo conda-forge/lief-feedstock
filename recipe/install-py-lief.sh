@@ -46,7 +46,9 @@ pushd build
     find ${SP_DIR}
     ${PYTHON} setup.py install --single-version-externally-managed --record=record.txt
     ext_suffix="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
-    ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/_pylief${ext_suffix}
+    if [[ ${target_platform} == osx-* ]]; then
+      ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/_pylief${ext_suffix}
+    fi
   popd
 popd
 [[ -d "${PREFIX}"/share/LIEF/examples ]] && rm -rf "${PREFIX}"/share/LIEF/examples/
