@@ -24,6 +24,9 @@ cmake .. -LAH -G "Ninja"  \
   -DCMAKE_AR="${AR}"  \
   -DCMAKE_LINKER="${LD}"  \
   -DCMAKE_NM="${NM}"  \
+  -DCMAKE_BUILD_STATIC_LIBS=OFF  \
+  -DBUILD_STATIC_LIBS=OFF  \
+  -DBUILD_SHARED_LIBS=ON  \
   -DCMAKE_OBJCOPY="${OBJCOPY}"  \
   -DCMAKE_OBJDUMP="${OBJDUMP}"  \
   -DCMAKE_RANLIB="${RANLIB}"  \
@@ -60,22 +63,25 @@ mv api/python/lief.so ${SP_DIR}/lief${ext_suffix}
 if [[ ${target_platform} == osx-64 ]]; then
   ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
 fi
-set -e
+
 ${PYTHON} -c "import lief"
 
-conda run -p ${PREFIX} --debug-wrapper-scripts which python
-
-conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version 2>&1 | grep ${PY_VER}
-if [[ ! $? ]]; then
-  echo "conda run runs the wrong python"
-  exit 1
-fi
-
-conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" 2>&1 | grep "The specified module could not be found"
-if [[ ! $? ]]; then
-  echo "conda run ${PREFIX} --debug-wrapper-scripts python \"import lief\" runs the wrong python"
-  exit 1
-fi
+# conda run is broken. It does not remove the shell-script-added base-env PATH entries from the
+# front of PATH, so when it adds the new env, if there was *another* env activated, then that is
+# the one that gets replaced with the PREFIX env PATH entries. Software from the base-env gets
+# run instead. This happens on all OSes and this test-code cannot be enabled until conda run is
+# free of this problem.
+# conda run -p ${PREFIX} --debug-wrapper-scripts which python
+# conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version 2>&1 | grep ${PY_VER}
+# if [[ ! $? ]]; then
+#   echo "conda run runs the wrong python"
+#   exit 1
+# fi
+# conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" 2>&1 | grep "The specified module could not be found"
+# if [[ ! $? ]]; then
+#   echo "conda run ${PREFIX} --debug-wrapper-scripts python \"import lief\" runs the wrong python"
+#   exit 1
+# fi
 
 if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
   rm -rf "${PREFIX}"/share/LIEF/examples/
