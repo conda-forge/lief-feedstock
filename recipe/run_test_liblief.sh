@@ -2,6 +2,7 @@
 
 pushd tests
 
+  export CONDA_BUILD_SYSROOT=/opt/MacOSX10.9.sdk
   cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug .
   ninja
 
