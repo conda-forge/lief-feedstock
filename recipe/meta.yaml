@@ -39,6 +39,7 @@ build:
 
 requirements:
   build:
+    - ccache
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config            # [not win]
@@ -60,6 +61,7 @@ outputs:
         - python
     requirements:
       build:
+        - ccache
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - pkg-config            # [not win]
@@ -93,6 +95,7 @@ outputs:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
     requirements:
       build:
+        - ccache
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - pkg-config            # [not win]

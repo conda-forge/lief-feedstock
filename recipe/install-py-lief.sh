@@ -12,8 +12,10 @@ else
   exit 1
 fi
 
-mkdir build-py${PY_VER}
-pushd build-py${PY_VER}
+# mkdir build-py${PY_VER}
+# pushd build-py${PY_VER}
+
+pushd build
 
 cmake .. -LAH -G "Ninja"  \
   -DCMAKE_BUILD_TYPE="Release"  \
