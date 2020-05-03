@@ -21,8 +21,9 @@ if "%DEBUG_C%" == "yes" (
   set DEBUG_SUFFIX=
 )
 
-mkdir build-%PY_VER%
-pushd build-%PY_VER%
+:: mkdir build-%PY_VER%
+:: pushd build-%PY_VER%
+pushd build
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?
@@ -64,17 +65,8 @@ echo Top of install-py-lief.bat: LIB=%LIB%
 echo Top of install-py-lief.bat: INCLUDE=%INCLUDE%
 echo Top of install-py-lief.bat: LIBRARY_LIB=%LIBRARY_LIB%
 
-if %PY_VER% == 3.8 (
-  set SHARED_BUILD=OFF
-  set STATIC_BUILD=ON
-::  set SHARED_BUILD=ON
-::  set STATIC_BUILD=OFF
-) else (
-  set SHARED_BUILD=OFF
-  set STATIC_BUILD=ON
-::  set SHARED_BUILD=ON
-::  set STATIC_BUILD=OFF
-)
+set SHARED_BUILD=ON
+set STATIC_BUILD=OFF
 
 set CC=cl.exe
 set CXX=cl.exe
@@ -135,22 +127,22 @@ popd
 
 :: When pywin32 (or something else) modifies PATH in funny ways we can end up with conda run
 :: not working at all properly, and the sys python getting run instead (for example).
-set CONDA_TEST_SAVE_TEMPS=1
-echo "(install-py-lief.bat) PATH just before conda run -p %RECIPE_DIR%\echo_path.bat is %PATH%"
-where conda
-call conda run -p %PREFIX% --debug-wrapper-scripts call %RECIPE_DIR%\echo_path.bat
-echo "(install-py-lief.bat) Done call conda run -p"
-if %errorlevel% neq 0 exit /b 1
+:: set CONDA_TEST_SAVE_TEMPS=1
+:: echo "(install-py-lief.bat) PATH just before conda run -p %RECIPE_DIR%\echo_path.bat is %PATH%"
+:: where conda
+:: call conda run -p %PREFIX% --debug-wrapper-scripts call %RECIPE_DIR%\echo_path.bat
+:: echo "(install-py-lief.bat) Done call conda run -p"
+:: if %errorlevel% neq 0 exit /b 1
 
 :: The commented out tests above are overkill, but we should run this one at least.
 :: Add --debug-wrapper-scripts to the conda run calls to see what goes on.
-call conda run -p %PREFIX% python --version 2>&1 | findstr /r /c:%PY_VER%
-if %errorlevel% neq 0 exit /b 1
+:: call conda run -p %PREFIX% python --version 2>&1 | findstr /r /c:%PY_VER%
+:: if %errorlevel% neq 0 exit /b 1
 
-call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"The specified module could not be found"
-if %errorlevel% neq 1 exit /b 1
+:: call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"The specified module could not be found"
+:: if %errorlevel% neq 1 exit /b 1
 
-call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"no current thread state"
-if %errorlevel% neq 1 exit /b 1
+:: call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"no current thread state"
+:: if %errorlevel% neq 1 exit /b 1
 
 if exist %PREFIX%\share\LIEF\examples rmdir /s /q %PREFIX%\share\LIEF\examples
