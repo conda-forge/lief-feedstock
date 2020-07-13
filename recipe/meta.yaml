@@ -1,15 +1,5 @@
 {% set version = "0.10.1" %}
 
-{% set debug = os.environ.get('PY_INTERP_DEBUG', '') %}
-{% if debug != '' %}
-  {% set debug = "_dbg" %}
-{% endif %}
-{% if debug != '' %}
-  {% set variant = "cpython_dbg" %}
-{% else %}
-  {% set variant = "cpython" %}
-{% endif %}
-
 package:
   name: lief
   version: {{ version }}
@@ -32,7 +22,6 @@ source:
 
 build:
   number: 0
-  string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
   skip: True  # [win and py<30]
@@ -54,7 +43,6 @@ outputs:
     script: install-py-lief.sh   # [unix]
     script: install-py-lief.bat  # [win]
     build:
-      # string: py{{ ''.join(python.split('.')[0:2]) }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
       ignore_run_exports:
@@ -72,13 +60,11 @@ outputs:
         - ninja
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
-        # - python {{python}}* *{{variant}}
         - python
         - setuptools
         - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
-        # - python {{python}}* *{{variant}}
         - python
     test:
       requires:
@@ -90,7 +76,6 @@ outputs:
     script: install-liblief.sh        # [unix]
     script: install-liblief.bat       # [win]
     build:
-      # string: h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}{{ debug }}
       run_exports:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
     requirements:
