@@ -5,7 +5,7 @@ Home: https://lief.quarkslab.com/
 
 Package license: Apache-2.0
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: A cross platform library to parse, modify and abstract ELF, PE and MachO formats.
 
@@ -29,7 +29,7 @@ Current build status
     <td>Drone</td>
     <td>
       <a href="https://cloud.drone.io/conda-forge/lief-feedstock">
-        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/master.svg?label=Linux">
+        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/lief-feedstock/master.svg?label=Linux">
       </a>
     </td>
   </tr>
