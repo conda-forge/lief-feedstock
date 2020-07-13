@@ -1,0 +1,29 @@
+From c4f12d38f04f28a79f21b655421f7738877931ef Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Thu, 12 Dec 2019 12:16:47 +0100
+Subject: [PATCH 7/7] Add LIEFOptions for BUILD_STATIC_LIBS and
+ BUILD_SHARED_LIBS
+
+May not want to prefix these with LIEF and then set the CMake names
+from that though?
+---
+ cmake/LIEFOptions.cmake | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/cmake/LIEFOptions.cmake b/cmake/LIEFOptions.cmake
+index e4b675e..b742d1b 100644
+--- a/cmake/LIEFOptions.cmake
++++ b/cmake/LIEFOptions.cmake
+@@ -27,6 +27,9 @@ option(LIEF_DEX            "Build LIEF with DEX module"                 ON)
+ option(LIEF_VDEX           "Build LIEF with VDEX module"                ON)
+ option(LIEF_ART            "Build LIEF with ART module"                 ON)
+ 
++option(BUILD_STATIC_LIBS "Build LIEF (and pyLIEF mostly) statically"    OFF)
++option(BUILD_SHARED_LIBS "Build LIEF (and pyLIEF) shared"               ON)
++
+ # Sanitizer
+ option(LIEF_ASAN "Enable Address sanitizer"   OFF)
+ option(LIEF_LSAN "Enable Leak sanitizer"      OFF)
+-- 
+2.24.0
+

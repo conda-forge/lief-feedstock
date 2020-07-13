@@ -1,0 +1,25 @@
+From bc909c9643742df43763d8bf8e475b5c3768f1cb Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Thu, 12 Dec 2019 01:33:28 +0100
+Subject: [PATCH 5/7] Update LIEF_VERSION_PATCH to 1 for v0.10.1
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9b168d9..064a2d7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -22,7 +22,7 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" AND IS_DIRECTORY "${CMAKE_CURRENT_S
+ else()
+   set(LIEF_VERSION_MAJOR "0")
+   set(LIEF_VERSION_MINOR "10")
+-  set(LIEF_VERSION_PATCH "0")
++  set(LIEF_VERSION_PATCH "1")
+ endif()
+ 
+ # LIEF Project
+-- 
+2.24.0
+

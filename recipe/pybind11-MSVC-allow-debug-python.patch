@@ -1,0 +1,29 @@
+--- build-py/api/python/lief_pybind11-prefix/src/lief_pybind11/include/pybind11/detail/common.h.orig	2019-10-15 01:57:24.000000000 +0200
++++ build-py/api/python/lief_pybind11-prefix/src/lief_pybind11/include/pybind11/detail/common.h	2020-02-17 00:37:35.779146200 +0100
+@@ -96,7 +96,7 @@
+ #define PYBIND11_VERSION_MINOR 4
+ #define PYBIND11_VERSION_PATCH 3
+ 
+-/// Include Python header, disable linking to pythonX_d.lib on Windows in debug mode
++/// Include Python header, disable linking to pythonX_d.lib on Windows in debug mode .. Trying not to disable that.
+ #if defined(_MSC_VER)
+ #  if (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 4)
+ #    define HAVE_ROUND 1
+@@ -105,7 +105,7 @@
+ #  pragma warning(disable: 4510 4610 4512 4005)
+ #  if defined(_DEBUG)
+ #    define PYBIND11_DEBUG_MARKER
+-#    undef _DEBUG
++///#    undef _DEBUG
+ #  endif
+ #endif
+ 
+@@ -125,7 +125,7 @@
+ 
+ #if defined(_MSC_VER)
+ #  if defined(PYBIND11_DEBUG_MARKER)
+-#    define _DEBUG
++///#    define _DEBUG
+ #    undef PYBIND11_DEBUG_MARKER
+ #  endif
+ #  pragma warning(pop)

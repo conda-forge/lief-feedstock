@@ -1,0 +1,45 @@
+From 24162f780ad9e2f8e5f797682349df04c4e5f397 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Wed, 11 Dec 2019 16:52:17 +0100
+Subject: [PATCH 4/7] Do not annotate static ELF Parser's parse function as
+ LIEF_API
+
+It leads to:
+
+..\include\LIEF/ELF/Parser.hpp(76): error C2487: 'parse': member of dll interface class may not be declared with dll interface
+..\include\LIEF/ELF/Parser.hpp(86): error C2487: 'parse': member of dll interface class may not be declared with dll interface
+
+https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2487?view=vs-2019
+
+This only started to fail when I forced shared libs:
+
+-DBUILD_SHARED_LIBS=ON
+---
+ include/LIEF/ELF/Parser.hpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/LIEF/ELF/Parser.hpp b/include/LIEF/ELF/Parser.hpp
+index b1c87d4..f8463e7 100644
+--- a/include/LIEF/ELF/Parser.hpp
++++ b/include/LIEF/ELF/Parser.hpp
+@@ -73,7 +73,7 @@ class LIEF_API Parser : public LIEF::Parser {
+     //! @param[in] file Path to the ELF binary
+     //! @param[in] count_mtd Method used to count dynamic symbols. Default: LIEF::ELF::DYNSYM_COUNT_METHODS::COUNT_AUTO
+     //! @Return LIEF::ELF::Binary
+-    LIEF_API static std::unique_ptr<Binary> parse(const std::string& file, DYNSYM_COUNT_METHODS count_mtd = DYNSYM_COUNT_METHODS::COUNT_AUTO);
++    static std::unique_ptr<Binary> parse(const std::string& file, DYNSYM_COUNT_METHODS count_mtd = DYNSYM_COUNT_METHODS::COUNT_AUTO);
+ 
+     //! @brief Parse the given raw data as an ELF binary and return a LIEF::ELF::Binary object
+     //!
+@@ -83,7 +83,7 @@ class LIEF_API Parser : public LIEF::Parser {
+     //! @param[in] name Binary name (optional)
+     //! @param[in] count_mtd Method used to count dynamic symbols. Default: LIEF::ELF::DYNSYM_COUNT_METHODS::COUNT_AUTO
+     //! @Return LIEF::ELF::Binary
+-    LIEF_API static std::unique_ptr<Binary> parse(const std::vector<uint8_t>& data, const std::string& name = "", DYNSYM_COUNT_METHODS count_mtd = DYNSYM_COUNT_METHODS::COUNT_AUTO);
++    static std::unique_ptr<Binary> parse(const std::vector<uint8_t>& data, const std::string& name = "", DYNSYM_COUNT_METHODS count_mtd = DYNSYM_COUNT_METHODS::COUNT_AUTO);
+ 
+     Parser& operator=(const Parser& copy) = delete;
+     Parser(const Parser& copy)            = delete;
+-- 
+2.24.0
+
