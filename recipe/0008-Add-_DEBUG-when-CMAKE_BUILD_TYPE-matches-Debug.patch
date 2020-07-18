@@ -1,0 +1,38 @@
+--- work/api/python/CMakeLists.txt.orig	2020-02-16 22:00:33.421952300 +0100
++++ work/api/python/CMakeLists.txt	2020-02-16 23:09:08.825767800 +0100
+@@ -24,6 +24,7 @@
+ message(STATUS "Python lib:     ${PYTHON_LIBRARY}")
+ message(STATUS "Python include: ${PYTHON_INCLUDE_DIR}")
+ message(STATUS "Python interpreter: ${PYTHON_EXECUTABLE}")
++message(STATUS "Python is debug: ${PYTHON_IS_DEBUG}")
+ 
+ set(PYBIND11_VERSION 2.4.3)
+ set(PYBIND11_SHA256 SHA256=f1cc1e9c2836f9873aefdaf76a3280a55aae51068c759b27499a9cf34090d364)
+@@ -141,6 +142,10 @@
+ ADD_FLAG_IF_SUPPORTED("-Wno-macro-redefined"         NO_MACRO_REDEFINED)
+ ADD_FLAG_IF_SUPPORTED("-Wno-deprecated-declarations" NO_DEPRECATED_DECLARATIONS)
+ 
++if (CMAKE_BUILD_TYPE MATCHES Debug)
++  target_compile_options(pyLIEF PRIVATE -D_DEBUG)
++endif ()
++
+ set_target_properties(pyLIEF PROPERTIES PREFIX "" OUTPUT_NAME "lief")
+ add_dependencies(pyLIEF lief_pybind11)
+ 
+--- work/cmake/LIEFCompilerFlags.cmake.orig	2020-02-16 23:38:59.875401600 +0100
++++ work/cmake/LIEFCompilerFlags.cmake	2020-02-16 23:39:15.613190900 +0100
+@@ -140,6 +140,14 @@
+   set(msvc_warning_flags "/W4 ${msvc_warning_flags}")
+   string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+   string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
++  if (CMAKE_BUILD_TYPE MATCHES Debug)
++    target_compile_options(LIB_LIEF PRIVATE -D_DEBUG)
++    string(APPEND CMAKE_C_FLAGS " /MTd")
++    string(APPEND CMAKE_CXX_FLAGS " /MTd")
++  else()
++    string(APPEND CMAKE_C_FLAGS " /MT")
++    string(APPEND CMAKE_CXX_FLAGS " /MT")
++  endif()
+   #foreach(flag ${msvc_warning_flags})
+   #  target_compile_options(LIB_LIEF PRIVATE ${flag})
+   #endforeach(flag)

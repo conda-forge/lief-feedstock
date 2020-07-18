@@ -1,4 +1,4 @@
-{% set version = "0.9.0" %}
+{% set version = "0.10.1" %}
 
 package:
   name: lief
@@ -7,30 +7,36 @@ package:
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
-    sha256: 8f1a12d69d9f6bd8404d4f5809549d1c7f3138cacf3bccd1192cb4f46bfb9eb7
+    sha256: 6f30c98a559f137e08b25bcbb376c0259914b33c307b8b901e01ca952241d00a
     patches:
-      - 0001-Allow-building-from-released-tarball.patch
-      - 0002-MSVC-Add-bigobj-flag.patch
-      - 0003-Export-LIEF-Object-and-LIEF-MachO-DataCodeEntry-clas.patch
-      - 0004-MachO-Fix-has_dynamic_symbol_command.patch
-      - 0005-Link-Python-extension-module-to-shared-LIEF-library.patch
+      - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
+      - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
+      - 0003-Export-BuildToolVersion.patch
+      - 0004-Do-not-annotate-static-ELF-Parser-s-parse-function-a.patch
+      - 0005-Update-LIEF_VERSION_PATCH-to-1-for-v0.10.1.patch
+      - 0006-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      - 0007-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
+      # - 0008-Export-parse-in-include-LIEF-ELF-Parser.hpp.patch
+      - 0008-Add-_DEBUG-when-CMAKE_BUILD_TYPE-matches-Debug.patch
+      - 0009-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
 
 build:
-  number: 1
+  number: 0
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
-  skip: True  # [win]
+  skip: True  # [win and py<30]
 
 requirements:
   build:
+    - ccache
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - git
     - pkg-config            # [not win]
-    - jom                   # [win]
+    - patch  # [not win]
+    - m2-patch  # [win]
+    - m2-gcc-libs  # [win]
     - cmake
-    - make                  # [unix]
-    - python
+    - ninja
 
 outputs:
   - name: py-lief
@@ -39,19 +45,24 @@ outputs:
     build:
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
+      ignore_run_exports:
+        - python
     requirements:
       build:
+        - ccache
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - git
         - pkg-config            # [not win]
-        - jom                   # [win]
+        # When making a debug build on Windows, we need to patch CMake downloaded pybind11. Sorry.
+        - m2-patch  # [win]
+        - m2-gcc-libs  # [win]
         - cmake
-        - make                  # [unix]
+        - ninja
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
         - setuptools
+        - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
@@ -69,13 +80,12 @@ outputs:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
     requirements:
       build:
+        - ccache
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - git
         - pkg-config            # [not win]
-        - jom                   # [win]
         - cmake
-        - make                  # [unix]
+        - ninja
     test:
       files:
         - tests
@@ -84,8 +94,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - cmake
-        - jom                   # [win]
-        - make                  # [unix]
+        - ninja
 
 about:
   home: https://lief.quarkslab.com/

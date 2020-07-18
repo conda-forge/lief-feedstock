@@ -1,0 +1,25 @@
+From eb656a538a76a3767b633fa9ec85a2e893cfe037 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Tue, 10 Dec 2019 18:20:18 +0100
+Subject: [PATCH 3/7] Export BuildToolVersion
+
+---
+ include/LIEF/MachO/BuildVersion.hpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/LIEF/MachO/BuildVersion.hpp b/include/LIEF/MachO/BuildVersion.hpp
+index da9cd8b..2bfb80d 100644
+--- a/include/LIEF/MachO/BuildVersion.hpp
++++ b/include/LIEF/MachO/BuildVersion.hpp
+@@ -29,7 +29,7 @@ namespace LIEF {
+ namespace MachO {
+ 
+ 
+-class BuildToolVersion : public LIEF::Object {
++class LIEF_API BuildToolVersion : public LIEF::Object {
+   public:
+   //! @brief Version is an array of **3** integers
+   using version_t = std::array<uint32_t, 3>;
+-- 
+2.24.0
+

@@ -5,7 +5,7 @@ Home: https://lief.quarkslab.com/
 
 Package license: Apache-2.0
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: A cross platform library to parse, modify and abstract ELF, PE and MachO formats.
 
@@ -29,7 +29,7 @@ Current build status
     <td>Drone</td>
     <td>
       <a href="https://cloud.drone.io/conda-forge/lief-feedstock">
-        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/master.svg?label=Linux">
+        <img alt="linux" src="https://img.shields.io/drone/build/conda-forge/lief-feedstock/master.svg?label=Linux">
       </a>
     </td>
   </tr>
@@ -46,113 +46,44 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_aarch64_python3.6target_platformlinux-aarch64</td>
+              <td>linux_aarch64_target_platformlinux-aarch64</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_python3.6target_platformlinux-aarch64" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_target_platformlinux-aarch64" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_python3.7target_platformlinux-aarch64</td>
+              <td>linux_ppc64le_target_platformlinux-ppc64le</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_python3.7target_platformlinux-aarch64" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_target_platformlinux-ppc64le" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_python3.8target_platformlinux-aarch64</td>
+              <td>linux_target_platformlinux-64</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_python3.8target_platformlinux-aarch64" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_target_platformlinux-64" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_python3.6target_platformlinux-ppc64le</td>
+              <td>osx_target_platformosx-64</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_python3.6target_platformlinux-ppc64le" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=osx&configuration=osx_target_platformosx-64" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_python3.7target_platformlinux-ppc64le</td>
+              <td>win</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_python3.7target_platformlinux-ppc64le" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le_python3.8target_platformlinux-ppc64le</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_ppc64le_python3.8target_platformlinux-ppc64le" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_python2.7target_platformlinux-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_python2.7target_platformlinux-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_python3.6target_platformlinux-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_python3.6target_platformlinux-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_python3.7target_platformlinux-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_python3.7target_platformlinux-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_python3.8target_platformlinux-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=linux&configuration=linux_python3.8target_platformlinux-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_python2.7target_platformosx-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=osx&configuration=osx_python2.7target_platformosx-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_python3.6target_platformosx-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=osx&configuration=osx_python3.6target_platformosx-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_python3.7target_platformosx-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=osx&configuration=osx_python3.7target_platformosx-64" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_python3.8target_platformosx-64</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=6372&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=osx&configuration=osx_python3.8target_platformosx-64" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/lief-feedstock?branchName=master&jobName=win&configuration=win_" alt="variant">
                 </a>
               </td>
             </tr>
           </tbody>
         </table>
       </details>
-    </td>
-  </tr>
-  <tr>
-    <td>Windows</td>
-    <td>
-      <img src="https://img.shields.io/badge/Windows-disabled-lightgrey.svg" alt="Windows disabled">
     </td>
   </tr>
 </table>

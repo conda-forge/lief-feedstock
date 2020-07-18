@@ -1,0 +1,28 @@
+From 34c4191240ded0aa76ee4fe0965e0fad7c9d32c4 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Mon, 14 Jan 2019 10:25:09 -0600
+Subject: [PATCH 1/7] python: Only pass NODEFAULTLIB:MSVCRT when not
+ BUILD_SHARED_LIBS
+
+---
+ api/python/CMakeLists.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/api/python/CMakeLists.txt b/api/python/CMakeLists.txt
+index fc28e64..a63afa4 100644
+--- a/api/python/CMakeLists.txt
++++ b/api/python/CMakeLists.txt
+@@ -124,7 +124,9 @@ set_property(TARGET pyLIEF PROPERTY CXX_STANDARD_REQUIRED ON)
+ 
+ if (MSVC)
+   target_compile_options(pyLIEF PUBLIC /FIiso646.h)
+-	set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
++  if (NOT BUILD_SHARED_LIBS)
++    set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
++  endif (NOT BUILD_SHARED_LIBS)
+ endif()
+ 
+ set_target_properties(pyLIEF PROPERTIES PYTHON_VERSION ${PYTHON_VERSION})
+-- 
+2.24.0
+

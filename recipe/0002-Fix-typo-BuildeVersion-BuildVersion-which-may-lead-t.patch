@@ -1,0 +1,26 @@
+From c66d09de662b48d338297893ed154753221276dd Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Tue, 10 Dec 2019 13:59:49 +0100
+Subject: [PATCH 2/7] Fix typo BuildeVersion => BuildVersion which may lead to
+ my link failures
+
+---
+ api/python/MachO/objects/pyBuildVersion.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/api/python/MachO/objects/pyBuildVersion.cpp b/api/python/MachO/objects/pyBuildVersion.cpp
+index 821f4f5..9b5f311 100644
+--- a/api/python/MachO/objects/pyBuildVersion.cpp
++++ b/api/python/MachO/objects/pyBuildVersion.cpp
+@@ -50,7 +50,7 @@ void create<BuildVersion>(py::module& m) {
+   tool_version_cls
+     .def_property_readonly("tool",
+         &BuildToolVersion::tool,
+-        "" RST_CLASS_REF(.BuildeVersion.TOOLS) " type")
++        "" RST_CLASS_REF(.BuildVersion.TOOLS) " type")
+ 
+     .def_property_readonly("version",
+         &BuildToolVersion::version,
+-- 
+2.24.0
+
