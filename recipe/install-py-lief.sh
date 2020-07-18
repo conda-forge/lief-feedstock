@@ -48,12 +48,12 @@ fi
 
 # cmake --build . --target pyLIEF
 # cmake --build . --target install
-ninja -v pyLIEF
+ninja -v pyLIEF -j${CPU_COUNT}
 if [[ ! $? ]]; then
   echo "Build failed with $?"
   exit 1
 fi
-ninja -v install
+ninja -v install -j${CPU_COUNT}
 if [[ ! $? ]]; then
   echo "Install failed with $?"
   exit 1
