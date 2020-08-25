@@ -19,9 +19,10 @@ source:
       # - 0008-Export-parse-in-include-LIEF-ELF-Parser.hpp.patch
       - 0008-Add-_DEBUG-when-CMAKE_BUILD_TYPE-matches-Debug.patch
       - 0009-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
+      - 0010-Fix-module-entry-point-declaration.patch
 
 build:
-  number: 0
+  number: 1
   # Python 2.7 is not supported on Windows
   # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
   skip: True  # [win and py<30]
