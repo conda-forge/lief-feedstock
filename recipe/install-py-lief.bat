@@ -95,6 +95,9 @@ if %errorlevel% neq 0 exit /b 1
 :: called lief, instead of putting it in that directory (or so it seems at least).
 mkdir api\python\lief
 
+:: Delete files from other python versions
+rmdir /s /q api\python\CMakeFiles\pyLIEF.dir
+
 :: when DEBUG_C, the first run will download pybind11 sources which will cause a build failure
 :: at best, and a broken .pyd at worst because pybind11 undefines _DEBUG just before including
 :: Python.h. We undo that.
