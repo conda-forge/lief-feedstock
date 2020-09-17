@@ -2,16 +2,6 @@
 
 set -x
 
-declare -a CMAKE_EXTRA_ARGS
-if [[ ${target_platform} =~ linux-* ]]; then
-  echo "Nothing special for linux"
-elif [[ ${target_platform} == osx-64 ]]; then
-  CMAKE_EXTRA_ARGS+=(-DCMAKE_OSX_SYSROOT=${CONDA_BUILD_SYSROOT})
-else
-  echo "target_platform not known: ${target_platform}"
-  exit 1
-fi
-
 # mkdir build-py${PY_VER}
 # pushd build-py${PY_VER}
 
@@ -39,7 +29,7 @@ cmake .. -LAH -G "Ninja"  \
   -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
   -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
   -DPYTHON_VERSION=${PY_VER}  \
-  "${CMAKE_EXTRA_ARGS[@]}"
+  "${CMAKE_ARGS}"
 
 if [[ ! $? ]]; then
   echo "configure failed with $?"
@@ -60,7 +50,7 @@ if [[ ! $? ]]; then
 fi
 ext_suffix="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
 mv api/python/lief.so ${SP_DIR}/lief${ext_suffix}
-if [[ ${target_platform} == osx-64 ]]; then
+if [[ ${target_platform} == osx-* ]]; then
   ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
 fi
 
