@@ -19,7 +19,7 @@ fi
 mkdir build || true
 pushd build
 
-cmake .. -LAH -G "Ninja"  \
+cmake ${CMAKE_ARGS} .. -LAH -G "Ninja"  \
   -DLIEF_VERSION_MAJOR=0  \
   -DLIEF_VERSION_MINOR=10  \
   -DLIEF_VERSION_PATCH=1  \
