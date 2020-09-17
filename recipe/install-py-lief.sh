@@ -54,7 +54,9 @@ if [[ ${target_platform} == osx-* ]]; then
   ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
 fi
 
-${PYTHON} -c "import lief"
+if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
+  ${PYTHON} -c "import lief"
+fi
 
 # conda run is broken. It does not remove the shell-script-added base-env PATH entries from the
 # front of PATH, so when it adds the new env, if there was *another* env activated, then that is
