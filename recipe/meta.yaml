@@ -61,6 +61,8 @@ outputs:
         - m2-gcc-libs  # [win]
         - cmake
         - ninja
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
       host:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
