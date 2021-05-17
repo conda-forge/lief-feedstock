@@ -10,16 +10,9 @@ source:
     sha256: ebd48768a9ede63d462ee0e31e03a4a432b43e317b4c31c997ba4af9901142b0
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
-      - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
-      - 0003-Export-BuildToolVersion.patch
-      - 0004-Do-not-annotate-static-ELF-Parser-s-parse-function-a.patch
-      - 0005-Update-LIEF_VERSION_PATCH-to-1-for-v0.10.1.patch
-      - 0006-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
-      - 0007-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
-      # - 0008-Export-parse-in-include-LIEF-ELF-Parser.hpp.patch
-      - 0008-Add-_DEBUG-when-CMAKE_BUILD_TYPE-matches-Debug.patch
-      - 0009-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
-      - 0010-Fix-module-entry-point-declaration.patch
+      - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
+      - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
 
 build:
   number: 0

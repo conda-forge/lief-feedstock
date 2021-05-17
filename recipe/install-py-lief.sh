@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -exuo pipefail
 
 # mkdir build-py${PY_VER}
 # pushd build-py${PY_VER}
@@ -11,16 +11,9 @@ cmake .. -LAH -G "Ninja"  \
   -DCMAKE_BUILD_TYPE="Release"  \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
   -DCMAKE_SKIP_RPATH=ON  \
-  -DCMAKE_AR="${AR}"  \
-  -DCMAKE_LINKER="${LD}"  \
-  -DCMAKE_NM="${NM}"  \
   -DCMAKE_BUILD_STATIC_LIBS=OFF  \
   -DBUILD_STATIC_LIBS=OFF  \
   -DBUILD_SHARED_LIBS=ON  \
-  -DCMAKE_OBJCOPY="${OBJCOPY}"  \
-  -DCMAKE_OBJDUMP="${OBJDUMP}"  \
-  -DCMAKE_RANLIB="${RANLIB}"  \
-  -DCMAKE_STRIP="${STRIP}"  \
   -DLIEF_PYTHON_API=ON  \
   -DLIEF_INSTALL_PYTHON=ON  \
   -DPYTHON_EXECUTABLE="${PYTHON}"  \
@@ -54,7 +47,7 @@ if [[ ${target_platform} == osx-* ]]; then
   ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
 fi
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" != "1" ]]; then
   ${PYTHON} -c "import lief"
 fi
 
