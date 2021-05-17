@@ -105,6 +105,7 @@ Installing `lief` from the `conda-forge` channel can be achieved by adding `cond
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `liblief, py-lief` can be installed with:
@@ -186,4 +187,5 @@ Feedstock Maintainers
 * [@isuruf](https://github.com/isuruf/)
 * [@mingwandroid](https://github.com/mingwandroid/)
 * [@msarahan](https://github.com/msarahan/)
+* [@xhochy](https://github.com/xhochy/)
 
