@@ -1,4 +1,4 @@
-{% set version = "0.10.1" %}
+{% set version = "0.11.3" %}
 
 package:
   name: lief
@@ -7,25 +7,16 @@ package:
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
-    sha256: 6f30c98a559f137e08b25bcbb376c0259914b33c307b8b901e01ca952241d00a
+    sha256: ebd48768a9ede63d462ee0e31e03a4a432b43e317b4c31c997ba4af9901142b0
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
-      - 0002-Fix-typo-BuildeVersion-BuildVersion-which-may-lead-t.patch
-      - 0003-Export-BuildToolVersion.patch
-      - 0004-Do-not-annotate-static-ELF-Parser-s-parse-function-a.patch
-      - 0005-Update-LIEF_VERSION_PATCH-to-1-for-v0.10.1.patch
-      - 0006-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
-      - 0007-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
-      # - 0008-Export-parse-in-include-LIEF-ELF-Parser.hpp.patch
-      - 0008-Add-_DEBUG-when-CMAKE_BUILD_TYPE-matches-Debug.patch
-      - 0009-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
-      - 0010-Fix-module-entry-point-declaration.patch
+      - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
+      - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
+      - 0005-Add-boost-throw_exception-implementation.patch
 
 build:
-  number: 2
-  # Python 2.7 is not supported on Windows
-  # lief_easyloggingpp\src\easylogging++.h(327) : fatal error C1189: #error :  "C++0x (or higher) support not detected! (Is `-std=c++11' missing?)
-  skip: True  # [win and py<30]
+  number: 0
 
 requirements:
   build:
@@ -43,7 +34,7 @@ requirements:
 
 outputs:
   - name: py-lief
-    script: install-py-lief.sh   # [unix]
+    script: install-py-lief.sh  # [unix]
     script: install-py-lief.bat  # [win]
     build:
       run_exports:
@@ -78,8 +69,8 @@ outputs:
         - lief
 
   - name: liblief
-    script: install-liblief.sh        # [unix]
-    script: install-liblief.bat       # [win]
+    script: install-liblief.sh  # [unix]
+    script: install-liblief.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
@@ -119,3 +110,4 @@ extra:
     - isuruf
     - mingwandroid
     - msarahan
+    - xhochy
