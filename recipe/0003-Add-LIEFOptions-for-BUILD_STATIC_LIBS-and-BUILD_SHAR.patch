@@ -1,7 +1,7 @@
-From 1cc7d446788f82a8133563674d7ac68578d2a0e8 Mon Sep 17 00:00:00 2001
+From e19ee8aa14c61c96451d5716bc766504bb9e9fa6 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 17 May 2021 10:06:42 +0200
-Subject: [PATCH 3/4] Add LIEFOptions for BUILD_STATIC_LIBS and
+Subject: [PATCH 3/5] Add LIEFOptions for BUILD_STATIC_LIBS and
  BUILD_SHARED_LIBS
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 3/4] Add LIEFOptions for BUILD_STATIC_LIBS and
  1 file changed, 3 insertions(+)
 
 diff --git a/cmake/LIEFOptions.cmake b/cmake/LIEFOptions.cmake
-index fd6df6c..d6c5642 100644
+index b9e7d83..e16d3e0 100644
 --- a/cmake/LIEFOptions.cmake
 +++ b/cmake/LIEFOptions.cmake
-@@ -29,6 +29,9 @@ option(LIEF_DEX            "Build LIEF with DEX module"                 ON)
+@@ -30,6 +30,9 @@ option(LIEF_DEX            "Build LIEF with DEX module"                 ON)
  option(LIEF_VDEX           "Build LIEF with VDEX module"                ON)
  option(LIEF_ART            "Build LIEF with ART module"                 ON)
  
