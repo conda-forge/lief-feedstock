@@ -1,7 +1,7 @@
-From 1e77e1c568b99f8c06fda25f32ffe0b162ce365b Mon Sep 17 00:00:00 2001
+From 2346f625fdbb1a78ef51375ce0c57e22bf0b5ab0 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 17 Feb 2020 22:22:36 +0000
-Subject: [PATCH 4/4] Avoid deprecated get_config_var(SO), use EXT_SUFFIX, look
+Subject: [PATCH 4/5] Avoid deprecated get_config_var(SO), use EXT_SUFFIX, look
  for _d lib when debug
 
 ---

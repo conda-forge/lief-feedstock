@@ -1,7 +1,7 @@
-From 1907abacba536eb1fd00162b3bbd8477f09d778f Mon Sep 17 00:00:00 2001
+From 2e534150dd4bda69f19426db4bf860824b116289 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 17 May 2021 09:54:06 +0200
-Subject: [PATCH 1/4] python: Only pass NODEFAULTLIB:MSVCRT when not
+Subject: [PATCH 1/5] python: Only pass NODEFAULTLIB:MSVCRT when not
  BUILD_SHARED_LIBS
 
 ---

@@ -1,4 +1,4 @@
-From 497878f223a729d8458f7abf4a861b61bb487ea8 Mon Sep 17 00:00:00 2001
+From 40050c6259c73937ab6e7cb27dc8f90e2f79297a Mon Sep 17 00:00:00 2001
 From: "Uwe L. Korn" <uwe.korn@quantco.com>
 Date: Mon, 17 May 2021 16:26:53 +0200
 Subject: [PATCH 5/5] Add boost::throw_exception implementation
