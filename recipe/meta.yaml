@@ -16,7 +16,7 @@ source:
       - 0005-Add-boost-throw_exception-implementation.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
