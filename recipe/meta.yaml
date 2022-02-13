@@ -9,12 +9,12 @@ source:
     fn: lief-{{ version }}.tar.gz
     sha256: 6d6d57304a56850958e4ce54f3da2ea2b9eb856ccbab61c6cde9cba15d7c9da5
     patches:
-      - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
+      # - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
+      - 0006-Unvendor-pybind11-and-spdlog.patch
       - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
       - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
       - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
       - 0005-Add-boost-throw_exception-implementation.patch
-      - 0006-Unvendor-pybind11-and-spdlog.patch
 
 build:
   number: 1

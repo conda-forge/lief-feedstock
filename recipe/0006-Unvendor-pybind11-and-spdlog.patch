@@ -1,16 +1,18 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5c6a1ccb..5b201660 100644
+index 5c6a1ccb..39f47d40 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -226,6 +226,7 @@ endif()
- # Logging Configuration
- # =====================
+@@ -302,8 +302,7 @@ source_group("mbedtls\\tls" FILES ${mbedtls_src_tls})
+ # Library definition
+ # ==================
+ target_include_directories(
+-  LIB_LIEF SYSTEM PRIVATE "${SPDLOG_SOURCE_DIR}/include"
+-                          "${MBEDTLS_INCLUDE_DIRS}")
++  LIB_LIEF SYSTEM PRIVATE "${MBEDTLS_INCLUDE_DIRS}")
  
-+find_package(spdlog REQUIRED)
- target_compile_definitions(LIB_LIEF PRIVATE SPDLOG_DISABLE_DEFAULT_LOGGER
-                                             SPDLOG_FUNCTION=)
- 
-@@ -350,7 +351,7 @@ target_sources(LIB_LIEF PRIVATE
+ target_include_directories(
+   LIB_LIEF
+@@ -350,7 +349,7 @@ target_sources(LIB_LIEF PRIVATE
    ${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/utfcpp/utf8.h)
  
  
@@ -20,10 +22,10 @@ index 5c6a1ccb..5b201660 100644
  # Flags definition
  # ----------------
 diff --git a/api/python/CMakeLists.txt b/api/python/CMakeLists.txt
-index 18957cf9..9722a3e0 100644
+index dd23f6cf..7ced3a80 100644
 --- a/api/python/CMakeLists.txt
 +++ b/api/python/CMakeLists.txt
-@@ -17,15 +17,8 @@ macro(ADD_FLAG_IF_SUPPORTED flag name)
+@@ -17,26 +17,8 @@ macro(ADD_FLAG_IF_SUPPORTED flag name)
    endif()
  endmacro()
  
@@ -35,14 +37,40 @@ index 18957cf9..9722a3e0 100644
 -message(STATUS "Python include: ${PYTHON_INCLUDE_DIR}")
 -message(STATUS "Python interpreter: ${PYTHON_EXECUTABLE}")
 -
--find_package(pybind11 CONFIG)
+-set(PYBIND11_VERSION 2.6.1)
+-set(PYBIND11_SHA256 SHA256=e3f9408fca4e8ebf2d22229d5256adb49098073832aad87f3f6078d91a6942b2)
+-set(PYBIND11_URL "${THIRD_PARTY_DIRECTORY}/pybind11-${PYBIND11_VERSION}.zip" CACHE STRING "URL to the Pybind11 repo")
+-ExternalProject_Add(lief_pybind11
+-  URL               ${PYBIND11_URL}
+-  URL_HASH          ${PYBIND11_SHA256}
+-  CONFIGURE_COMMAND ""
+-  BUILD_COMMAND     ""
+-  INSTALL_COMMAND   "")
+-ExternalProject_get_property(lief_pybind11 SOURCE_DIR)
+-set(PYBIND11_SOURCE_DIR "${SOURCE_DIR}")
+-
 +find_package(Python COMPONENTS Interpreter Development REQUIRED)
 +find_package(pybind11 CONFIG REQUIRED)
  
  # Define source files
  set(LIEF_PYTHON_BASIC_SRC
-@@ -124,7 +117,7 @@ if (MSVC)
-   set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
+@@ -83,7 +65,7 @@ target_include_directories(pyLIEF PUBLIC
+ 
+ target_include_directories(pyLIEF SYSTEM PRIVATE
+   "${PYTHON_INCLUDE_DIR}"
+-  "${PYBIND11_SOURCE_DIR}/include")
++  "${pybind11_INCLUDE_DIRS}")
+ 
+ include("${CMAKE_CURRENT_SOURCE_DIR}/Abstract/CMakeLists.txt")
+ 
+@@ -132,10 +114,12 @@ if (MSVC)
+   if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+     target_compile_options(pyLIEF PUBLIC /FIiso646.h)
+   endif()
+-  set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
++  if (NOT BUILD_SHARED_LIBS)
++    set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
++  endif (NOT BUILD_SHARED_LIBS)
  endif()
  
 -set_target_properties(pyLIEF PROPERTIES PYTHON_VERSION ${PYTHON_VERSION})
@@ -50,11 +78,11 @@ index 18957cf9..9722a3e0 100644
  set(PYLIEF_DEPS_LIBRARIES LIB_LIEF)
  
  if(LIEF_COVERAGE)
-@@ -137,7 +130,6 @@ ADD_FLAG_IF_SUPPORTED("-Wno-macro-redefined"         NO_MACRO_REDEFINED)
+@@ -148,7 +132,6 @@ ADD_FLAG_IF_SUPPORTED("-Wno-macro-redefined"         NO_MACRO_REDEFINED)
  ADD_FLAG_IF_SUPPORTED("-Wno-deprecated-declarations" NO_DEPRECATED_DECLARATIONS)
  
  set_target_properties(pyLIEF PROPERTIES PREFIX "" OUTPUT_NAME "lief")
--add_dependencies(pyLIEF pybind11)
+-add_dependencies(pyLIEF lief_pybind11)
  
  if(APPLE)
      set_target_properties(pyLIEF PROPERTIES
