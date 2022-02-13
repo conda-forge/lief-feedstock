@@ -1,0 +1,106 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5c6a1ccb..5b201660 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -226,6 +226,7 @@ endif()
+ # Logging Configuration
+ # =====================
+ 
++find_package(spdlog REQUIRED)
+ target_compile_definitions(LIB_LIEF PRIVATE SPDLOG_DISABLE_DEFAULT_LOGGER
+                                             SPDLOG_FUNCTION=)
+ 
+@@ -350,7 +351,7 @@ target_sources(LIB_LIEF PRIVATE
+   ${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/utfcpp/utf8.h)
+ 
+ 
+-add_dependencies(LIB_LIEF lief_spdlog lief_mbed_tls)
++add_dependencies(LIB_LIEF lief_mbed_tls)
+ 
+ # Flags definition
+ # ----------------
+diff --git a/api/python/CMakeLists.txt b/api/python/CMakeLists.txt
+index 18957cf9..9722a3e0 100644
+--- a/api/python/CMakeLists.txt
++++ b/api/python/CMakeLists.txt
+@@ -17,15 +17,8 @@ macro(ADD_FLAG_IF_SUPPORTED flag name)
+   endif()
+ endmacro()
+ 
+-set(PYTHON_VERSION "3.5" CACHE STRING "Python Version to use")
+-find_package(PythonLibsNew EXACT ${PYTHON_VERSION} MODULE REQUIRED)
+-
+-message(STATUS "Python version: ${PYTHON_VERSION}")
+-message(STATUS "Python lib:     ${PYTHON_LIBRARY}")
+-message(STATUS "Python include: ${PYTHON_INCLUDE_DIR}")
+-message(STATUS "Python interpreter: ${PYTHON_EXECUTABLE}")
+-
+-find_package(pybind11 CONFIG)
++find_package(Python COMPONENTS Interpreter Development REQUIRED)
++find_package(pybind11 CONFIG REQUIRED)
+ 
+ # Define source files
+ set(LIEF_PYTHON_BASIC_SRC
+@@ -124,7 +117,7 @@ if (MSVC)
+   set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
+ endif()
+ 
+-set_target_properties(pyLIEF PROPERTIES PYTHON_VERSION ${PYTHON_VERSION})
++target_link_libraries(pyLIEF PRIVATE pybind11::module)
+ set(PYLIEF_DEPS_LIBRARIES LIB_LIEF)
+ 
+ if(LIEF_COVERAGE)
+@@ -137,7 +130,6 @@ ADD_FLAG_IF_SUPPORTED("-Wno-macro-redefined"         NO_MACRO_REDEFINED)
+ ADD_FLAG_IF_SUPPORTED("-Wno-deprecated-declarations" NO_DEPRECATED_DECLARATIONS)
+ 
+ set_target_properties(pyLIEF PROPERTIES PREFIX "" OUTPUT_NAME "lief")
+-add_dependencies(pyLIEF pybind11)
+ 
+ if(APPLE)
+     set_target_properties(pyLIEF PROPERTIES
+diff --git a/cmake/LIEFDependencies.cmake b/cmake/LIEFDependencies.cmake
+index e75326f2..531c358d 100644
+--- a/cmake/LIEFDependencies.cmake
++++ b/cmake/LIEFDependencies.cmake
+@@ -146,20 +146,6 @@ set(mbedtls_src_tls
+ 
+ #set_source_files_properties("${MBEDTLS_SOURCE_DIR}/library/bignum.c" PROPERTIES COMPILE_FLAGS -Wno-overlength-strings)
+ 
+-set(SPDLOG_VERSION 1.8.2)
+-set(SPDLOG_SHA256 SHA256=f0410b12b526065802b40db01304783550d3d20b4b6fe2f8da55f9d08ed2035d)
+-set(SPDLOG_URL "${THIRD_PARTY_DIRECTORY}/spdlog-${SPDLOG_VERSION}.zip" CACHE STRING "URL to the spdlog lib repo")
+-ExternalProject_Add(lief_spdlog
+-  URL               ${SPDLOG_URL}
+-  URL_HASH          ${SPDLOG_SHA256}
+-  CONFIGURE_COMMAND ""
+-  BUILD_COMMAND     ""
+-  UPDATE_COMMAND    ""
+-  INSTALL_COMMAND   "")
+-
+-ExternalProject_get_property(lief_spdlog SOURCE_DIR)
+-set(SPDLOG_SOURCE_DIR "${SOURCE_DIR}")
+-
+ # Fuzzing
+ # ~~~~~~~
+ set(FUZZING_FLAGS -fno-omit-frame-pointer -g -O2)
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 0bc2a49a..c3e72d31 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -184,15 +184,7 @@ endif()
+ endmacro()
+ 
+ if (LIEF_PYTHON_API)
+-  set(PYTHON_TESTS_ENABLED OFF)
+-  get_target_property(PYTHON_VERSION pyLIEF PYTHON_VERSION)
+-  find_package(PythonInterp ${PYTHON_VERSION})
+-
+-  message(STATUS "Python executable: ${PYTHON_EXECUTABLE}")
+-
+-  if (PYTHONINTERP_FOUND)
+-    set(PYTHON_TESTS_ENABLED ON)
+-  endif()
++  set(PYTHON_TESTS_ENABLED ON)
+ 
+   if (PYTHON_TESTS_ENABLED)
+ 
