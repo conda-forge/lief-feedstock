@@ -16,12 +16,7 @@ cmake .. -LAH -G "Ninja"  \
   -DBUILD_SHARED_LIBS=ON  \
   -DLIEF_PYTHON_API=ON  \
   -DLIEF_INSTALL_PYTHON=ON  \
-  -DPYTHON_EXECUTABLE="${PYTHON}"  \
-  -DPYTHON_INCLUDE_DIR:PATH=$(${PYTHON} -c 'from sysconfig import get_paths; print(get_paths()["include"])')  \
-  -DPYTHON_LIBRARIES="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
-  -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
-  -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
-  -DPYTHON_VERSION=${PY_VER}  \
+  -DPython_EXECUTABLE="${PYTHON}"  \
   "${CMAKE_ARGS}"
 
 if [[ ! $? ]]; then
