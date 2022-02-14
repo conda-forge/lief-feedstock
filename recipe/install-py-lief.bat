@@ -24,6 +24,7 @@ if "%DEBUG_C%" == "yes" (
 :: mkdir build-%PY_VER%
 :: pushd build-%PY_VER%
 pushd build
+rm CMakeCache.txt
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?

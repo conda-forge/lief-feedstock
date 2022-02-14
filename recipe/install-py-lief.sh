@@ -6,6 +6,7 @@ set -exuo pipefail
 # pushd build-py${PY_VER}
 
 pushd build
+rm CMakeCache.txt
 
 cmake .. -LAH -G "Ninja"  \
   -DCMAKE_BUILD_TYPE="Release"  \
