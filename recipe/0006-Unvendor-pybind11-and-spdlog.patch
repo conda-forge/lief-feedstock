@@ -1,8 +1,18 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5c6a1ccb..39f47d40 100644
+index 5c6a1ccb..f23436ca 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -302,8 +302,7 @@ source_group("mbedtls\\tls" FILES ${mbedtls_src_tls})
+@@ -151,8 +151,7 @@ set(LIEF_VISITOR_INCLUDE_FILES
+ set(LIEF_INCLUDE_FILES ${LIEF_INC_FILES} ${LIEF_VISITOR_INCLUDE_FILES})
+ 
+ set(LIEF_JSON_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/visitors/json.cpp")
+-set(LIEF_JSON_HDR "${CMAKE_CURRENT_SOURCE_DIR}/include/LIEF/json.hpp"
+-                  "${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/json.hpp")
++set(LIEF_JSON_HDR "${CMAKE_CURRENT_SOURCE_DIR}/include/LIEF/json.hpp")
+ 
+ if(LIEF_ENABLE_JSON)
+   list(APPEND LIBLIEF_SOURCE_FILES "${LIEF_JSON_SRC}")
+@@ -302,25 +301,13 @@ source_group("mbedtls\\tls" FILES ${mbedtls_src_tls})
  # Library definition
  # ==================
  target_include_directories(
@@ -12,7 +22,24 @@ index 5c6a1ccb..39f47d40 100644
  
  target_include_directories(
    LIB_LIEF
-@@ -350,7 +349,7 @@ target_sources(LIB_LIEF PRIVATE
+   PUBLIC "${LIEF_PUBLIC_INCLUDE_DIR}"
+   PRIVATE "${LIEF_PRIVATE_INCLUDE_DIR}")
+ 
+-if(LIEF_ENABLE_JSON)
+-  add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/json.hpp
+-    COMMAND
+-      ${CMAKE_COMMAND} -E copy_directory ${LIBJSON_SOURCE_DIR}/
+-      ${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/
+-    DEPENDS lief_libjson)
+-
+-  target_sources(LIB_LIEF PRIVATE
+-    ${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/json.hpp)
+-endif()
+-
+ if(LIEF_FROZEN_ENABLED)
+   add_dependencies(LIB_LIEF lief_frozen)
+ endif()
+@@ -350,7 +337,7 @@ target_sources(LIB_LIEF PRIVATE
    ${CMAKE_CURRENT_BINARY_DIR}/include/LIEF/third-party/utfcpp/utf8.h)
  
  
@@ -87,10 +114,33 @@ index dd23f6cf..7ced3a80 100644
  if(APPLE)
      set_target_properties(pyLIEF PROPERTIES
 diff --git a/cmake/LIEFDependencies.cmake b/cmake/LIEFDependencies.cmake
-index e75326f2..531c358d 100644
+index e75326f2..7eec8232 100644
 --- a/cmake/LIEFDependencies.cmake
 +++ b/cmake/LIEFDependencies.cmake
-@@ -146,20 +146,6 @@ set(mbedtls_src_tls
+@@ -6,21 +6,7 @@ set(__add_lief_dependencies ON)
+ # Json
+ # ----
+ if (LIEF_ENABLE_JSON)
+-  set(LIBJSON_VERSION 3.9.1)
+-  set(LIBJSON_SHA256 SHA256=5db3b7b3356a0742e06b27b6ee744f8ee487ed9c0f8cf3f9778a2076e7a933ba)
+-  set(LIBJSON_URL "${THIRD_PARTY_DIRECTORY}/json-${LIBJSON_VERSION}.zip" CACHE STRING "URL to the JSON lib repo")
+-  ExternalProject_Add(lief_libjson
+-    URL               ${LIBJSON_URL}
+-    URL_HASH          ${LIBJSON_SHA256}
+-    UPDATE_COMMAND    ""
+-    CONFIGURE_COMMAND ""
+-    BUILD_COMMAND     ""
+-    INSTALL_COMMAND   "")
+-
+-  ExternalProject_get_property(lief_libjson SOURCE_DIR)
+-  set(LIBJSON_SOURCE_DIR "${SOURCE_DIR}")
+-  message(STATUS "Enable JSON support")
+-  set(ENABLE_JSON_SUPPORT 1)
++  find_package(nlohmann_json CONFIG REQUIRED)
+ else()
+   message(STATUS "Disable JSON support")
+   set(ENABLE_JSON_SUPPORT 0)
+@@ -146,20 +132,6 @@ set(mbedtls_src_tls
  
  #set_source_files_properties("${MBEDTLS_SOURCE_DIR}/library/bignum.c" PROPERTIES COMPILE_FLAGS -Wno-overlength-strings)
  
@@ -111,6 +161,19 @@ index e75326f2..531c358d 100644
  # Fuzzing
  # ~~~~~~~
  set(FUZZING_FLAGS -fno-omit-frame-pointer -g -O2)
+diff --git a/include/LIEF/json.hpp b/include/LIEF/json.hpp
+index 9e246503..18f085d9 100644
+--- a/include/LIEF/json.hpp
++++ b/include/LIEF/json.hpp
+@@ -19,7 +19,7 @@
+ #include <LIEF/config.h>
+ 
+ #ifdef LIEF_JSON_SUPPORT
+-#include <LIEF/third-party/json.hpp>
++#include <nlohmann/json.hpp>
+ 
+ using json = nlohmann::json;
+ #endif
 diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
 index 0bc2a49a..c3e72d31 100644
 --- a/tests/CMakeLists.txt
