@@ -31,6 +31,8 @@ requirements:
     - m2-gcc-libs           # [win]
     - cmake
     - ninja
+  host:
+    - nlohmann_json
 
 outputs:
   - name: py-lief
