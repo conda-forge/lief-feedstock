@@ -1,22 +1,22 @@
-{% set version = "0.11.5" %}
+{% set version = "0.12.0-rc.1" %}
 
 package:
   name: lief
-  version: {{ version }}
+  version: {{ version.split('-')[0] }}
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
-    sha256: 6d6d57304a56850958e4ce54f3da2ea2b9eb856ccbab61c6cde9cba15d7c9da5
-    patches:
-      - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
-      - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
-      - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
-      - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
-      - 0005-Add-boost-throw_exception-implementation.patch
+    sha256: f388329251173fdc105f6d12809fe99a7cf57b8cfa39556cac38bffcdf9cc3b8
+    # patches:
+      # - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
+      # - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      # - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
+      # - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
+      # - 0005-Add-boost-throw_exception-implementation.patch
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
@@ -26,9 +26,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config            # [not win]
-    - patch  # [not win]
-    - m2-patch  # [win]
-    - m2-gcc-libs  # [win]
+    - patch                 # [not win]
+    - m2-patch              # [win]
+    - m2-gcc-libs           # [win]
     - cmake
     - ninja
 
@@ -58,6 +58,8 @@ outputs:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
         - setuptools
+        - pybind11
+        - nlohmann_json
         - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
@@ -82,6 +84,8 @@ outputs:
         - pkg-config            # [not win]
         - cmake
         - ninja
+      host:
+        - nlohmann_json
     test:
       files:
         - tests
@@ -108,6 +112,6 @@ about:
 extra:
   recipe-maintainers:
     - isuruf
-    - mingwandroid
     - msarahan
     - xhochy
+    - wolfv
