@@ -39,6 +39,7 @@ outputs:
     script: install-py-lief.sh  # [unix]
     script: install-py-lief.bat  # [win]
     build:
+      skip: true  # [py<38]
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
       ignore_run_exports:
