@@ -7,6 +7,8 @@ set -exuo pipefail
 
 pushd build
 
+rm CMakeCache.txt
+
 cmake .. -LAH -G "Ninja"  \
   -DCMAKE_BUILD_TYPE="Release"  \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \

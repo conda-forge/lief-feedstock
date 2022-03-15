@@ -1,13 +1,6 @@
 @echo ON
 setlocal enabledelayedexpansion
 
-if "%PY3K%" == "0" (
-    echo "Copying stdint.h for windows"
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\calib3d\include\stdint.h
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\videoio\include\stdint.h
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\highgui\include\stdint.h
-)
-
 for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
    set "PY_MAJOR=%%a"
    set "PY_MINOR=%%b"
@@ -24,6 +17,9 @@ if "%DEBUG_C%" == "yes" (
 :: mkdir build-%PY_VER%
 :: pushd build-%PY_VER%
 pushd build
+
+:: delete CMakeCache.txt to unset previous variables
+del CMakeCache.txt
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?
@@ -102,15 +98,6 @@ rmdir /s /q api\python\CMakeFiles\pyLIEF.dir
 :: at best, and a broken .pyd at worst because pybind11 undefines _DEBUG just before including
 :: Python.h. We undo that.
 ninja -v pyLIEF
-
-if "%DEBUG_C%" == "yes" (
-  patch -p1<%RECIPE_DIR%\pybind11-MSVC-allow-debug-python.patch
-  rmdir /s /q api\python\CMakeFiles
-  rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-build
-  rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-stamp
-  rmdir /s /q build-py\api\python\lief_pybind11-prefix\tmp
-  ninja -v pyLIEF
-)
 
 ninja -v install
 
