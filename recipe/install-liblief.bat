@@ -4,9 +4,9 @@ pushd build
   if %errorlevel% neq 0 exit /b 1
   if exist %PREFIX%\share\LIEF\examples rmdir /s /q %PREFIX%\share\LIEF\examples
   if not exist %PREFIX%\bin mkdir %PREFIX%\bin\
-  if not exist %PREFIX%\bin\libLIEF.dll copy %PREFIX%\lib\libLIEF.dll %PREFIX%\bin\libLIEF.dll
-  if exist libLIEF.pdb (
-    if not exist %PREFIX%\bin\libLIEF.pdb copy libLIEF.pdb %PREFIX%\bin\libLIEF.pdb
+  if not exist %PREFIX%\bin\LIEF.dll copy %PREFIX%\lib\LIEF.dll %PREFIX%\bin\LIEF.dll
+  if exist LIEF.pdb (
+    if not exist %PREFIX%\bin\LIEF.pdb copy LIEF.pdb %PREFIX%\bin\LIEF.pdb
   )
 
 popd

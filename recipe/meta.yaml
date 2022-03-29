@@ -2,41 +2,42 @@
 
 package:
   name: lief
-  version: {{ version }}
+  version: {{ version.split('-')[0] }}
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
     sha256: e232ff1e5566d66f2213eda7f03346eb532b408994ae80eecf03c780cada43d0
-    patches:
-      - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
-      - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
-      - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
-      - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
-      - 0005-Add-boost-throw_exception-implementation.patch
+    # patches:
+      # - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
+      # - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      # - 0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
+      # - 0004-Avoid-deprecated-get_config_var-SO-use-EXT_SUFFIX-lo.patch
+      # - 0005-Add-boost-throw_exception-implementation.patch
 
 build:
   number: 0
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - ccache
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config            # [not win]
-    - patch  # [not win]
-    - m2-patch  # [win]
-    - m2-gcc-libs  # [win]
+    - patch                 # [not win]
+    - m2-patch              # [win]
+    - m2-gcc-libs           # [win]
     - cmake
     - ninja
+  host:
+    - nlohmann_json
 
 outputs:
   - name: py-lief
     script: install-py-lief.sh  # [unix]
     script: install-py-lief.bat  # [win]
     build:
+      skip: true  # [py<38]
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
       ignore_run_exports:
@@ -58,6 +59,8 @@ outputs:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
         - setuptools
+        - pybind11
+        - nlohmann_json
         - pip
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
@@ -82,6 +85,8 @@ outputs:
         - pkg-config            # [not win]
         - cmake
         - ninja
+      host:
+        - nlohmann_json
     test:
       files:
         - tests
@@ -108,6 +113,6 @@ about:
 extra:
   recipe-maintainers:
     - isuruf
-    - mingwandroid
     - msarahan
     - xhochy
+    - wolfv
