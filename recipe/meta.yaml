@@ -7,7 +7,7 @@ package:
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     fn: lief-{{ version }}.tar.gz
-    sha256: e232ff1e5566d66f2213eda7f03346eb532b408994ae80eecf03c780cada43d0
+    sha256: 4a5b893f514b03092885ef4dc0760ac8dd61860bee991e5af7f31bb33f12fc13
     # patches:
       # - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       # - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
