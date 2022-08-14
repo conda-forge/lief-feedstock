@@ -1,4 +1,4 @@
-{% set version = "0.11.5" %}
+{% set version = "0.12.1" %}
 
 package:
   name: lief
@@ -6,8 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    fn: lief-{{ version }}.tar.gz
-    sha256: 6d6d57304a56850958e4ce54f3da2ea2b9eb856ccbab61c6cde9cba15d7c9da5
+    sha256: 745710ad2b74a70ee8b37c529063da4769a9ed5091df4627dd8216deac86d27c
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
@@ -15,7 +14,7 @@ source:
       - 0004-Add-boost-throw_exception-implementation.patch
 
 build:
-  number: 2
+  number: 0
 
 requirements:
   build:
