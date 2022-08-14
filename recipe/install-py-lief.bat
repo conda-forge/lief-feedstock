@@ -111,16 +111,21 @@ if "%DEBUG_C%" == "yes" (
 
 ninja -v install
 
+python -c "from sysconfig import get_config_var as get; print(get('EXT_SUFFIX') or get('SO'))" > tmpFile
+set /p EXT_SUFFIX= < tmpFile
+del tmpFile
+
+
 :: We end up with an exe called lief which is weird.
 pushd api\python
   :: We may want to have our own dummy setup.py so we get a dist-info folder. It would
   :: be nice to use LIEF's setup.py but it places too many constraints on the build.
   :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
   if "%DEBUG_C%" == "yes" (
-    copy lief\lief.pyd %SP_DIR%\lief_d.pyd
+    copy lief\lief.pyd %SP_DIR%\lief_d%EXT_SUFFIX%
     if exist lief.pdb copy lief.pdb %SP_DIR%\lief_d.pdb
   ) else (
-    copy lief\lief.pyd %SP_DIR%\lief.pyd
+    copy lief\lief.pyd %SP_DIR%\lief%EXT_SUFFIX%
     if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
   )
 popd
