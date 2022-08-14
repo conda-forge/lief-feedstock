@@ -84,6 +84,7 @@ cmake -LAH -G "Ninja"  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^
     -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
     -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
+    -DLIEF_EXTERNAL_PYBIND11=ON  ^
     ..
 if %errorlevel% neq 0 exit /b 1
 

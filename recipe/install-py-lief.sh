@@ -24,6 +24,7 @@ cmake .. -LAH -G "Ninja"  \
   -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
   -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
   -DPYTHON_VERSION=${PY_VER}  \
+  -DLIEF_EXTERNAL_PYBIND11=ON \
   "${CMAKE_ARGS}"
 
 if [[ ! $? ]]; then
