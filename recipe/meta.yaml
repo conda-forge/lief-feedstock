@@ -31,6 +31,8 @@ requirements:
     - m2-gcc-libs  # [win]
     - cmake
     - ninja
+  host:
+    - nlohmann_json
 
 outputs:
   - name: py-lief
@@ -59,6 +61,8 @@ outputs:
         - python
         - setuptools
         - pip
+        - pybind11
+        - nlohmann_json
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
@@ -82,6 +86,8 @@ outputs:
         - pkg-config            # [not win]
         - cmake
         - ninja
+      host:
+        - nlohmann_json
     test:
       files:
         - tests
@@ -108,6 +114,6 @@ about:
 extra:
   recipe-maintainers:
     - isuruf
-    - mingwandroid
     - msarahan
     - xhochy
+    - wolfv
