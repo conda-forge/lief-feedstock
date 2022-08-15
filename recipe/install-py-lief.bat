@@ -1,13 +1,6 @@
 @echo ON
 setlocal enabledelayedexpansion
 
-if "%PY3K%" == "0" (
-    echo "Copying stdint.h for windows"
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\calib3d\include\stdint.h
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\videoio\include\stdint.h
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\highgui\include\stdint.h
-)
-
 for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
    set "PY_MAJOR=%%a"
    set "PY_MINOR=%%b"
@@ -24,6 +17,9 @@ if "%DEBUG_C%" == "yes" (
 :: mkdir build-%PY_VER%
 :: pushd build-%PY_VER%
 pushd build
+
+:: delete CMakeCache.txt to unset previous variables
+del CMakeCache.txt
 
 :: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
 :: Who'd have thought it?
@@ -88,6 +84,7 @@ cmake -LAH -G "Ninja"  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^
     -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
     -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
+    -DLIEF_EXTERNAL_PYBIND11=ON  ^
     ..
 if %errorlevel% neq 0 exit /b 1
 
@@ -114,16 +111,21 @@ if "%DEBUG_C%" == "yes" (
 
 ninja -v install
 
+python -c "from sysconfig import get_config_var as get; print(get('EXT_SUFFIX') or get('SO'))" > tmpFile
+set /p EXT_SUFFIX= < tmpFile
+del tmpFile
+
+
 :: We end up with an exe called lief which is weird.
 pushd api\python
   :: We may want to have our own dummy setup.py so we get a dist-info folder. It would
   :: be nice to use LIEF's setup.py but it places too many constraints on the build.
   :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
   if "%DEBUG_C%" == "yes" (
-    copy lief\lief.pyd %SP_DIR%\lief_d.pyd
+    copy lief\lief.pyd %SP_DIR%\lief_d%EXT_SUFFIX%
     if exist lief.pdb copy lief.pdb %SP_DIR%\lief_d.pdb
   ) else (
-    copy lief\lief.pyd %SP_DIR%\lief.pyd
+    copy lief\lief.pyd %SP_DIR%\lief%EXT_SUFFIX%
     if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
   )
 popd

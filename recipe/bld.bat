@@ -11,13 +11,6 @@ if "%DEBUG_C%" == "yes" (
 mkdir build
 pushd build
 
-if "%PY3K%" == "0" (
-    echo "Copying stdint.h for windows"
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\calib3d\include\stdint.h
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\videoio\include\stdint.h
-    copy "%LIBRARY_INC%\stdint.h" %SRC_DIR%\modules\highgui\include\stdint.h
-)
-
 :: CMake/OpenCV like Unix-style paths for some reason.
 set UNIX_PREFIX=%PREFIX:\=/%
 set UNIX_LIBRARY_PREFIX=%LIBRARY_PREFIX:\=/%
@@ -38,5 +31,7 @@ cmake -LAH -G "Ninja"  ^
     -DCMAKE_SKIP_RPATH=ON  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^
     -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
+    -DLIEF_EXTERNAL_PYBIND11=ON ^
+    -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON ^
     ..
 if %errorlevel% neq 0 exit /b 1

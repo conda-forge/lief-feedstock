@@ -1,7 +1,7 @@
-From 2e534150dd4bda69f19426db4bf860824b116289 Mon Sep 17 00:00:00 2001
+From 77eb7ecfc39913b6b6fb3aab7b2da03480094248 Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 17 May 2021 09:54:06 +0200
-Subject: [PATCH 1/5] python: Only pass NODEFAULTLIB:MSVCRT when not
+Subject: [PATCH 1/4] python: Only pass NODEFAULTLIB:MSVCRT when not
  BUILD_SHARED_LIBS
 
 ---
@@ -9,13 +9,13 @@ Subject: [PATCH 1/5] python: Only pass NODEFAULTLIB:MSVCRT when not
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/api/python/CMakeLists.txt b/api/python/CMakeLists.txt
-index dd23f6c..f5ff8d8 100644
+index 7c93c898..1bac596f 100644
 --- a/api/python/CMakeLists.txt
 +++ b/api/python/CMakeLists.txt
-@@ -132,7 +132,9 @@ if (MSVC)
-   if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-     target_compile_options(pyLIEF PUBLIC /FIiso646.h)
-   endif()
+@@ -135,7 +135,9 @@ set_target_properties(pyLIEF PROPERTIES
+ )
+ 
+ if (MSVC)
 -  set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
 +  if (NOT BUILD_SHARED_LIBS)
 +    set_property(TARGET pyLIEF PROPERTY LINK_FLAGS /NODEFAULTLIB:MSVCRT)
@@ -24,5 +24,5 @@ index dd23f6c..f5ff8d8 100644
  
  set_target_properties(pyLIEF PROPERTIES PYTHON_VERSION ${PYTHON_VERSION})
 -- 
-2.30.1 (Apple Git-130)
+2.37.1
 

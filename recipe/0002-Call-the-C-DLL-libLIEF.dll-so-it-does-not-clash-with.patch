@@ -1,7 +1,7 @@
-From b2c1d54566327dc98e89753d03b70524fc0d59c1 Mon Sep 17 00:00:00 2001
+From e2adc16be169cf7cb9ebe2de73604fb8c7780d5a Mon Sep 17 00:00:00 2001
 From: Ray Donnelly <mingw.android@gmail.com>
 Date: Mon, 17 May 2021 10:04:07 +0200
-Subject: [PATCH 2/5] Call the C++ DLL libLIEF.dll so it does not clash with
+Subject: [PATCH 2/4] Call the C++ DLL libLIEF.dll so it does not clash with
  lief.pyd
 
 ---
@@ -9,12 +9,12 @@ Subject: [PATCH 2/5] Call the C++ DLL libLIEF.dll so it does not clash with
  1 file changed, 19 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5c6a1cc..5138c99 100644
+index b89d0522..d950725b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -483,6 +483,25 @@ endif()
+@@ -572,6 +572,25 @@ endif()
  
- set_target_properties(LIB_LIEF PROPERTIES OUTPUT_NAME LIEF CLEAN_DIRECT_OUTPUT 1)
+ set_target_properties(LIB_LIEF PROPERTIES OUTPUT_NAME LIEF EXPORT_NAME LIEF CLEAN_DIRECT_OUTPUT 1)
  
 +if(MSVC)
 +  string(TOLOWER "${CMAKE_BUILD_TYPE}" build_type)
@@ -39,5 +39,5 @@ index 5c6a1cc..5138c99 100644
  # Set a default build type if none was specified
  if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 -- 
-2.30.1 (Apple Git-130)
+2.37.1
 
