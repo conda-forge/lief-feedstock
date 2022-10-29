@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: ae84dd7ac4ded73bcdb80e730e774651589e4231bbfe9c67a9be3d3c8996bb16
+    sha256: d779c802ba1f80d0e93765e038e0a198fb5ffe4662afe467e33102cb44a06e99
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
@@ -14,7 +14,7 @@ source:
       - 0004-Add-boost-throw_exception-implementation.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
