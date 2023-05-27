@@ -1,11 +1,11 @@
-About lief
-==========
+About lief-feedstock
+====================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/lief-feedstock/blob/main/LICENSE.txt)
 
 Home: https://lief.quarkslab.com/
 
 Package license: Apache-2.0
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/lief-feedstock/blob/main/LICENSE.txt)
 
 Summary: A cross platform library to parse, modify and abstract ELF, PE and MachO formats.
 
