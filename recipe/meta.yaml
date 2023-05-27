@@ -1,4 +1,4 @@
-{% set version = "0.12.3" %}
+{% set version = "0.13.1" %}
 
 package:
   name: lief
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: 762925ad2eed642a6e7ef2cc899bcd3e93a40a2ce1dd2391d9b9ecadfe6438cf
+    sha256: 8ce5957236ee00bc8bc431b8c3a36a3028c13d32620f8fa16d53b17d1fd1a203
     patches:
       - 0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
       - 0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
