@@ -1,0 +1,29 @@
+From d05069069c54d296890971cd02cbb7cfd8dcf02e Mon Sep 17 00:00:00 2001
+From: "Uwe L. Korn" <uwe.korn@quantco.com>
+Date: Mon, 17 May 2021 16:26:53 +0200
+Subject: [PATCH 3/3] Add boost::throw_exception implementation
+
+---
+ src/errors.cpp | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/errors.cpp b/src/errors.cpp
+index f3fa2287..12c04670 100644
+--- a/src/errors.cpp
++++ b/src/errors.cpp
+@@ -49,3 +49,15 @@ const std::error_category& lief_error_category() {
+ LIEF::error_t LIEF::return_error(lief_errors e) {
+   return boost::leaf::new_error(e);
+ }
++
++
++// We need to explicitly define this here as Boost infers from the defines/environment
++// that boost::throw_exception will be user-defined.
++namespace boost
++{
++#ifdef BOOST_NO_EXCEPTIONS
++void throw_exception( std::exception const & e ){
++    throw 11;
++};
++#endif
++}// namespace boost

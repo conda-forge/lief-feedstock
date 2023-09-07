@@ -8,10 +8,9 @@ source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     sha256: c68ef94ee613c6557faccc135bdaba4322c2e044be2b806ceea1de763cc099cf
     patches:
-      - patches/0001-python-Only-pass-NODEFAULTLIB-MSVCRT-when-not-BUILD_.patch
-      - patches/0002-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
-      - patches/0003-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
-      - patches/0004-Add-boost-throw_exception-implementation.patch
+      - patches/0001-Call-the-C-DLL-libLIEF.dll-so-it-does-not-clash-with.patch
+      - patches/0002-Add-LIEFOptions-for-BUILD_STATIC_LIBS-and-BUILD_SHAR.patch
+      - patches/0003-Add-boost-throw_exception-implementation.patch
 
 build:
   number: 0
