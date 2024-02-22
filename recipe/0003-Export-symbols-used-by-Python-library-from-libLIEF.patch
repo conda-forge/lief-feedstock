@@ -1,0 +1,211 @@
+From 86624a242ff560b90bd329b017268db04b69cd06 Mon Sep 17 00:00:00 2001
+From: Marcel Bargull <marcel.bargull@udo.edu>
+Date: Thu, 22 Feb 2024 15:16:52 +0100
+Subject: [PATCH 3/3] Export symbols used by Python library from libLIEF
+
+Signed-off-by: Marcel Bargull <marcel.bargull@udo.edu>
+---
+ include/LIEF/BinaryStream/BinaryStream.hpp                 | 3 ++-
+ include/LIEF/BinaryStream/SpanStream.hpp                   | 3 ++-
+ include/LIEF/BinaryStream/VectorStream.hpp                 | 3 ++-
+ include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp           | 2 +-
+ include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp | 3 ++-
+ include/LIEF/ELF/NoteDetails/properties/StackSize.hpp      | 3 ++-
+ include/LIEF/ELF/NoteDetails/properties/X86Feature.hpp     | 3 ++-
+ include/LIEF/ELF/NoteDetails/properties/X86ISA.hpp         | 3 ++-
+ include/LIEF/PE/signature/GenericContent.hpp               | 3 ++-
+ include/LIEF/PE/signature/SpcIndirectData.hpp              | 3 ++-
+ 10 files changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/include/LIEF/BinaryStream/BinaryStream.hpp b/include/LIEF/BinaryStream/BinaryStream.hpp
+index 880f8eba..04701830 100644
+--- a/include/LIEF/BinaryStream/BinaryStream.hpp
++++ b/include/LIEF/BinaryStream/BinaryStream.hpp
+@@ -24,6 +24,7 @@
+ #include <type_traits>
+ #include <algorithm>
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/BinaryStream/Convert.hpp"
+ #include "LIEF/errors.hpp"
+ 
+@@ -31,7 +32,7 @@ namespace LIEF {
+ class ASN1Reader;
+ 
+ //! Class that is used to a read stream of data from different sources
+-class BinaryStream {
++class LIEF_API BinaryStream {
+   public:
+   friend class ASN1Reader;
+   enum class STREAM_TYPE {
+diff --git a/include/LIEF/BinaryStream/SpanStream.hpp b/include/LIEF/BinaryStream/SpanStream.hpp
+index 322744fa..f1da8f31 100644
+--- a/include/LIEF/BinaryStream/SpanStream.hpp
++++ b/include/LIEF/BinaryStream/SpanStream.hpp
+@@ -18,12 +18,13 @@
+ 
+ #include <string>
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/errors.hpp"
+ #include "LIEF/span.hpp"
+ #include "LIEF/BinaryStream/BinaryStream.hpp"
+ 
+ namespace LIEF {
+-class SpanStream : public BinaryStream {
++class LIEF_API SpanStream : public BinaryStream {
+   public:
+   using BinaryStream::p;
+   using BinaryStream::end;
+diff --git a/include/LIEF/BinaryStream/VectorStream.hpp b/include/LIEF/BinaryStream/VectorStream.hpp
+index 324093ba..0189236c 100644
+--- a/include/LIEF/BinaryStream/VectorStream.hpp
++++ b/include/LIEF/BinaryStream/VectorStream.hpp
+@@ -19,10 +19,11 @@
+ #include <vector>
+ #include <string>
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/errors.hpp"
+ #include "LIEF/BinaryStream/BinaryStream.hpp"
+ namespace LIEF {
+-class VectorStream : public BinaryStream {
++class LIEF_API VectorStream : public BinaryStream {
+   public:
+   using BinaryStream::p;
+   using BinaryStream::end;
+diff --git a/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp b/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
+index e180abab..a0830d67 100644
+--- a/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
++++ b/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
+@@ -52,7 +52,7 @@ class LIEF_API NoteGnuProperty : public Note {
+       return type_;
+     }
+ 
+-    virtual void dump(std::ostream& os) const;
++    LIEF_API virtual void dump(std::ostream& os) const;
+ 
+     virtual ~Property() = default;
+ 
+diff --git a/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp b/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp
+index db184168..0fe819bd 100644
+--- a/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp
++++ b/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp
+@@ -16,6 +16,7 @@
+ #ifndef LIEF_ELF_NOTE_DETAILS_PROPERTIES_AARCH64_FEATURE_H
+ #define LIEF_ELF_NOTE_DETAILS_PROPERTIES_AARCH64_FEATURE_H
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/ELF/NoteDetails/NoteGnuProperty.hpp"
+ 
+ namespace LIEF {
+@@ -24,7 +25,7 @@ class BinaryStream;
+ namespace ELF {
+ 
+ /// This class represents the `GNU_PROPERTY_AARCH64_FEATURE_1_AND` property.
+-class AArch64Feature : public NoteGnuProperty::Property {
++class LIEF_API AArch64Feature : public NoteGnuProperty::Property {
+   public:
+   enum class FEATURE {
+     UNKNOWN = 0,
+diff --git a/include/LIEF/ELF/NoteDetails/properties/StackSize.hpp b/include/LIEF/ELF/NoteDetails/properties/StackSize.hpp
+index 58f85f39..577b1f14 100644
+--- a/include/LIEF/ELF/NoteDetails/properties/StackSize.hpp
++++ b/include/LIEF/ELF/NoteDetails/properties/StackSize.hpp
+@@ -16,6 +16,7 @@
+ #ifndef LIEF_ELF_NOTE_DETAILS_PROPERTIES_STACK_SIZE_H
+ #define LIEF_ELF_NOTE_DETAILS_PROPERTIES_STACK_SIZE_H
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/ELF/NoteDetails/NoteGnuProperty.hpp"
+ 
+ namespace LIEF {
+@@ -23,7 +24,7 @@ namespace ELF {
+ /// This class provides an interface over the `GNU_PROPERTY_STACK_SIZE` property
+ ///
+ /// This property can be used by the loader to raise the stack limit.
+-class StackSize : public NoteGnuProperty::Property {
++class LIEF_API StackSize : public NoteGnuProperty::Property {
+   public:
+   static bool classof(const NoteGnuProperty::Property* prop) {
+     return prop->type() == NoteGnuProperty::Property::TYPE::STACK_SIZE;
+diff --git a/include/LIEF/ELF/NoteDetails/properties/X86Feature.hpp b/include/LIEF/ELF/NoteDetails/properties/X86Feature.hpp
+index bee7a30c..6f4a25ef 100644
+--- a/include/LIEF/ELF/NoteDetails/properties/X86Feature.hpp
++++ b/include/LIEF/ELF/NoteDetails/properties/X86Feature.hpp
+@@ -18,6 +18,7 @@
+ #include <vector>
+ #include <utility>
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/ELF/NoteDetails/NoteGnuProperty.hpp"
+ 
+ namespace LIEF {
+@@ -28,7 +29,7 @@ namespace ELF {
+ /// - ``GNU_PROPERTY_X86_FEATURE_1_AND``
+ /// - ``GNU_PROPERTY_X86_FEATURE_2_USED``
+ /// - ``GNU_PROPERTY_X86_FEATURE_2_NEEDED``
+-class X86Features : public NoteGnuProperty::Property {
++class LIEF_API X86Features : public NoteGnuProperty::Property {
+   public:
+ 
+   /// Flag according to the ``_AND``, ``_USED`` or ``_NEEDED`` suffixes
+diff --git a/include/LIEF/ELF/NoteDetails/properties/X86ISA.hpp b/include/LIEF/ELF/NoteDetails/properties/X86ISA.hpp
+index 736da017..38cd4811 100644
+--- a/include/LIEF/ELF/NoteDetails/properties/X86ISA.hpp
++++ b/include/LIEF/ELF/NoteDetails/properties/X86ISA.hpp
+@@ -18,6 +18,7 @@
+ #include <vector>
+ #include <utility>
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/ELF/NoteDetails/NoteGnuProperty.hpp"
+ 
+ namespace LIEF {
+@@ -31,7 +32,7 @@ namespace ELF {
+ /// - ``GNU_PROPERTY_X86_COMPAT_ISA_1_NEEDED``
+ /// - ``GNU_PROPERTY_X86_COMPAT_2_ISA_1_USED``
+ /// - ``GNU_PROPERTY_X86_COMPAT_2_ISA_1_NEEDED``
+-class X86ISA : public NoteGnuProperty::Property {
++class LIEF_API X86ISA : public NoteGnuProperty::Property {
+   public:
+   enum class FLAG {
+     NONE = 0,
+diff --git a/include/LIEF/PE/signature/GenericContent.hpp b/include/LIEF/PE/signature/GenericContent.hpp
+index 1fe015d8..75409198 100644
+--- a/include/LIEF/PE/signature/GenericContent.hpp
++++ b/include/LIEF/PE/signature/GenericContent.hpp
+@@ -15,12 +15,13 @@
+  */
+ #ifndef LIEF_PE_GENERIC_CONTENT_H
+ #define LIEF_PE_GENERIC_CONTENT_H
++#include "LIEF/visibility.h"
+ #include "LIEF/span.hpp"
+ #include "LIEF/PE/signature/ContentInfo.hpp"
+ 
+ namespace LIEF {
+ namespace PE {
+-class GenericContent : public ContentInfo::Content {
++class LIEF_API GenericContent : public ContentInfo::Content {
+   friend class SignatureParser;
+ 
+   public:
+diff --git a/include/LIEF/PE/signature/SpcIndirectData.hpp b/include/LIEF/PE/signature/SpcIndirectData.hpp
+index 58e9a10b..17c5cb3e 100644
+--- a/include/LIEF/PE/signature/SpcIndirectData.hpp
++++ b/include/LIEF/PE/signature/SpcIndirectData.hpp
+@@ -20,12 +20,13 @@
+ #include <vector>
+ #include <cstdint>
+ 
++#include "LIEF/visibility.h"
+ #include "LIEF/span.hpp"
+ #include "LIEF/PE/signature/ContentInfo.hpp"
+ 
+ namespace LIEF {
+ namespace PE {
+-class SpcIndirectData : public ContentInfo::Content {
++class LIEF_API SpcIndirectData : public ContentInfo::Content {
+   friend class SignatureParser;
+ 
+   public:
