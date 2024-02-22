@@ -1,28 +1,15 @@
 @echo ON
 setlocal enabledelayedexpansion
 
-if "%DEBUG_C%" == "yes" (
-  set BUILD_TYPE=Debug
-) else (
-  set BUILD_TYPE=Release
-)
-
 :: All builds done in a subdir so CMake caches are not found next time.
 mkdir build
 pushd build
-
-:: CMake/OpenCV like Unix-style paths for some reason.
-set UNIX_PREFIX=%PREFIX:\=/%
-set UNIX_LIBRARY_PREFIX=%LIBRARY_PREFIX:\=/%
-set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
-set UNIX_SP_DIR=%SP_DIR:\=/%
-set UNIX_SRC_DIR=%SRC_DIR:\=/%
 
 set CC=cl.exe
 set CXX=cl.exe
 
 cmake -LAH -G "Ninja"  ^
-    -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^
+    -DCMAKE_BUILD_TYPE="Release"  ^
     -DBUILD_SHARED_LIBS:BOOL=ON  ^
     -DLIEF_PYTHON_API=OFF  ^
     -DCMAKE_CXX_FLAGS="%CXXFLAGS% /EHsc /wd4359"  ^

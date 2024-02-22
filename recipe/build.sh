@@ -10,9 +10,6 @@ fi
 
 # Please keep this comment around. It may help if this problem reoccurs.
 # if [[ ${target_platform} =~ linux-* ]]; then
-#   # TODO: remove this when lief's internal pybind is updated (with lief=0.10.0 probably)
-#   export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
-#   export CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
 #   # export LDFLAGS="${LDFLAGS} -Wl,--trace -Wl,--cref -Wl,--trace-symbol,_ZTIN4LIEF5MachO16BuildToolVersionE"
 #   # export LDFLAGS="${LDFLAGS} -Wl,--trace-symbol,_ZTIN4LIEF5MachO16BuildToolVersionE -Wl,--trace-symbol,_ZTIN4LIEF5MachO12BuildVersionE"
 # fi

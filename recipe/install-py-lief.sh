@@ -54,23 +54,6 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" != "1" ]]; then
   ${PYTHON} -c "import lief"
 fi
 
-# conda run is broken. It does not remove the shell-script-added base-env PATH entries from the
-# front of PATH, so when it adds the new env, if there was *another* env activated, then that is
-# the one that gets replaced with the PREFIX env PATH entries. Software from the base-env gets
-# run instead. This happens on all OSes and this test-code cannot be enabled until conda run is
-# free of this problem.
-# conda run -p ${PREFIX} --debug-wrapper-scripts which python
-# conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version 2>&1 | grep ${PY_VER}
-# if [[ ! $? ]]; then
-#   echo "conda run runs the wrong python"
-#   exit 1
-# fi
-# conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" 2>&1 | grep "The specified module could not be found"
-# if [[ ! $? ]]; then
-#   echo "conda run ${PREFIX} --debug-wrapper-scripts python \"import lief\" runs the wrong python"
-#   exit 1
-# fi
-
 if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
   rm -rf "${PREFIX}"/share/LIEF/examples/
 fi

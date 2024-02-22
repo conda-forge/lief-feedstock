@@ -24,9 +24,6 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config            # [not win]
-    - patch  # [not win]
-    - m2-patch  # [win]
-    - m2-gcc-libs  # [win]
     - cmake
     - ninja
   host:
@@ -47,9 +44,6 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - pkg-config            # [not win]
-        # When making a debug build on Windows, we need to patch CMake downloaded pybind11. Sorry.
-        - m2-patch  # [win]
-        - m2-gcc-libs  # [win]
         - cmake
         - ninja
         - python                                 # [build_platform != target_platform]
