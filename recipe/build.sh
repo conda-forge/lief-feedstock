@@ -2,9 +2,7 @@
 
 set -exuo pipefail
 
-if [[ ${target_platform} == osx-64 ]]; then
-  CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_OSX_SYSROOT=${CONDA_BUILD_SYSROOT}"
-elif [[ ${target_platform} == linux-ppc64le ]]; then
+if [[ ${target_platform} == linux-ppc64le ]]; then
   CMAKE_ARGS="${CMAKE_ARGS} -DLIEF_LOGGING=OFF"
 fi
 
@@ -18,7 +16,6 @@ mkdir build || true
 pushd build
 
 cmake ${CMAKE_ARGS} -LAH -G "Ninja"  \
-  -DCMAKE_BUILD_TYPE="Release"  \
   -DBUILD_STATIC_LIBS=OFF  \
   -DBUILD_SHARED_LIBS=ON  \
   -DCMAKE_SKIP_RPATH=ON  \

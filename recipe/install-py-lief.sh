@@ -10,8 +10,6 @@ pushd build
 rm CMakeCache.txt
 
 cmake .. -LAH -G "Ninja"  \
-  -DCMAKE_BUILD_TYPE="Release"  \
-  -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
   -DCMAKE_SKIP_RPATH=ON  \
   -DCMAKE_BUILD_STATIC_LIBS=OFF  \
   -DBUILD_STATIC_LIBS=OFF  \

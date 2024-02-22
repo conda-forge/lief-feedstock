@@ -53,8 +53,7 @@ set CC=cl.exe
 set CXX=cl.exe
 
 cmake -LAH -G "Ninja"  ^
-    -DCMAKE_BUILD_TYPE="Release"  ^
-    -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
+    %CMAKE_ARGS% ^
     -DBUILD_SHARED_LIBS:BOOL=%SHARED_BUILD%  ^
     -DBUILD_STATIC_LIBS:BOOL=%STATIC_BUILD%  ^
     -DLIEF_PYTHON_API=ON  ^
