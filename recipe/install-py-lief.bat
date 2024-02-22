@@ -66,18 +66,23 @@ cd api\python
 
 if not exist config-default.toml.bak copy config-default.toml config-default.toml.bak
 del config-default.toml
-for /f %%l in (config-default.toml.bak) do (
-  echo %%l
-  if "%%l" == "[lief.build]" (
-    echo lief-install-dir = "%LIBRARY_PREFIX:\=\\%"
-    echo extra-cmake-opt = [
-    for /f "delims=" %%a in ("%CMAKE_ARGS: =!LF!%") do (
-      set "arg=%%a"
-      echo "!arg:\=\\!",
+(
+  echo off
+  for /f "delims=" %%l in (config-default.toml.bak) do (
+    echo %%l
+    if "%%l" == "[lief.build]" (
+      echo lief-install-dir = "%LIBRARY_PREFIX:\=\\%"
+      echo extra-cmake-opt = [
+      for /f "delims=" %%a in ("%CMAKE_ARGS: =!LF!%") do (
+        set "arg=%%a"
+        echo "!arg:\=\\!",
+      )
+      echo ]
     )
-    echo ]
-  )
-) >> config-default.toml
+  ) >> config-default.toml
+  echo on
+)
+type config-default.toml
 if %errorlevel% neq 0 exit /b 1
 
 for /f "useback delims=" %%e in (^
