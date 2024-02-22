@@ -2,10 +2,6 @@
 
 set -xeuo pipefail
 
-if [[ ${target_platform} == linux-ppc64le ]]; then
-  CMAKE_ARGS="${CMAKE_ARGS} -DLIEF_LOGGING=OFF"
-fi
-
 CMAKE_ARGS="${CMAKE_ARGS} \
   -DBUILD_STATIC_LIBS=OFF \
   -DBUILD_SHARED_LIBS=ON \
