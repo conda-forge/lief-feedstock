@@ -63,6 +63,7 @@ outputs:
         - setuptools >=68.2.2
         - tomli >=2.0.1
       run:
+        - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
     test:
@@ -89,6 +90,8 @@ outputs:
         - ninja
       host:
         - nlohmann_json
+      run:
+        - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.13") }}  # [osx and x86_64]
     test:
       files:
         - tests
