@@ -7,6 +7,10 @@ package:
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     sha256: 92916dcb3178353d863aef4f409186889983c56e025b774741d5316a72ec3a7d
+    patches:
+      - 0001-Dynamically-link-Python-library-to-libLIEF.patch
+      - 0002-Export-symbols-used-by-Python-library-from-libLIEF.patch
+      - 0003-Inject-proper-extension-module-suffix-via-env-var.patch
 
 build:
   number: 0
@@ -43,13 +47,21 @@ outputs:
         - ninja
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - pydantic >=2.4.2                       # [build_platform != target_platform]
+        - pydantic-core >=2.10.1                 # [build_platform != target_platform]
+        - scikit-build-core >=0.6.0              # [build_platform != target_platform]
+        - setuptools >=68.2.2                    # [build_platform != target_platform]
+        - tomli >=2.0.1                          # [build_platform != target_platform]
       host:
+        - nlohmann_json
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
-        - setuptools
         - pip
-        - pybind11
-        - nlohmann_json
+        - pydantic >=2.4.2
+        - pydantic-core >=2.10.1
+        - scikit-build-core >=0.6.0
+        - setuptools >=68.2.2
+        - tomli >=2.0.1
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
@@ -58,6 +70,8 @@ outputs:
         - {{ compiler('cxx') }}
       imports:
         - lief
+      commands:
+        - python -c "import ctypes.util, lief; missing = {name for name in {s.name for s in lief.parse(lief._lief.__file__).imported_functions} - {s.name for s in lief.parse(ctypes.util.find_library('LIEF')).exported_functions} if '4LIEF' in name}; assert not missing, missing"
 
   - name: liblief
     script: install-liblief.sh  # [unix]

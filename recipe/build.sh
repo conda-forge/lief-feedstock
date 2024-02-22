@@ -12,9 +12,8 @@ CMAKE_ARGS="${CMAKE_ARGS} \
   -DCMAKE_SKIP_RPATH=ON \
   -DLIEF_EXAMPLES=OFF \
   -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON \
+  -DLIEF_PY_LIEF_EXT=ON \
   -DLIEF_PYTHON_API=OFF \
-  -DLIEF_INSTALL_PYTHON=OFF \
-  -DLIEF_EXTERNAL_PYBIND11=ON \
 "
 
 # Please keep this comment around. It may help if this problem reoccurs.

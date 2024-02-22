@@ -1,5 +1,8 @@
 @echo ON
 setlocal enabledelayedexpansion
+:: Variable LF contains "line feed" character. Do not remove the following 2 blank lines!
+set LF=^
+
 
 for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
    set "PY_MAJOR=%%a"
@@ -44,49 +47,46 @@ set "CMAKE_ARGS=%CMAKE_ARGS% -DBUILD_SHARED_LIBS=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_SKIP_RPATH=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_EXAMPLES=OFF"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PY_LIEF_EXT=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PYTHON_API=ON"
-set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_INSTALL_PYTHON=ON"
-set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_EXTERNAL_PYBIND11=ON"
+
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_DISABLE_FROZEN=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DPYTHON_EXECUTABLE=%PREFIX%\python.exe"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DPYTHON_VERSION=%PY_VER%"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DPYTHON_LIBRARY=%PREFIX%\libs\%PY_LIB%"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_VERBOSE_MAKEFILE=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS="
 
 set CC=cl.exe
 set CXX=cl.exe
 
-:: delete CMakeCache.txt to unset previous variables
-del build\CMakeCache.txt
+cd api\python
 
-cmake %CMAKE_ARGS% -LAH -G "Ninja" -B build  ^
-    -DLIEF_DISABLE_FROZEN=OFF  ^
-    -DPYTHON_EXECUTABLE=%PREFIX%\python.exe  ^
-    -DPYTHON_VERSION=%PY_VER%  ^
-    -DPYTHON_LIBRARY=%PREFIX%\libs\%PY_LIB%  ^
-    -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include  ^
-    -DCMAKE_VERBOSE_MAKEFILE=ON  ^
-    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
-    -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS=OFF
-
+if not exist config-default.toml.bak copy config-default.toml config-default.toml.bak
+del config-default.toml
+for /f %%l in (config-default.toml.bak) do (
+  echo %%l
+  if "%%l" == "[lief.build]" (
+    echo lief-install-dir = "%LIBRARY_PREFIX:\=\\%"
+    echo extra-cmake-opt = [
+    for /f "delims=" %%a in ("%CMAKE_ARGS: =!LF!%") do (
+      set "arg=%%a"
+      echo "!arg:\=\\!",
+    )
+    echo ]
+  )
+) >> config-default.toml
 if %errorlevel% neq 0 exit /b 1
 
-:: If we do not create this directory, then a cmake copy command will copy a pyd to a file
-:: called lief, instead of putting it in that directory (or so it seems at least).
-mkdir build\api\python\lief
+for /f "useback delims=" %%e in (^
+`%PYTHON% -c "from sysconfig import get_config_var as get; print(get('EXT_SUFFIX') or get('SO'))"`) do (
+  set "EXT_SUFFIX=%%e"
+)
+if %errorlevel% neq 0 exit /b 1
 
-:: Delete files from other python versions
-rmdir /s /q build\api\python\CMakeFiles\pyLIEF.dir
-
-ninja -C build -v install
-
-python -c "from sysconfig import get_config_var as get; print(get('EXT_SUFFIX') or get('SO'))" > tmpFile
-set /p EXT_SUFFIX= < tmpFile
-del tmpFile
-
-
-:: We end up with an exe called lief which is weird.
-pushd build\api\python
-  :: We may want to have our own dummy setup.py so we get a dist-info folder. It would
-  :: be nice to use LIEF's setup.py but it places too many constraints on the build.
-  :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
-copy lief\lief.pyd %SP_DIR%\lief%EXT_SUFFIX%
-if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
-popd
+pip install --no-deps --no-build-isolation --ignore-installed --no-index -vv .
+if %errorlevel% neq 0 exit /b 1
 
 if exist %PREFIX%\share\LIEF\examples rmdir /s /q %PREFIX%\share\LIEF\examples

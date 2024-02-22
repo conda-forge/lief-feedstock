@@ -8,32 +8,35 @@ CMAKE_ARGS="${CMAKE_ARGS} \
   -DCMAKE_SKIP_RPATH=ON \
   -DLIEF_EXAMPLES=OFF \
   -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON \
+  -DLIEF_PY_LIEF_EXT=ON \
   -DLIEF_PYTHON_API=ON \
-  -DLIEF_INSTALL_PYTHON=ON  \
-  -DLIEF_EXTERNAL_PYBIND11=ON \
-"
 
-rm build/CMakeCache.txt
-
-cmake "${CMAKE_ARGS}" -LAH -G "Ninja" -B build  \
   -DPYTHON_EXECUTABLE="${PYTHON}"  \
   -DPYTHON_INCLUDE_DIR:PATH=$(${PYTHON} -c 'from sysconfig import get_paths; print(get_paths()["include"])')  \
   -DPYTHON_LIBRARIES="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
   -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
   -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
-  -DPYTHON_VERSION=${PY_VER}
+  -DPYTHON_VERSION=${PY_VER} \
+"
 
-ninja -C build -v pyLIEF -j${CPU_COUNT}
-ninja -C build -v install -j${CPU_COUNT}
+cd api/python
 
-ext_suffix="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
-mv api/python/lief.so ${SP_DIR}/lief${ext_suffix}
-if [[ ${target_platform} == osx-* ]]; then
-  ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
-fi
+mv -n config-default.toml config-default.toml.bak
+while read -r line; do
+  printf '%s\n' "${line}"
+  case ${line} in ( '[lief.build]' )
+    cat << EOF
+lief-install-dir = "${PREFIX}"
+extra-cmake-opt = [
+$(printf '"%s",\n' ${CMAKE_ARGS})
+]
+EOF
+  ;; esac
+done < config-default.toml.bak > config-default.toml
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" != "1" ]]; then
-  ${PYTHON} -c "import lief"
-fi
+EXT_SUFFIX="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
+export EXT_SUFFIX
+
+pip install --no-deps --no-build-isolation --ignore-installed --no-index -vv .
 
 rm -rf "${PREFIX}"/share/LIEF/examples/
