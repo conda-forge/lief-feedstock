@@ -94,14 +94,14 @@ Current release info
 Installing lief
 ===============
 
-Installing `lief` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `lief` from the `conda-forge/label/lief_rc` channel can be achieved by adding `conda-forge/label/lief_rc` to your channels with:
 
 ```
-conda config --add channels conda-forge
+conda config --add channels conda-forge/label/lief_rc
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `liblief, py-lief` can be installed with `conda`:
+Once the `conda-forge/label/lief_rc` channel has been enabled, `liblief, py-lief` can be installed with `conda`:
 
 ```
 conda install liblief py-lief
@@ -116,26 +116,26 @@ mamba install liblief py-lief
 It is possible to list all of the versions of `liblief` available on your platform with `conda`:
 
 ```
-conda search liblief --channel conda-forge
+conda search liblief --channel conda-forge/label/lief_rc
 ```
 
 or with `mamba`:
 
 ```
-mamba search liblief --channel conda-forge
+mamba search liblief --channel conda-forge/label/lief_rc
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search liblief --channel conda-forge
+mamba repoquery search liblief --channel conda-forge/label/lief_rc
 
 # List packages depending on `liblief`:
-mamba repoquery whoneeds liblief --channel conda-forge
+mamba repoquery whoneeds liblief --channel conda-forge/label/lief_rc
 
 # List dependencies of `liblief`:
-mamba repoquery depends liblief --channel conda-forge
+mamba repoquery depends liblief --channel conda-forge/label/lief_rc
 ```
 
 
