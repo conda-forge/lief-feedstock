@@ -9,9 +9,6 @@ set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PY_LIEF_EXT=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PYTHON_API=OFF"
 
-set CC=cl.exe
-set CXX=cl.exe
-
 mkdir build
 
 cmake %CMAKE_ARGS% -LAH -G "Ninja" -B build  ^

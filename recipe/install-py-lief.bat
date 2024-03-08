@@ -17,9 +17,6 @@ set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_VERBOSE_MAKEFILE=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS="
 
-set CC=cl.exe
-set CXX=cl.exe
-
 cd api\python
 
 if not exist config-default.toml.bak copy config-default.toml config-default.toml.bak
