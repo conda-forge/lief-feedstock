@@ -10,13 +10,6 @@ CMAKE_ARGS="${CMAKE_ARGS} \
   -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON \
   -DLIEF_PY_LIEF_EXT=ON \
   -DLIEF_PYTHON_API=ON \
-
-  -DPYTHON_EXECUTABLE="${PYTHON}"  \
-  -DPYTHON_INCLUDE_DIR:PATH=$(${PYTHON} -c 'from sysconfig import get_paths; print(get_paths()["include"])')  \
-  -DPYTHON_LIBRARIES="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
-  -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
-  -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
-  -DPYTHON_VERSION=${PY_VER} \
 "
 
 cd api/python
