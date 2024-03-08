@@ -9,6 +9,11 @@ source:
     sha256: 92916dcb3178353d863aef4f409186889983c56e025b774741d5316a72ec3a7d
     patches:
       - 0001-Inject-proper-extension-module-suffix-via-env-var.patch
+      # Upstream does not support dynamic linking to libLIEF from the Python
+      # extension module. To make this work, we need to export symbols from
+      # libLIEF which the module uses.
+      # Since it offers few (any?) real advantages, we may want to drop dynamic
+      # linking in the future and link libLIEF statically for py-lief, too.
       - 0002-Dynamically-link-Python-library-to-libLIEF.patch
       - 0003-Export-symbols-used-by-Python-library-from-libLIEF.patch
 
@@ -54,9 +59,12 @@ outputs:
         - tomli >=2.0.1                          # [build_platform != target_platform]
       host:
         - nlohmann_json
+        # Dynamically linked to libLIEF for now; see comment in patch section.
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
         - pip
+        # Upstream pins build dependencies exactly; we are a bit more lenient
+        # here to avoid potential solvability issues.
         - pydantic >=2.4.2
         - pydantic-core >=2.10.1
         - scikit-build-core >=0.6.0
@@ -72,6 +80,7 @@ outputs:
       imports:
         - lief
       commands:
+        # Test general functionality by introspecting inter-subpackage linkage.
         - python -c "import ctypes.util, lief; missing = {name for name in {s.name for s in lief.parse(lief._lief.__file__).imported_functions} - {s.name for s in lief.parse(ctypes.util.find_library('LIEF')).exported_functions} if '4LIEF' in name}; assert not missing, missing"
 
   - name: liblief
