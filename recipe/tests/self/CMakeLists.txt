@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.12)
+project(test-lief-self)
+add_executable(test-lief-self test-lief-self.cpp)
+link_directories($ENV{PREFIX}/lib)
+include_directories($ENV{PREFIX}/include)
+target_link_libraries(test-lief-self LIEF)
