@@ -1,76 +1,35 @@
 #!/bin/bash
 
-set -exuo pipefail
+set -xeuo pipefail
 
-# mkdir build-py${PY_VER}
-# pushd build-py${PY_VER}
+CMAKE_ARGS="${CMAKE_ARGS} \
+  -DBUILD_STATIC_LIBS=OFF \
+  -DBUILD_SHARED_LIBS=ON \
+  -DCMAKE_SKIP_RPATH=ON \
+  -DLIEF_EXAMPLES=OFF \
+  -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON \
+  -DLIEF_PY_LIEF_EXT=ON \
+  -DLIEF_PYTHON_API=ON \
+"
 
-pushd build
+cd api/python
 
-rm CMakeCache.txt
+mv -n config-default.toml config-default.toml.bak
+while read -r line; do
+  printf '%s\n' "${line}"
+  case ${line} in ( '[lief.build]' )
+    cat << EOF
+lief-install-dir = "${PREFIX}"
+extra-cmake-opt = [
+$(printf '"%s",\n' ${CMAKE_ARGS})
+]
+EOF
+  ;; esac
+done < config-default.toml.bak > config-default.toml
 
-cmake .. -LAH -G "Ninja"  \
-  -DCMAKE_BUILD_TYPE="Release"  \
-  -DCMAKE_INSTALL_PREFIX="${PREFIX}"  \
-  -DCMAKE_SKIP_RPATH=ON  \
-  -DCMAKE_BUILD_STATIC_LIBS=OFF  \
-  -DBUILD_STATIC_LIBS=OFF  \
-  -DBUILD_SHARED_LIBS=ON  \
-  -DLIEF_PYTHON_API=ON  \
-  -DLIEF_INSTALL_PYTHON=ON  \
-  -DPYTHON_EXECUTABLE="${PYTHON}"  \
-  -DPYTHON_INCLUDE_DIR:PATH=$(${PYTHON} -c 'from sysconfig import get_paths; print(get_paths()["include"])')  \
-  -DPYTHON_LIBRARIES="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
-  -DPYTHON_LIBRARY="${PREFIX}"/lib/libpython${PY_VER}.dylib  \
-  -DPYTHON_EXECUTABLE="${PREFIX}"/bin/python  \
-  -DPYTHON_VERSION=${PY_VER}  \
-  -DLIEF_EXTERNAL_PYBIND11=ON \
-  "${CMAKE_ARGS}"
+EXT_SUFFIX="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
+export EXT_SUFFIX
 
-if [[ ! $? ]]; then
-  echo "configure failed with $?"
-  exit 1
-fi
+pip install --no-deps --no-build-isolation --ignore-installed --no-index -vv .
 
-# cmake --build . --target pyLIEF
-# cmake --build . --target install
-ninja -v pyLIEF -j${CPU_COUNT}
-if [[ ! $? ]]; then
-  echo "Build failed with $?"
-  exit 1
-fi
-ninja -v install -j${CPU_COUNT}
-if [[ ! $? ]]; then
-  echo "Install failed with $?"
-  exit 1
-fi
-ext_suffix="$( ${PYTHON} -c 'from sysconfig import get_config_var as get; print(get("EXT_SUFFIX") or get("SO"))' )"
-mv api/python/lief.so ${SP_DIR}/lief${ext_suffix}
-if [[ ${target_platform} == osx-* ]]; then
-  ${INSTALL_NAME_TOOL:-install_name_tool} -id @rpath/_pylief${ext_suffix} ${SP_DIR}/lief${ext_suffix}
-fi
-
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" != "1" ]]; then
-  ${PYTHON} -c "import lief"
-fi
-
-# conda run is broken. It does not remove the shell-script-added base-env PATH entries from the
-# front of PATH, so when it adds the new env, if there was *another* env activated, then that is
-# the one that gets replaced with the PREFIX env PATH entries. Software from the base-env gets
-# run instead. This happens on all OSes and this test-code cannot be enabled until conda run is
-# free of this problem.
-# conda run -p ${PREFIX} --debug-wrapper-scripts which python
-# conda run -p ${PREFIX} --debug-wrapper-scripts python -v --version 2>&1 | grep ${PY_VER}
-# if [[ ! $? ]]; then
-#   echo "conda run runs the wrong python"
-#   exit 1
-# fi
-# conda run -p ${PREFIX} --debug-wrapper-scripts python -v -c "import lief" 2>&1 | grep "The specified module could not be found"
-# if [[ ! $? ]]; then
-#   echo "conda run ${PREFIX} --debug-wrapper-scripts python \"import lief\" runs the wrong python"
-#   exit 1
-# fi
-
-if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
-  rm -rf "${PREFIX}"/share/LIEF/examples/
-fi
+rm -rf "${PREFIX}"/share/LIEF/examples/

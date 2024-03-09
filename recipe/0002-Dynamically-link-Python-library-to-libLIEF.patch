@@ -1,0 +1,23 @@
+From 756318874cdd717caf79d7a8dd655f46a369f377 Mon Sep 17 00:00:00 2001
+From: Marcel Bargull <marcel.bargull@udo.edu>
+Date: Thu, 22 Feb 2024 15:15:12 +0100
+Subject: [PATCH 2/3] Dynamically link Python library to libLIEF
+
+Signed-off-by: Marcel Bargull <marcel.bargull@udo.edu>
+---
+ api/python/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/api/python/CMakeLists.txt b/api/python/CMakeLists.txt
+index 3991d1fc..2185e4c2 100644
+--- a/api/python/CMakeLists.txt
++++ b/api/python/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+ 
+ if (LIEF_PY_LIEF_EXT)
+-  find_package(LIEF REQUIRED COMPONENTS STATIC)
++  find_package(LIEF REQUIRED COMPONENTS SHARED)
+   message(STATUS "Using pre-installed version of LIEF")
+   set(LIEF_TARGET LIEF::LIEF)
+ else()

@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.12)
+project(test-lief-macho)
+add_executable(test-lief-macho test-lief-macho.cpp)
+link_directories($ENV{PREFIX}/lib)
+include_directories($ENV{PREFIX}/include)
+target_link_libraries(test-lief-macho LIEF)

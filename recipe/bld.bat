@@ -1,37 +1,24 @@
 @echo ON
 setlocal enabledelayedexpansion
 
-if "%DEBUG_C%" == "yes" (
-  set BUILD_TYPE=Debug
-) else (
-  set BUILD_TYPE=Release
-)
+set "CMAKE_ARGS=%CMAKE_ARGS% -DBUILD_STATIC_LIBS=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DBUILD_SHARED_LIBS=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_SKIP_RPATH=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_EXAMPLES=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PY_LIEF_EXT=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PYTHON_API=OFF"
 
-:: All builds done in a subdir so CMake caches are not found next time.
 mkdir build
-pushd build
 
-:: CMake/OpenCV like Unix-style paths for some reason.
-set UNIX_PREFIX=%PREFIX:\=/%
-set UNIX_LIBRARY_PREFIX=%LIBRARY_PREFIX:\=/%
-set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
-set UNIX_SP_DIR=%SP_DIR:\=/%
-set UNIX_SRC_DIR=%SRC_DIR:\=/%
-
-set CC=cl.exe
-set CXX=cl.exe
-
-cmake -LAH -G "Ninja"  ^
-    -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^
-    -DBUILD_SHARED_LIBS:BOOL=ON  ^
-    -DLIEF_PYTHON_API=OFF  ^
-    -DCMAKE_CXX_FLAGS="%CXXFLAGS% /EHsc /wd4359"  ^
-    -DCMAKE_C_FLAGS="%CFLAGS% /EHsc /wd4359"  ^
-    -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
-    -DCMAKE_SKIP_RPATH=ON  ^
+:: Suppresses warnings C4251, C4275 explicitly to reduce log size (may want to address this upstream).
+:: refs:
+::   - https://learn.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-1-c4251
+::   - https://learn.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-2-c4275
+cmake %CMAKE_ARGS% -LAH -G "Ninja" -B build  ^
+    -DCMAKE_CXX_FLAGS="%CXXFLAGS% /nologo /EHsc /wd4251 /wd4275"  ^
+    -DCMAKE_C_FLAGS="%CFLAGS% /nologo /EHsc /wd4251 /wd4275"  ^
     -DCMAKE_VERBOSE_MAKEFILE=ON  ^
-    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
-    -DLIEF_EXTERNAL_PYBIND11=ON ^
-    -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON ^
-    ..
+    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF
+
 if %errorlevel% neq 0 exit /b 1

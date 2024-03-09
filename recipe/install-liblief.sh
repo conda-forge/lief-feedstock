@@ -1,11 +1,8 @@
 #!/bin/bash
 
-pushd build
+set -xeu
 
-ninja -j${CPU_COUNT} -v && ninja -v install
+ninja -C build -v -j${CPU_COUNT}
+ninja -C build -v install
 
-if [[ -d "${PREFIX}"/share/LIEF/examples ]]; then
-  rm -rf "${PREFIX}"/share/LIEF/examples/
-fi
-
-popd
+rm -rf "${PREFIX}"/share/LIEF/examples/

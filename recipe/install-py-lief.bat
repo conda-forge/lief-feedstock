@@ -1,153 +1,51 @@
 @echo ON
 setlocal enabledelayedexpansion
+:: Variable LF contains "line feed" character. Do not remove the following 2 blank lines!
+set LF=^
 
-for /F "tokens=1,2 delims=. " %%a in ("%PY_VER%") do (
-   set "PY_MAJOR=%%a"
-   set "PY_MINOR=%%b"
+
+set "CMAKE_ARGS=%CMAKE_ARGS% -DBUILD_STATIC_LIBS=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DBUILD_SHARED_LIBS=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_SKIP_RPATH=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_EXAMPLES=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_OPT_NLOHMANN_JSON_EXTERNAL=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PY_LIEF_EXT=ON"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_PYTHON_API=ON"
+
+set "CMAKE_ARGS=%CMAKE_ARGS% -DLIEF_DISABLE_FROZEN=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS="
+
+cd api\python
+
+if not exist config-default.toml.bak copy config-default.toml config-default.toml.bak
+del config-default.toml
+(
+  echo off
+  for /f "delims=" %%l in (config-default.toml.bak) do (
+    echo %%l
+    if "%%l" == "[lief.build]" (
+      echo lief-install-dir = "%LIBRARY_PREFIX:\=\\%"
+      echo extra-cmake-opt = [
+      for /f "delims=" %%a in ("%CMAKE_ARGS: =!LF!%") do (
+        set "arg=%%a"
+        echo "!arg:\=\\!",
+      )
+      echo ]
+    )
+  ) >> config-default.toml
+  echo on
 )
-
-if "%DEBUG_C%" == "yes" (
-  set BUILD_TYPE=Debug
-  set DEBUG_SUFFIX=_d
-) else (
-  set BUILD_TYPE=Release
-  set DEBUG_SUFFIX=
-)
-
-:: mkdir build-%PY_VER%
-:: pushd build-%PY_VER%
-pushd build
-
-:: delete CMakeCache.txt to unset previous variables
-del CMakeCache.txt
-
-:: It turns out that python3.lib is the DLL import lib and python37.lib is a static lib
-:: Who'd have thought it?
-set PY_LIB=python%PY_MAJOR%%PY_MINOR%%DEBUG_SUFFIX%.lib
-
-:: CMake/OpenCV like Unix-style paths.
-set UNIX_PREFIX=%PREFIX:\=/%
-set UNIX_LIBRARY_PREFIX=%LIBRARY_PREFIX:\=/%
-set UNIX_LIBRARY_BIN=%LIBRARY_BIN:\=/%
-set UNIX_SP_DIR=%SP_DIR:\=/%
-set UNIX_SRC_DIR=%SRC_DIR:\=/%
-
-:: Yes, we build it statically for the Python extension. This is because I failed
-:: to fix the following problem with Python 3.8:
-::
-:: (C:\opt\b\lief-win\_build_env) (base) C:\opt\b\lief-win\work\build-pylief>C:\opt\b\lief-win\_h_env\python.exe -c "import lief"
-:: Fatal Python error: _PyInterpreterState_Get(): no current thread state
-:: Python runtime state: initialized
-:: 
-:: Current thread 0x000052b4 (most recent call first):
-::   File "<frozen importlib._bootstrap>", line 219 in _call_with_frames_removed
-::   File "<frozen importlib._bootstrap_external>", line 1101 in create_module
-::   File "<frozen importlib._bootstrap>", line 556 in module_from_spec
-::   File "<frozen importlib._bootstrap>", line 657 in _load_unlocked
-::   File "<frozen importlib._bootstrap>", line 975 in _find_and_load_unlocked
-::   File "<frozen importlib._bootstrap>", line 991 in _find_and_load
-::   File "<string>", line 1 in <module>
-:: edit: Does LIEF_DISABLE_FROZEN fix this? Well, no, it causes more problems:
-::
-:: -DLIEF_DISABLE_FROZEN=ON leads to the following problem with Python 3.7:
-:: (C:\opt\b\lief-win\_build_env) (base) C:\opt\b\lief-win\work\build-pylief>C:\opt\b\lief-win\_h_env\python.exe -c "import lief"
-:: Traceback (most recent call last):
-::   File "<string>", line 1, in <module>
-:: ImportError: OS_ABI: element "GNU" already exists!
-
-echo Top of install-py-lief.bat: INCLUDE=%INCLUDE%
-echo Top of install-py-lief.bat: LIBRARY_INC=%LIBRARY_INC%
-echo Top of install-py-lief.bat: LIB=%LIB%
-echo Top of install-py-lief.bat: INCLUDE=%INCLUDE%
-echo Top of install-py-lief.bat: LIBRARY_LIB=%LIBRARY_LIB%
-
-set SHARED_BUILD=ON
-set STATIC_BUILD=OFF
-
-set CC=cl.exe
-set CXX=cl.exe
-
-cmake -LAH -G "Ninja"  ^
-    -DCMAKE_BUILD_TYPE="%BUILD_TYPE%"  ^
-    -DCMAKE_INSTALL_PREFIX=%PREFIX%  ^
-    -DBUILD_SHARED_LIBS:BOOL=%SHARED_BUILD%  ^
-    -DBUILD_STATIC_LIBS:BOOL=%STATIC_BUILD%  ^
-    -DLIEF_PYTHON_API=ON  ^
-    -DLIEF_DISABLE_FROZEN=OFF  ^
-    -DCMAKE_SKIP_RPATH=ON  ^
-    -DLIEF_PYTHON_API=ON  ^
-    -DLIEF_INSTALL_PYTHON=ON  ^
-    -DPYTHON_EXECUTABLE=%PREFIX%\python%DEBUG_SUFFIX%.exe  ^
-    -DPYTHON_VERSION=%PY_VER%  ^
-    -DPYTHON_LIBRARY=%PREFIX%\libs\%PY_LIB%  ^
-    -DPYTHON_INCLUDE_DIR:PATH=%PREFIX%\include  ^
-    -DCMAKE_VERBOSE_MAKEFILE=ON  ^
-    -DCMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
-    -DCMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS=OFF  ^
-    -DLIEF_EXTERNAL_PYBIND11=ON  ^
-    ..
+type config-default.toml
 if %errorlevel% neq 0 exit /b 1
 
-:: If we do not create this directory, then a cmake copy command will copy a pyd to a file
-:: called lief, instead of putting it in that directory (or so it seems at least).
-mkdir api\python\lief
-
-:: Delete files from other python versions
-rmdir /s /q api\python\CMakeFiles\pyLIEF.dir
-
-:: when DEBUG_C, the first run will download pybind11 sources which will cause a build failure
-:: at best, and a broken .pyd at worst because pybind11 undefines _DEBUG just before including
-:: Python.h. We undo that.
-ninja -v pyLIEF
-
-if "%DEBUG_C%" == "yes" (
-  patch -p1<%RECIPE_DIR%\pybind11-MSVC-allow-debug-python.patch
-  rmdir /s /q api\python\CMakeFiles
-  rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-build
-  rmdir /s /q build-py\api\python\lief_pybind11-prefix\src\lief_pybind11-stamp
-  rmdir /s /q build-py\api\python\lief_pybind11-prefix\tmp
-  ninja -v pyLIEF
+for /f "useback delims=" %%e in (^
+`%PYTHON% -c "from sysconfig import get_config_var as get; print(get('EXT_SUFFIX') or get('SO'))"`) do (
+  set "EXT_SUFFIX=%%e"
 )
+if %errorlevel% neq 0 exit /b 1
 
-ninja -v install
-
-python -c "from sysconfig import get_config_var as get; print(get('EXT_SUFFIX') or get('SO'))" > tmpFile
-set /p EXT_SUFFIX= < tmpFile
-del tmpFile
-
-
-:: We end up with an exe called lief which is weird.
-pushd api\python
-  :: We may want to have our own dummy setup.py so we get a dist-info folder. It would
-  :: be nice to use LIEF's setup.py but it places too many constraints on the build.
-  :: %PYTHON% setup.py install --single-version-externally-managed --record=record.txt
-  if "%DEBUG_C%" == "yes" (
-    copy lief\lief.pyd %SP_DIR%\lief_d%EXT_SUFFIX%
-    if exist lief.pdb copy lief.pdb %SP_DIR%\lief_d.pdb
-  ) else (
-    copy lief\lief.pyd %SP_DIR%\lief%EXT_SUFFIX%
-    if exist lief.pdb copy lief.pdb %SP_DIR%\lief.pdb
-  )
-popd
-
-:: When pywin32 (or something else) modifies PATH in funny ways we can end up with conda run
-:: not working at all properly, and the sys python getting run instead (for example).
-:: set CONDA_TEST_SAVE_TEMPS=1
-:: echo "(install-py-lief.bat) PATH just before conda run -p %RECIPE_DIR%\echo_path.bat is %PATH%"
-:: where conda
-:: call conda run -p %PREFIX% --debug-wrapper-scripts call %RECIPE_DIR%\echo_path.bat
-:: echo "(install-py-lief.bat) Done call conda run -p"
-:: if %errorlevel% neq 0 exit /b 1
-
-:: The commented out tests above are overkill, but we should run this one at least.
-:: Add --debug-wrapper-scripts to the conda run calls to see what goes on.
-:: call conda run -p %PREFIX% python --version 2>&1 | findstr /r /c:%PY_VER%
-:: if %errorlevel% neq 0 exit /b 1
-
-:: call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"The specified module could not be found"
-:: if %errorlevel% neq 1 exit /b 1
-
-:: call conda run -p %PREFIX% python -v -c "import lief" 2>&1 | findstr /r /c:"no current thread state"
-:: if %errorlevel% neq 1 exit /b 1
+pip install --no-deps --no-build-isolation --ignore-installed --no-index -vv .
+if %errorlevel% neq 0 exit /b 1
 
 if exist %PREFIX%\share\LIEF\examples rmdir /s /q %PREFIX%\share\LIEF\examples
