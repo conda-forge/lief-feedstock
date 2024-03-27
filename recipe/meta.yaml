@@ -25,6 +25,7 @@ requirements:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - ccache
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config            # [not win]
@@ -45,6 +46,7 @@ outputs:
     requirements:
       build:
         - ccache
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - pkg-config            # [not win]
@@ -92,6 +94,7 @@ outputs:
     requirements:
       build:
         - ccache
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - pkg-config            # [not win]
