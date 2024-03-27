@@ -18,7 +18,7 @@ source:
       - 0003-Export-symbols-used-by-Python-library-from-libLIEF.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
