@@ -8,14 +8,13 @@ source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     sha256: 28653b59afc8b8b255251f21a0f3cbfbdec05dd988fb3f473e22dde28f427ad8
     patches:
-      - 0001-Inject-proper-extension-module-suffix-via-env-var.patch
-      # Upstream does not support dynamic linking to libLIEF from the Python
-      # extension module. To make this work, we need to export symbols from
-      # libLIEF which the module uses.
-      # Since it offers few (any?) real advantages, we may want to drop dynamic
-      # linking in the future and link libLIEF statically for py-lief, too.
-      - 0002-Dynamically-link-Python-library-to-libLIEF.patch
-      - 0003-Export-symbols-used-by-Python-library-from-libLIEF.patch
+      ## Upstream does not support dynamic linking to libLIEF from the Python
+      ## extension module. To make this work, we need to export symbols from
+      ## libLIEF which the module uses.
+      ## Since it offers few (any?) real advantages, we may want to drop dynamic
+      ## linking in the future and link libLIEF statically for py-lief, too.
+      - 0001-Dynamically-link-Python-library-to-libLIEF.patch
+      - 0002-Export-symbols-used-by-Python-library-from-libLIEF.patch
 
 build:
   number: 0
