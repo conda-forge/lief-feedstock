@@ -1,4 +1,4 @@
-{% set version = "0.14.1" %}
+{% set version = "0.15.1" %}
 
 package:
   name: lief
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: 92916dcb3178353d863aef4f409186889983c56e025b774741d5316a72ec3a7d
+    sha256: 28653b59afc8b8b255251f21a0f3cbfbdec05dd988fb3f473e22dde28f427ad8
     patches:
       - 0001-Inject-proper-extension-module-suffix-via-env-var.patch
       # Upstream does not support dynamic linking to libLIEF from the Python
@@ -18,7 +18,7 @@ source:
       - 0003-Export-symbols-used-by-Python-library-from-libLIEF.patch
 
 build:
-  number: 2
+  number: 0
 
 requirements:
   build:
