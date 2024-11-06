@@ -5,7 +5,7 @@
 #include <LIEF/logging.hpp>
 
 int main(int argc, char **argv) {
-    LIEF::logging::set_level(LIEF::logging::LOG_DEBUG);
+    LIEF::logging::set_level(LIEF::logging::LEVEL::DEBUG);
 
     std::cout << "LIEF Binary Introspection" << std::endl;
 
