@@ -146,6 +146,7 @@ about:
     It turns out that many projects need to parse executable formats and they usually re-implement
     their own parser. Moreover these parsers are usually bound to one language.
     LIEF attempts to fill this void.
+  dev_url: https://github.com/lief-project/LIEF
   doc_url: https://lief.quarkslab.com/doc/stable/index.html
   doc_source_url: https://github.com/lief-project/LIEF/tree/master/doc
 
