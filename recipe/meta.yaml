@@ -65,6 +65,8 @@ outputs:
         - pydantic-core >=2.10.1
         - scikit-build-core >=0.6.0
         - setuptools >=68.2.2
+        # Required for msvc.msvc14_get_vc_env
+        - setuptools <=70.2  # [win]
         - tomli >=2.0.1
       run:
         - {{ pin_subpackage('liblief', exact=True) }}
