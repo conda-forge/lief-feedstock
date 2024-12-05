@@ -1,4 +1,4 @@
-From ad2ec1040675ba629f2b86edd6841cfa1de1b07e Mon Sep 17 00:00:00 2001
+From 4f3b726a0b6b869bc92479e4fdb7858083b6442c Mon Sep 17 00:00:00 2001
 From: Romain Thomas <me@romainthomas.fr>
 Date: Sat, 5 Oct 2024 05:49:38 +0200
 Subject: [PATCH] Make sure we have a correct visibility
@@ -12,6 +12,9 @@ Subject: [PATCH] Make sure we have a correct visibility
  include/LIEF/BinaryStream/MemoryStream.hpp                 | 3 ++-
  include/LIEF/BinaryStream/SpanStream.hpp                   | 3 ++-
  include/LIEF/BinaryStream/VectorStream.hpp                 | 3 ++-
+ include/LIEF/DWARF/Function.hpp                            | 2 +-
+ include/LIEF/DWARF/types/ClassLike.hpp                     | 2 +-
+ include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp           | 2 +-
  include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp | 3 ++-
  include/LIEF/ELF/NoteDetails/properties/StackSize.hpp      | 3 ++-
  include/LIEF/ELF/NoteDetails/properties/X86Feature.hpp     | 3 ++-
@@ -19,7 +22,7 @@ Subject: [PATCH] Make sure we have a correct visibility
  include/LIEF/MachO/LoadCommand.hpp                         | 2 +-
  include/LIEF/PE/signature/PKCS9TSTInfo.hpp                 | 3 ++-
  include/LIEF/range.hpp                                     | 5 ++++-
- 15 files changed, 37 insertions(+), 14 deletions(-)
+ 18 files changed, 40 insertions(+), 17 deletions(-)
 
 diff --git a/api/python/CMakeLists.txt b/api/python/CMakeLists.txt
 index daa3036..cd968a7 100644
@@ -162,6 +165,45 @@ index e892a3a..61b885c 100644
    public:
    using BinaryStream::p;
    using BinaryStream::end;
+diff --git a/include/LIEF/DWARF/Function.hpp b/include/LIEF/DWARF/Function.hpp
+index 503959d..f6ee259 100644
+--- a/include/LIEF/DWARF/Function.hpp
++++ b/include/LIEF/DWARF/Function.hpp
+@@ -99,7 +99,7 @@ class LIEF_API Function {
+   };
+ 
+   /// This class wraps a DWARF function's parameter
+-  class Parameter {
++  class LIEF_API Parameter {
+     public:
+     Parameter(std::unique_ptr<details::Parameter> impl);
+     Parameter(Parameter&& other) noexcept;
+diff --git a/include/LIEF/DWARF/types/ClassLike.hpp b/include/LIEF/DWARF/types/ClassLike.hpp
+index 6ae8263..8e5ef25 100644
+--- a/include/LIEF/DWARF/types/ClassLike.hpp
++++ b/include/LIEF/DWARF/types/ClassLike.hpp
+@@ -33,7 +33,7 @@ class LIEF_API ClassLike : public Type {
+   using Type::Type;
+ 
+   /// This represents a class/struct/union attribute
+-  class Member {
++  class LIEF_API Member {
+     public:
+     Member(std::unique_ptr<details::Member> impl);
+     Member(Member&& other) noexcept;
+diff --git a/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp b/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
+index 126b4fd..c6fca10 100644
+--- a/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
++++ b/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
+@@ -32,7 +32,7 @@ class LIEF_API NoteGnuProperty : public Note {
+ 
+   /// This class wraps the different properties that can be used in a
+   /// `NT_GNU_PROPERTY_TYPE_0` note
+-  class Property {
++  class LIEF_API Property {
+     public:
+ 
+     /// LIEF's mirror types of the original `GNU_PROPERTY_` values
 diff --git a/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp b/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp
 index 0bc12a9..226ec70 100644
 --- a/include/LIEF/ELF/NoteDetails/properties/AArch64Feature.hpp
