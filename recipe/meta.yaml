@@ -1,4 +1,4 @@
-{% set version = "0.15.1" %}
+{% set version = "0.16.0" %}
 
 package:
   name: lief
@@ -6,10 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: 28653b59afc8b8b255251f21a0f3cbfbdec05dd988fb3f473e22dde28f427ad8
-    patches:
-      # https://github.com/lief-project/LIEF/commit/ba294bd1816aa6754836162350423238861937a7
-      - 0001-Make-sure-we-have-a-correct-visibility.patch
+    sha256: 532be16c49539aa98156a9f59c0cd8e7ad6f6b93afbfc6346ad6cb95edf246c2
 
 build:
   number: 0
