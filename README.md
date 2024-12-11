@@ -9,6 +9,8 @@ Package license: Apache-2.0
 
 Summary: A cross platform library to parse, modify and abstract ELF, PE and MachO formats.
 
+Development: https://github.com/lief-project/LIEF
+
 Documentation: https://lief.quarkslab.com/doc/stable/index.html
 
 It turns out that many projects need to parse executable formats and they usually re-implement
