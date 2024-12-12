@@ -1,0 +1,36 @@
+From 6f0cf11a62d9fb569b3848a0b83ee84397a59631 Mon Sep 17 00:00:00 2001
+From: Uwe Korn <uwelk@xhochy.com>
+Date: Thu, 12 Dec 2024 09:12:11 +0000
+Subject: [PATCH 2/2] Fix missing visibilities
+
+---
+ include/LIEF/DWARF/types/ClassLike.hpp           | 2 +-
+ include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/LIEF/DWARF/types/ClassLike.hpp b/include/LIEF/DWARF/types/ClassLike.hpp
+index 8952ccd..8f5f782 100644
+--- a/include/LIEF/DWARF/types/ClassLike.hpp
++++ b/include/LIEF/DWARF/types/ClassLike.hpp
+@@ -34,7 +34,7 @@ class LIEF_API ClassLike : public Type {
+   using Type::Type;
+ 
+   /// This represents a class/struct/union attribute
+-  class Member {
++  class LIEF_API Member {
+     public:
+     Member(std::unique_ptr<details::Member> impl);
+     Member(Member&& other) noexcept;
+diff --git a/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp b/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
+index b74ae7a..22825dd 100644
+--- a/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
++++ b/include/LIEF/ELF/NoteDetails/NoteGnuProperty.hpp
+@@ -32,7 +32,7 @@ class LIEF_API NoteGnuProperty : public Note {
+ 
+   /// This class wraps the different properties that can be used in a
+   /// `NT_GNU_PROPERTY_TYPE_0` note
+-  class Property {
++  class LIEF_API Property {
+     public:
+ 
+     /// LIEF's mirror types of the original `GNU_PROPERTY_` values
