@@ -1,0 +1,40 @@
+From 77f39699b5ec5ce04e03e3f5541784b473abc7b2 Mon Sep 17 00:00:00 2001
+From: Uwe Korn <uwelk@xhochy.com>
+Date: Wed, 11 Dec 2024 15:01:05 +0000
+Subject: [PATCH 1/2] Fix ChainedBindingInfo visibility issues
+
+---
+ include/LIEF/MachO/ChainedBindingInfo.hpp | 4 +---
+ src/MachO/ChainedBindingInfo.cpp          | 4 ++++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/include/LIEF/MachO/ChainedBindingInfo.hpp b/include/LIEF/MachO/ChainedBindingInfo.hpp
+index 5bda3f3..ac0ad44 100644
+--- a/include/LIEF/MachO/ChainedBindingInfo.hpp
++++ b/include/LIEF/MachO/ChainedBindingInfo.hpp
+@@ -99,9 +99,7 @@ class LIEF_API ChainedBindingInfo : public BindingInfo {
+     return info->type() == TYPES::CHAINED;
+   }
+ 
+-  ~ChainedBindingInfo() override {
+-    clear();
+-  }
++  ~ChainedBindingInfo() override;
+ 
+   void accept(Visitor& visitor) const override;
+ 
+diff --git a/src/MachO/ChainedBindingInfo.cpp b/src/MachO/ChainedBindingInfo.cpp
+index 5b33752..2400f71 100644
+--- a/src/MachO/ChainedBindingInfo.cpp
++++ b/src/MachO/ChainedBindingInfo.cpp
+@@ -51,6 +51,10 @@ ChainedBindingInfo& ChainedBindingInfo::operator=(ChainedBindingInfo other) {
+   return *this;
+ }
+ 
++ChainedBindingInfo::~ChainedBindingInfo() {
++  clear();
++}
++
+ void ChainedBindingInfo::swap(ChainedBindingInfo& other) noexcept {
+   BindingInfo::swap(other);
+   std::swap(format_,          other.format_);
