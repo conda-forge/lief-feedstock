@@ -4,5 +4,3 @@ cxx_compiler:  # [win]
 - vs2022       # [win]
 c_stdlib_version:  # [osx and x86_64]
   - 10.13          # [osx and x86_64]
-channel_targets:
-  - conda-forge lief_rc
