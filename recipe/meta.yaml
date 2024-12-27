@@ -1,4 +1,4 @@
-{% set version = "0.16.0" %}
+{% set version = "0.16.1" %}
 
 package:
   name: lief
@@ -6,13 +6,13 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: 532be16c49539aa98156a9f59c0cd8e7ad6f6b93afbfc6346ad6cb95edf246c2
+    sha256: 9fb3d18bd2182170f65c63b577c680de53605e92d18a22d49b535ca61349c5db
     patches:
       - 0001-Fix-ChainedBindingInfo-visibility-issues.patch
       - 0002-Fix-missing-visibilities.patch
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
