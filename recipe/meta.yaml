@@ -7,9 +7,6 @@ package:
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
     sha256: 895ce0321b233a6d610ed89ccbe8dc4aa2cf0bb959919a1db0693ba264f3d29a
-    patches:
-      - 0001-Fix-ChainedBindingInfo-visibility-issues.patch
-      - 0002-Fix-missing-visibilities.patch
 
 build:
   number: 0
