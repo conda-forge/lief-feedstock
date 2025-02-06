@@ -28,9 +28,9 @@ requirements:
 
 outputs:
   - name: py-lief
-    script:
-      - install-py-lief.sh  # [unix]
-      - install-py-lief.bat  # [win]
+    script: |-
+      install-py-lief.sh  # [unix]
+      install-py-lief.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage('py-lief', max_pin='x.x') }}
@@ -80,9 +80,9 @@ outputs:
         - python -c "import ctypes.util, lief; missing = {name for name in {s.name for s in lief.parse(lief._lief.__file__).imported_functions} - {s.name for s in lief.parse(ctypes.util.find_library('LIEF')).exported_functions} if '4LIEF' in name}; assert not missing, missing"
 
   - name: liblief
-    script:
-      - install-liblief.sh  # [unix]
-      - install-liblief.bat  # [win]
+    script: |-
+      install-liblief.sh  # [unix]
+      install-liblief.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
