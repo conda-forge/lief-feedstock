@@ -1,4 +1,4 @@
-{% set version = "0.17.0" %}
+{% set version = "0.17.1" %}
 
 package:
   name: lief
@@ -6,12 +6,10 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: bcc5f1e0dcfbf6de07d8a666bf742cda6467cd08d4b5a9679dfdbaafe08563e2
-    patches:
-       - 0001-Add-missing-visibility.patch
+    sha256: 9dea0f09c7b98e8d0c9a47f8629fbd1646ddc9bf1cae7c2f4ce42fe8934dc315
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
