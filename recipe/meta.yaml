@@ -1,4 +1,4 @@
-{% set version = "0.17.1" %}
+{% set version = "0.17.3" %}
 
 package:
   name: lief
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: 9dea0f09c7b98e8d0c9a47f8629fbd1646ddc9bf1cae7c2f4ce42fe8934dc315
+    sha256: 00158beac9432b350fb528d571457a0bea8de154633a31735524a74fa69ea196
 
 build:
   number: 0
