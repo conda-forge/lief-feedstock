@@ -1,4 +1,4 @@
-{% set version = "0.17.1" %}
+{% set version = "0.17.4" %}
 
 package:
   name: lief
@@ -6,7 +6,7 @@ package:
 
 source:
   - url: https://github.com/lief-project/LIEF/archive/{{ version }}.tar.gz
-    sha256: 9dea0f09c7b98e8d0c9a47f8629fbd1646ddc9bf1cae7c2f4ce42fe8934dc315
+    sha256: cc1c8c563faaddf497d1a2d8f2712257f15e680e6a5ef4ea1e29ba8e19fb6248
 
 build:
   number: 0
@@ -24,7 +24,7 @@ requirements:
     - ninja
   host:
     - nlohmann_json
-    - mbedtls
+    - mbedtls 3.*
 
 outputs:
   - name: py-lief
@@ -95,7 +95,7 @@ outputs:
         - ninja
       host:
         - nlohmann_json
-        - mbedtls
+        - mbedtls 3.*
     test:
       files:
         - tests
