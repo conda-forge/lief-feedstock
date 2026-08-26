@@ -15,7 +15,7 @@ requirements:
   build:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - ccache
+    - ccache  # [build_platform != 'win-arm64']
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
@@ -37,7 +37,7 @@ outputs:
         - python
     requirements:
       build:
-        - ccache
+        - ccache  # [build_platform != 'win-arm64']
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
@@ -86,7 +86,7 @@ outputs:
         - {{ pin_subpackage('liblief', max_pin='x.x') }}
     requirements:
       build:
-        - ccache
+        - ccache  # [build_platform != 'win-arm64']
         - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
