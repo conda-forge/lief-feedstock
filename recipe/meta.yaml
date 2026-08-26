@@ -25,6 +25,7 @@ requirements:
   host:
     - nlohmann_json
     - mbedtls 3.*
+    - spdlog
 
 outputs:
   - name: py-lief
@@ -53,6 +54,7 @@ outputs:
         - tomli >=2.0.1                          # [build_platform != target_platform]
       host:
         - nlohmann_json
+        - spdlog
         # Dynamically linked to libLIEF for now; see comment in patch section.
         - {{ pin_subpackage('liblief', exact=True) }}
         - python
@@ -96,6 +98,7 @@ outputs:
       host:
         - nlohmann_json
         - mbedtls 3.*
+        - spdlog
     test:
       files:
         - tests
