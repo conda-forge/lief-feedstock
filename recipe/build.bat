@@ -1,4 +1,4 @@
-@echo ON
+@echo on
 setlocal enabledelayedexpansion
 
 set "CMAKE_ARGS=%CMAKE_ARGS% -DBUILD_STATIC_LIBS=OFF"
