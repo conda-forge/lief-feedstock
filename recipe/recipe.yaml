@@ -90,8 +90,8 @@ outputs:
             - bash "${RECIPE_DIR}/install-liblief.sh"
         - if: win
           then:
-            - call "%RECIPE_DIR%\\build.bat"
-            - call "%RECIPE_DIR%\\install-liblief.bat"
+            - call "%RECIPE_DIR%\build.bat"
+            - call "%RECIPE_DIR%\install-liblief.bat"
     requirements:
       build:
         - if: build_platform != 'win-arm64'
