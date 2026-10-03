@@ -8,7 +8,7 @@ conda_forge_output_validation: true
 github:
   branch_name: main
   tooling_branch_name: main
-provider: 
+provider:
   linux_aarch64: default
   osx_arm64: default
   win_arm64: default

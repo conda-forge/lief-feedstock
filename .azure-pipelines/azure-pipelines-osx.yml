@@ -8,8 +8,8 @@ jobs:
     vmImage: $(VMIMAGE)
   strategy:
     matrix:
-      osx_64_is_freethreadingfalse:
-        CONFIG: osx_64_is_freethreadingfalse
+      osx_64_channel_sourcesconda-forgeconda-forgelabelpython_rcis_freethreadingfalse:
+        CONFIG: osx_64_channel_sourcesconda-forgeconda-forgelabelpython_rcis_freethreadingfalse
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
         build_workspace_dir: ~/miniforge3/conda-bld
@@ -18,8 +18,8 @@ jobs:
         resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
-      osx_64_is_freethreadingtrue:
-        CONFIG: osx_64_is_freethreadingtrue
+      osx_64_channel_sourcesconda-forgeis_freethreadingfalse:
+        CONFIG: osx_64_channel_sourcesconda-forgeis_freethreadingfalse
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
         build_workspace_dir: ~/miniforge3/conda-bld
@@ -28,8 +28,18 @@ jobs:
         resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
-      osx_arm64_is_freethreadingfalse:
-        CONFIG: osx_arm64_is_freethreadingfalse
+      osx_64_channel_sourcesconda-forgeis_freethreadingtrue:
+        CONFIG: osx_64_channel_sourcesconda-forgeis_freethreadingtrue
+        UPLOAD_PACKAGES: 'True'
+        VMIMAGE: macOS-15
+        build_workspace_dir: ~/miniforge3/conda-bld
+        free_disk_space: skip
+        pagefile_size: 0
+        resize_partitions: false
+        store_build_artifacts: false
+        tools_install_dir: ~/miniforge3
+      osx_arm64_channel_sourcesconda-forgeconda-forgelabelpython_rcis_freethreadingfalse:
+        CONFIG: osx_arm64_channel_sourcesconda-forgeconda-forgelabelpython_rcis_freethreadingfalse
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15-arm64
         build_workspace_dir: ~/miniforge3/conda-bld
@@ -38,8 +48,18 @@ jobs:
         resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
-      osx_arm64_is_freethreadingtrue:
-        CONFIG: osx_arm64_is_freethreadingtrue
+      osx_arm64_channel_sourcesconda-forgeis_freethreadingfalse:
+        CONFIG: osx_arm64_channel_sourcesconda-forgeis_freethreadingfalse
+        UPLOAD_PACKAGES: 'True'
+        VMIMAGE: macOS-15-arm64
+        build_workspace_dir: ~/miniforge3/conda-bld
+        free_disk_space: skip
+        pagefile_size: 0
+        resize_partitions: false
+        store_build_artifacts: false
+        tools_install_dir: ~/miniforge3
+      osx_arm64_channel_sourcesconda-forgeis_freethreadingtrue:
+        CONFIG: osx_arm64_channel_sourcesconda-forgeis_freethreadingtrue
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15-arm64
         build_workspace_dir: ~/miniforge3/conda-bld
