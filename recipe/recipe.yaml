@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   version: "1.0.0"
-  build_number: 5
+  build_number: 6
 
 recipe:
   name: lief-split
@@ -124,15 +124,13 @@ outputs:
         script:
           - if: not win
             then: set -x
-          - if: win
-            then: echo on
+            else: echo on
           - pushd tests
           - if: not win
-            then: PATH=".:${PATH}"
-          - if: not win
-            then: findstr() { grep "${@}"; }
-          - if: not win
-            then: call() { true; }
+            then:
+              - PATH=".:${PATH}"
+              - findstr() { grep "${@}"; }
+              - call() { true; }
           - pushd self
           - cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug . || exit 1
           - ninja || exit 1
