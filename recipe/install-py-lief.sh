@@ -14,6 +14,14 @@ CMAKE_ARGS="${CMAKE_ARGS} \
   -DLIEF_PYTHON_API=ON \
 "
 
+if [[ "${build_platform}" != "${target_platform}" ]]; then
+  # CMake 4.5 stopped using the Python interpreter when cross-compiling under
+  # policy CMP0190 OLD, and its fallback cannot find Development.Module for
+  # free-threaded Python. cross-python's $PREFIX/bin/python already runs on
+  # the build machine, so let FindPython run it with env as the emulator.
+  CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_POLICY_DEFAULT_CMP0190=NEW -DPython_CROSSCOMPILING_EMULATOR=env"
+fi
+
 pushd api/python
 
 mv -n config-default.toml config-default.toml.bak
